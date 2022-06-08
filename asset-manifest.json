@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/modomator/static/css/main.b99f8df6.css",
+    "main.js": "/modomator/static/js/main.d95d6217.js",
+    "static/js/787.2d91b9cb.chunk.js": "/modomator/static/js/787.2d91b9cb.chunk.js",
+    "index.html": "/modomator/index.html",
+    "main.b99f8df6.css.map": "/modomator/static/css/main.b99f8df6.css.map",
+    "main.d95d6217.js.map": "/modomator/static/js/main.d95d6217.js.map",
+    "787.2d91b9cb.chunk.js.map": "/modomator/static/js/787.2d91b9cb.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b99f8df6.css",
+    "static/js/main.d95d6217.js"
+  ]
+}

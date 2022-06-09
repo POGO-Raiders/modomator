@@ -14,10 +14,10 @@ const ModForm = () => {
   const openNotification = (type) => {
     notification.open({
       message: `${type} copied to clipboard.`,
+      duration: 2,
     });
   };
 
-  const [form] = Form.useForm();
   const [type, setType] = useState("");
 
   const onFinish = (values) => {
@@ -31,54 +31,54 @@ const ModForm = () => {
   };
 
   return (
-    <Form
-      form={form}
-      name="basic"
-      labelCol={{ span: 8 }}
-      wrapperCol={{ span: 8 }}
-      initialValues={{ verified: false }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      autoComplete="off"
-    >
-      <Form.Item
-        label="Discord ID"
-        name="id"
-        rules={[{ required: true, message: "Input the member's ID." }]}
+    <div className="form-container">
+      <Form
+        name="modform"
+        initialValues={{ verified: false }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+        requiredMark={false}
       >
-        <Input />
-      </Form.Item>
+        <Form.Item
+          label="Discord ID"
+          name="id"
+          rules={[{ required: true, message: "Input the member's ID." }]}
+        >
+          <Input />
+        </Form.Item>
 
-      <Form.Item
-        name="reason"
-        label="Reason"
-        rules={[{ required: true, message: "Select a reason for moderation." }]}
-      >
-        <Radio.Group buttonStyle="solid">
-          {Object.keys(ModerationMap).map((k, i) => (
-            <Radio.Button value={k} key={i}>
-              {k}
-            </Radio.Button>
-          ))}
-        </Radio.Group>
-      </Form.Item>
+        <Form.Item
+          name="reason"
+          label="Reason"
+          rules={[{ required: true, message: "Select a reason for moderation." }]}
+        >
+          <Radio.Group buttonStyle="solid">
+            {Object.keys(ModerationMap).map((k, i) => (
+              <Radio.Button value={k} key={i}>
+                {k}
+              </Radio.Button>
+            ))}
+          </Radio.Group>
+        </Form.Item>
 
-      <Form.Item name="verified" valuePropName="checked" wrapperCol={{ offset: 8, span: 16 }}>
-        <Checkbox>Verified Host</Checkbox>
-      </Form.Item>
+        <Form.Item name="verified" valuePropName="checked">
+          <Checkbox>Verified Host</Checkbox>
+        </Form.Item>
 
-      <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="default" htmlType="submit" onClick={() => setType("Warn")}>
-          Warn
-        </Button>
-        <Button type="primary" htmlType="submit" danger={true} onClick={() => setType("Ban")}>
-          Ban
-        </Button>
-        <Button type="link" htmlType="button" onClick={() => form.resetFields()}>
-          Clear
-        </Button>
-      </Form.Item>
-    </Form>
+        <Form.Item style={{ float: "right" }}>
+          <Button type="default" htmlType="submit" onClick={() => setType("Warn")}>
+            Warn
+          </Button>
+          <Button type="primary" htmlType="submit" danger={true} onClick={() => setType("Ban")}>
+            Ban
+          </Button>
+          <Button type="link" htmlType="reset">
+            Clear
+          </Button>
+        </Form.Item>
+      </Form>
+    </div>
   );
 };
 

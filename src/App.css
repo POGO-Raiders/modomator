@@ -8,6 +8,12 @@
   color: var(--pgr-red)
 }
 
+.form-container {
+  margin: auto;
+  padding: 0 40px;
+  max-width: 512px;
+}
+
 .centered {
   text-align: center;
 }

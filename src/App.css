@@ -1,3 +1,17 @@
+:root {
+  --pgr-red: #e93030;
+}
+
+.form-title {
+  font-size: 32;
+  font-weight: bold;
+  color: var(--pgr-red)
+}
+
+.centered {
+  text-align: center;
+}
+
 .ant-btn {
   margin-right: 8px;
 }

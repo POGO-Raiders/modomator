@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import { Layout, Typography } from "antd";
+import { Layout } from "antd";
 import ModForm from "./ModForm";
 const logo = require('./assets/pgricon64.png');
 

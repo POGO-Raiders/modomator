@@ -2,11 +2,11 @@ import "./App.css";
 import React from "react";
 import { Layout, Typography } from "antd";
 import ModForm from "./ModForm";
-//import logo from "./pgricon64.png";
+const logo = require('./assets/pgricon64.png');
 
 const { Footer, Header } = Layout;
 
-const App = () => {
+const App = (): JSX.Element => {
   return (
     <Layout style={{ background: "none" }}>
       <Header style={{ background: "none" }}>
@@ -14,7 +14,7 @@ const App = () => {
       </Header>
       <ModForm />
       <Footer style={{ textAlign: "center", background: "none" }}>
-        <img width={32} src="./pgricon64.png" alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
+        <img width={32} src={logo} alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
         Pokémon GO Raiders
       </Footer>
     </Layout>

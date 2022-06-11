@@ -15,7 +15,7 @@ const App = () => {
             react_1.default.createElement("h1", { className: "centered form-title" }, "Modomator")),
         react_1.default.createElement(ModForm_1.default, null),
         react_1.default.createElement(Footer, { style: { textAlign: "center", background: "none" } },
-            react_1.default.createElement("img", { width: 32, src: "./pgricon64.png", alt: "Pok\u00E9mon Go Raiders logo", style: { marginRight: 8 } }),
+            react_1.default.createElement("img", { width: 32, src: "logo192.png", alt: "Pok\u00E9mon Go Raiders logo", style: { marginRight: 8 } }),
             "Pok\u00E9mon GO Raiders")));
 };
 exports.default = App;

@@ -2,7 +2,7 @@
     "compilerOptions": {
 	"skipLibCheck": true,
 	"esModuleInterop": true,
-        "outDir": "./js/",
+        "outDir": "./build/",
         "sourceMap": true,
         "module": "commonjs",
         "target": "es6",

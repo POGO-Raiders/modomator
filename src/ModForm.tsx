@@ -3,8 +3,10 @@ import "antd/dist/antd.min.css";
 import { notification, Radio, Button, Checkbox, Form, Input } from "antd";
 import React, { useState } from "react";
 import ModerationMap from "./ModerationMap";
+import { ModerationFactory, ModerationType } from "./Moderation";
 
 const ModForm = (): JSX.Element => {
+
   const copyToClipboard = (str: string) => {
     if (navigator && navigator.clipboard && navigator.clipboard.writeText)
       return navigator.clipboard.writeText(str);
@@ -18,12 +20,17 @@ const ModForm = (): JSX.Element => {
     });
   };
 
-  const [type, setType] = useState("");
+  const [moderationType, setModerationType] = useState<ModerationType>();
 
-  const onFinish = (values: any) => {
-    const copyString = generateModerationString(type, values.id, values.reason, values.verified);
+  const onFinish = (formData: any) => {
+    console.log(formData)
+    // TODO: Handle error case better
+    if (!moderationType) return;
+    const moderation = ModerationFactory.create(moderationType, formData)
+    const copyString = moderation.moderationString;
     copyToClipboard(copyString);
-    openNotification(type);
+    openNotification(moderationType);
+    window.open(moderation.discordChannelURL);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -67,10 +74,10 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
 
         <Form.Item style={{ float: "right" }}>
-          <Button type="default" htmlType="submit" onClick={() => setType("Warn")}>
+          <Button type="default" htmlType="submit" onClick={() => setModerationType(ModerationType.Warning)}>
             Warn
           </Button>
-          <Button type="primary" htmlType="submit" danger={true} onClick={() => setType("Ban")}>
+          <Button type="primary" htmlType="submit" danger={true} onClick={() => setModerationType(ModerationType.Ban)}>
             Ban
           </Button>
           <Button type="link" htmlType="reset">
@@ -83,18 +90,3 @@ const ModForm = (): JSX.Element => {
 };
 
 export default ModForm;
-
-function generateModerationString(type: string, id: any, reason: string | number, verified: boolean) {
-  if (type === "Ban") {
-    return `?ban ${id} ${ModerationMap[reason]} If you wish to appeal this ban, go to https://www.pogoraiders.gg/appeal`;
-  }
-
-  if (type === "Warn") {
-    const verifiedString = verified
-      ? "Your Verified Host Status will be reviewed as a result of this warning."
-      : "";
-    return `?warn ${id} ${ModerationMap[reason]} ${verifiedString}`;
-  }
-
-  return "ERROR";
-}

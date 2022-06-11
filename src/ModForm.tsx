@@ -4,14 +4,14 @@ import { notification, Radio, Button, Checkbox, Form, Input } from "antd";
 import React, { useState } from "react";
 import ModerationMap from "./ModerationMap";
 
-const ModForm = () => {
-  const copyToClipboard = (str) => {
+const ModForm = (): JSX.Element => {
+  const copyToClipboard = (str: string) => {
     if (navigator && navigator.clipboard && navigator.clipboard.writeText)
       return navigator.clipboard.writeText(str);
     return Promise.reject("The Clipboard API is not available.");
   };
 
-  const openNotification = (type) => {
+  const openNotification = (type: string) => {
     notification.open({
       message: `${type} copied to clipboard.`,
       duration: 2,
@@ -20,13 +20,13 @@ const ModForm = () => {
 
   const [type, setType] = useState("");
 
-  const onFinish = (values) => {
+  const onFinish = (values: any) => {
     const copyString = generateModerationString(type, values.id, values.reason, values.verified);
     copyToClipboard(copyString);
     openNotification(type);
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
 
@@ -84,7 +84,7 @@ const ModForm = () => {
 
 export default ModForm;
 
-function generateModerationString(type, id, reason, verified) {
+function generateModerationString(type: string, id: any, reason: string | number, verified: boolean) {
   if (type === "Ban") {
     return `?ban ${id} ${ModerationMap[reason]} If you wish to appeal this ban, go to https://www.pogoraiders.gg/appeal`;
   }

@@ -2,16 +2,10 @@
   --pgr-red: #e93030;
 }
 
-.home-settings {
-  position: absolute;
-  top: 18px;
-  right: 18px;
-}
-
 .form-title {
   font-size: 32;
   font-weight: bold;
-  color: var(--pgr-red)
+  color: var(--pgr-red);
 }
 
 .form-container {

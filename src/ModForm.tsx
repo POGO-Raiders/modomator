@@ -29,7 +29,7 @@ const ModForm = (): JSX.Element => {
     const copyString = moderation.moderationString;
     copyToClipboard(copyString).then(() => {
       openNotification(moderationType);
-      window.open(moderation.discordChannelURL)
+      window.open(moderation.discordChannelURL);
     });
   };
 
@@ -69,7 +69,7 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
 
         <Form.Item name="modifiers" valuePropName="checked">
-        <Checkbox.Group options={['Verified Host', 'Release Day']}/>
+          <Checkbox.Group options={["Verified Host", "Release Day"]} />
         </Form.Item>
 
         <Form.Item style={{ float: "right" }}>

@@ -27,9 +27,10 @@ const ModForm = (): JSX.Element => {
     if (!moderationType) return;
     const moderation = ModerationFactory.create(moderationType, formData);
     const copyString = moderation.moderationString;
-    copyToClipboard(copyString);
-    openNotification(moderationType);
-    window.open(moderation.discordChannelURL);
+    copyToClipboard(copyString).then(() => {
+      openNotification(moderationType);
+      window.open(moderation.discordChannelURL)
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -40,7 +41,6 @@ const ModForm = (): JSX.Element => {
     <div className="form-container">
       <Form
         name="modform"
-        initialValues={{ verified: false }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -68,11 +68,18 @@ const ModForm = (): JSX.Element => {
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item name="verified" valuePropName="checked">
-          <Checkbox>Verified Host</Checkbox>
+        <Form.Item name="modifiers" valuePropName="checked">
+        <Checkbox.Group options={['Verified Host', 'Release Day']}/>
         </Form.Item>
 
         <Form.Item style={{ float: "right" }}>
+          <Button
+            type="default"
+            htmlType="submit"
+            onClick={() => setModerationType(ModerationType.Mute)}
+          >
+            Mute
+          </Button>
           <Button
             type="default"
             htmlType="submit"

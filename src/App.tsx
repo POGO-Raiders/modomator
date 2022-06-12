@@ -2,7 +2,8 @@ import "./App.css";
 import React from "react";
 import { Layout } from "antd";
 import ModForm from "./ModForm";
-const logo = require('./assets/pgricon64.png');
+import SettingsMenu from "./SettingsMenu";
+const logo = require("./assets/pgricon64.png");
 
 const { Footer, Header } = Layout;
 
@@ -11,6 +12,7 @@ const App = (): JSX.Element => {
     <Layout style={{ background: "none" }}>
       <Header style={{ background: "none" }}>
         <h1 className="centered form-title">Modomator</h1>
+        <SettingsMenu className="home-settings" />
       </Header>
       <ModForm />
       <Footer style={{ textAlign: "center", background: "none" }}>

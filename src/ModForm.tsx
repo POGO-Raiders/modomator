@@ -41,6 +41,7 @@ const ModForm = (): JSX.Element => {
     <div className="form-container">
       <Form
         name="modform"
+        initialValues={{ modifiers: [] }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"

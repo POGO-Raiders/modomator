@@ -29,7 +29,7 @@ const ModForm = (): JSX.Element => {
     const copyString = moderation.moderationString;
     copyToClipboard(copyString).then(() => {
       openNotification(moderationType);
-      window.open(moderation.discordChannelURL);
+      if (localStorage.getItem("openInDiscord") == "true") window.open(moderation.discordChannelURL)?.close();
     });
   };
 

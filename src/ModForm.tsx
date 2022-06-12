@@ -6,7 +6,6 @@ import ModerationMap from "./ModerationMap";
 import { ModerationFactory, ModerationType } from "./Moderation";
 
 const ModForm = (): JSX.Element => {
-
   const copyToClipboard = (str: string) => {
     if (navigator && navigator.clipboard && navigator.clipboard.writeText)
       return navigator.clipboard.writeText(str);
@@ -23,10 +22,10 @@ const ModForm = (): JSX.Element => {
   const [moderationType, setModerationType] = useState<ModerationType>();
 
   const onFinish = (formData: any) => {
-    console.log(formData)
+    console.log(formData);
     // TODO: Handle error case better
     if (!moderationType) return;
-    const moderation = ModerationFactory.create(moderationType, formData)
+    const moderation = ModerationFactory.create(moderationType, formData);
     const copyString = moderation.moderationString;
     copyToClipboard(copyString);
     openNotification(moderationType);
@@ -74,10 +73,19 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
 
         <Form.Item style={{ float: "right" }}>
-          <Button type="default" htmlType="submit" onClick={() => setModerationType(ModerationType.Warning)}>
+          <Button
+            type="default"
+            htmlType="submit"
+            onClick={() => setModerationType(ModerationType.Warning)}
+          >
             Warn
           </Button>
-          <Button type="primary" htmlType="submit" danger={true} onClick={() => setModerationType(ModerationType.Ban)}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            danger={true}
+            onClick={() => setModerationType(ModerationType.Ban)}
+          >
             Ban
           </Button>
           <Button type="link" htmlType="reset">

@@ -6,7 +6,7 @@ import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import Heatran from "./Heatran";
-import ChangeLog from "./ChangeLog";
+import { ChangeLog } from "./ChangeLog";
 const logo = require("./assets/pgricon64.png");
 
 const { Footer, Header } = Layout;

@@ -1,6 +1,6 @@
 const ModerationMap: { [reason: string]: string } = {
   "Discrimination": "Discrimination is not allowed on this server and likely violates Discord ToS.",
-  "Failure to commit": "When you react to a raid, you are expected to join it. Please review the <#736807346268930058> of the server and <#793767024262119433>.",
+  "Failure to commit": "Failure to commit to a raid. When you react to a raid, you are expected to join it. Please review the <#736807346268930058> of the server and <#793767024262119433>.",
   "Failure to invite": "Failure to invite all members of your party to the raid. Make sure to use private lobbies and the search string below the QR code. Please review <#793767024262119433> and the server’s <#736807346268930058> for more information.",
   "Failure to reattempt": "When you host a raid that’s unsuccessful, you are expected to continue communicating with your lobby and provide a reattempt to prevent lost passes. If you need help, ping `@Moderator`. Please review <#793767024262119433> and the server’s <#736807346268930058> for more information.",
   "Harassment": "Harassment is not allowed on this server and likely violates Discord ToS.",

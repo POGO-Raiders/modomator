@@ -4,6 +4,7 @@ export interface ModFormData {
   id: string;
   reason: string;
   modifiers: string[];
+  muteMinutes: number;
 }
 
 export interface Moderation {
@@ -17,6 +18,7 @@ export abstract class AbstractModeration implements Moderation {
   protected id: string;
   protected reason: string;
   protected modifiers: string[];
+  protected muteMinutes: number;
   abstract discordChannelURL: string | undefined;
   abstract get moderationString(): string;
 
@@ -24,6 +26,7 @@ export abstract class AbstractModeration implements Moderation {
     this.id = formData.id;
     this.reason = formData.reason;
     this.modifiers = formData.modifiers;
+    this.muteMinutes = formData.muteMinutes;
   }
 }
 
@@ -34,7 +37,7 @@ export class Warning extends AbstractModeration {
     const verifiedString = this.modifiers.includes("Verified Host")
       ? "Your Verified Host Status will be reviewed as a result of this warning."
       : "";
-    return `?warn ${this.id} ${ModerationMap[this.reason]} ${verifiedString}`;
+    return `?warn ${this.id} ${ModerationMap[this.reason]?.description} ${verifiedString}`;
   }
 }
 
@@ -43,7 +46,7 @@ export class Ban extends AbstractModeration {
 
   get moderationString() {
     return `?ban ${this.id} ${
-      ModerationMap[this.reason]
+      ModerationMap[this.reason]?.description
     } If you wish to appeal this ban, go to https://www.pogoraiders.gg/appeal`;
   }
 }
@@ -51,27 +54,25 @@ export class Mute extends AbstractModeration {
   discordChannelURL = "discord://discord.com/channels/736744916012630046/738522768689332225";
 
   get moderationString() {
-    const muteMinutes = this.modifiers.includes("Release Day") ? 120 : 60;
-
-    return `?mute ${this.id} ${muteMinutes}m ${ModerationMap[this.reason]}`;
+    return `?mute ${this.id} ${this.muteMinutes}m ${ModerationMap[this.reason]?.description}`;
   }
 }
 
 // Factory Class to produce Moderations
-export enum ModerationType {
+export enum ModerationAction {
+  Mute = "Mute",
   Warning = "Warning",
   Ban = "Ban",
-  Mute = "Mute",
 }
 
 export class ModerationFactory {
-  public static create(type: ModerationType, formData: ModFormData): Moderation {
+  public static create(type: ModerationAction, formData: ModFormData): Moderation {
     switch (type) {
-      case ModerationType.Warning:
+      case ModerationAction.Warning:
         return new Warning(formData);
-      case ModerationType.Ban:
+      case ModerationAction.Ban:
         return new Ban(formData);
-      case ModerationType.Mute:
+      case ModerationAction.Mute:
         return new Mute(formData);
       default:
         throw new Error("Wrong moderation type passed.");

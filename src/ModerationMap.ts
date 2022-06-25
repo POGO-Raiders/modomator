@@ -3,6 +3,11 @@ import { ModerationAction } from "./Moderation";
 const ModerationMap: {
   [reason: string]: { description: string; hosting: boolean; categories: ModerationAction[] };
 } = {
+  "AFK host": {
+    description: "Going AFK while hosting a raid. When you host a raid, you are expected to communicate with your lobby and invite other players to join. Please review the server’s <#736807346268930058> and <#793767024262119433> for more information.",
+    hosting: true,
+    categories: [ModerationAction.Warning],
+  },
   Discrimination: {
     description: "Discrimination is not allowed on this server and likely violates Discord ToS.",
     hosting: false,
@@ -54,6 +59,11 @@ const ModerationMap: {
     hosting: false,
     categories: [ModerationAction.Mute, ModerationAction.Warning, ModerationAction.Ban],
   },
+  "Scam links": {
+    description: "Sending scam links on PGR or to other members over DM is not allowed and violates Discord ToS.",
+    hosting: false,
+    categories: [ModerationAction.Ban],
+  },
   Spamming: {
     description: "Spamming and disrupting the chat. Please take some time to re-read <#736807346268930058> before participating on the server again.",
     hosting: false,
@@ -67,7 +77,7 @@ const ModerationMap: {
   "Troll hosting": {
     description: "Troll hosting. When you post a raid, be prepared to host it.",
     hosting: true,
-    categories: [ModerationAction.Warning, ModerationAction.Ban],
+    categories: [ModerationAction.Mute],
   },
   "Unhatched Egg": {
     description:

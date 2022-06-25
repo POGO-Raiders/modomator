@@ -34,9 +34,10 @@ export class Warning extends AbstractModeration {
   discordChannelURL = "discord://discord.com/channels/736744916012630046/738522768689332225";
 
   get moderationString() {
-    const verifiedString = this.modifiers.includes("Verified Host")
-      ? "Your Verified Host Status will be reviewed as a result of this warning."
-      : "";
+    const verifiedString =
+      this.modifiers.includes("Verified Host") && ModerationMap[this.reason]?.hosting === true
+        ? "Your Verified Host Status will be reviewed as a result of this warning."
+        : "";
     return `?warn ${this.id} ${ModerationMap[this.reason]?.description} ${verifiedString}`;
   }
 }

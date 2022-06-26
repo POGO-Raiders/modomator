@@ -27,7 +27,7 @@ const ModForm = (): JSX.Element => {
   const [action, setAction] = useState<ModerationAction>();
   const [reason, setReason] = useState<string>();
   const [modifiers, setModifiers] = useState<string[]>([]);
-  const [muteMinutes, setMuteMinutes] = useState<number>(60);
+  const [muteHours, setMuteHours] = useState<number>(1);
   const [clipboardEnabled, setClipboardEnabled] = useState<boolean>(false);
   const moderation = useRef<Moderation>();
 
@@ -42,19 +42,19 @@ const ModForm = (): JSX.Element => {
           id,
           reason,
           modifiers,
-          muteMinutes,
+          muteHours,
         });
         form.setFieldsValue({ textarea: moderation.current?.moderationString });
         setClipboardEnabled(true);
       })
       .catch(() => {});
-  }, [id, form, action, reason, modifiers, muteMinutes, moderation]);
+  }, [id, form, action, reason, modifiers, muteHours, moderation]);
 
   return (
     <div className="form-container">
       <Form
         name="modform"
-        initialValues={{ modifiers: [], muteminutes: 60 }}
+        initialValues={{ modifiers: [], mutehours: 1 }}
         autoComplete="off"
         requiredMark={false}
         form={form}
@@ -77,7 +77,7 @@ const ModForm = (): JSX.Element => {
             buttonStyle="solid"
             onChange={(e) => {
               setAction(ModerationAction[e.target.value as keyof typeof ModerationAction]);
-              form.resetFields(["reason", "modifiers", "muteminutes"]);
+              form.resetFields(["reason", "modifiers", "mutehours"]);
             }}
           >
             {Object.keys(ModerationAction).map((k, i) => (
@@ -115,9 +115,9 @@ const ModForm = (): JSX.Element => {
 
         {action === ModerationAction.Mute ? (
           <Form.Item
-            name="muteminutes"
-            label="# of Minutes"
-            onReset={() => setMuteMinutes(60)}
+            name="mutehours"
+            label="# of Hours"
+            onReset={() => setMuteHours(1)}
             rules={[
               {
                 required: true,
@@ -125,7 +125,7 @@ const ModForm = (): JSX.Element => {
               },
             ]}
           >
-            <InputNumber min={60} onChange={setMuteMinutes} />
+            <InputNumber min={1} max={24} onChange={setMuteHours} />
           </Form.Item>
         ) : null}
 

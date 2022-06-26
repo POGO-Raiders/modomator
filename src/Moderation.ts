@@ -4,7 +4,7 @@ export interface ModFormData {
   id: string;
   reason: string;
   modifiers: string[];
-  muteMinutes: number;
+  muteHours: number;
 }
 
 export interface Moderation {
@@ -18,7 +18,7 @@ export abstract class AbstractModeration implements Moderation {
   protected id: string;
   protected reason: string;
   protected modifiers: string[];
-  protected muteMinutes: number;
+  protected muteHours: number;
   abstract discordChannelURL: string | undefined;
   abstract get moderationString(): string;
 
@@ -26,7 +26,7 @@ export abstract class AbstractModeration implements Moderation {
     this.id = formData.id;
     this.reason = formData.reason;
     this.modifiers = formData.modifiers;
-    this.muteMinutes = formData.muteMinutes;
+    this.muteHours = formData.muteHours;
   }
 }
 
@@ -55,7 +55,7 @@ export class Mute extends AbstractModeration {
   discordChannelURL = "discord://discord.com/channels/736744916012630046/738522768689332225";
 
   get moderationString() {
-    return `?mute ${this.id} ${this.muteMinutes}m ${ModerationMap[this.reason]?.description}`;
+    return `?mute ${this.id} ${this.muteHours}h ${ModerationMap[this.reason]?.description}`;
   }
 }
 

@@ -5,6 +5,13 @@ import React, { useEffect, useRef, useState } from "react";
 import ModerationMap from "./ModerationMap";
 import { ModerationFactory, ModerationAction, Moderation } from "./Moderation";
 import { CopyOutlined } from "@ant-design/icons";
+import styled from "styled-components";
+
+const ClearContainer = styled.div({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});
 
 const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
@@ -72,7 +79,7 @@ const ModForm = (): JSX.Element => {
           <Input onChange={(e) => setId(e.target.value)} />
         </Form.Item>
 
-        <Form.Item name="action" label="Action">
+        <Form.Item name="action" label="Action" onReset={() => setAction(undefined)}>
           <Radio.Group
             buttonStyle="solid"
             onChange={(e) => {
@@ -129,9 +136,13 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
         ) : null}
 
-        <Form.Item>
+        <Form.Item style={{ marginBottom: 0 }}>
           <Form.Item name="textarea" noStyle>
-            <Input.TextArea autoSize={true} readOnly={true} style={{ width: "calc(100% - 40px)" }} />
+            <Input.TextArea
+              autoSize={true}
+              readOnly={true}
+              style={{ width: "calc(100% - 40px)" }}
+            />
           </Form.Item>
           <Tooltip title="Copy to clipboard">
             <Button
@@ -149,6 +160,11 @@ const ModForm = (): JSX.Element => {
           </Tooltip>
         </Form.Item>
       </Form>
+      <ClearContainer>
+        <Button type="link" onClick={() => form.resetFields()}>
+          Clear
+        </Button>
+      </ClearContainer>
     </div>
   );
 };

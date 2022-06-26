@@ -111,7 +111,7 @@ const ModForm = (): JSX.Element => {
           </Radio.Group>
         </Form.Item>
 
-        {action === ModerationAction.Warning ? (
+        {action === ModerationAction.Warning || action === ModerationAction.Mute ? (
           <Form.Item name="modifiers" valuePropName="checked" onReset={() => setModifiers([])}>
             <Checkbox.Group
               options={["Verified Host"]}

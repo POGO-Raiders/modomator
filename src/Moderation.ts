@@ -55,7 +55,14 @@ export class Mute extends AbstractModeration {
   discordChannelURL = "discord://discord.com/channels/736744916012630046/738522768689332225";
 
   get moderationString() {
-    return `?mute ${this.id} ${this.muteHours}h ${ModerationMap[this.reason]?.description}`;
+    const verifiedString =
+      this.modifiers.includes("Verified Host") && ModerationMap[this.reason]?.hosting === true
+        ? "Your Verified Host Status will be reviewed as a result of this mute."
+        : "";
+
+    return `?mute ${this.id} ${this.muteHours}h ${
+      ModerationMap[this.reason]?.description
+    } ${verifiedString}`;
   }
 }
 

@@ -65,7 +65,7 @@ const ModerationMap: {
     categories: [ModerationAction.Ban],
   },
   Spamming: {
-    description: "Spamming and disrupting the chat. Please take some time to re-read <#736807346268930058> before participating on the server again.",
+    description: "Spamming and disrupting the chat.",
     hosting: false,
     categories: [ModerationAction.Mute, ModerationAction.Warning, ModerationAction.Ban],
   },

@@ -131,7 +131,7 @@ const ModForm = (): JSX.Element => {
 
         <Form.Item>
           <Form.Item name="textarea" noStyle>
-            <Input.TextArea autoSize={true} style={{ width: "calc(100% - 40px)" }} />
+            <Input.TextArea autoSize={true} readOnly={true} style={{ width: "calc(100% - 40px)" }} />
           </Form.Item>
           <Tooltip title="Copy to clipboard">
             <Button

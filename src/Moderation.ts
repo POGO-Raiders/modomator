@@ -46,9 +46,11 @@ export class Ban extends AbstractModeration {
   discordChannelURL = "discord://discord.com/channels/736744916012630046/778335478096724018";
 
   get moderationString() {
+    const appealLink = this.reason.toLowerCase() !== "ban evasion" ? "If you wish to appeal this ban, go to https://www.pogoraiders.gg/appeal" : "";
+
     return `?ban ${this.id} ${
       ModerationMap[this.reason]?.description
-    } If you wish to appeal this ban, go to https://www.pogoraiders.gg/appeal`;
+    } ${appealLink}`;
   }
 }
 export class Mute extends AbstractModeration {

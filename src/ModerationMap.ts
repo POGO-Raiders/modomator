@@ -8,6 +8,11 @@ const ModerationMap: {
     hosting: true,
     categories: [ModerationAction.Warning],
   },
+  "Ban Evasion": {
+    description: "Ban Evasion. You may not use an alternate account to avoid a ban issued on PGR.",
+    hosting: false,
+    categories: [ModerationAction.Ban]
+  },
   Discrimination: {
     description: "Discrimination is not allowed on this server and likely violates Discord ToS.",
     hosting: false,

@@ -64,7 +64,12 @@ const ModerationMap: {
     hosting: false,
     categories: [ModerationAction.Mute, ModerationAction.Warning, ModerationAction.Ban],
   },
-  "Scam links": {
+  "Scam links (first offense)": {
+    description: "Spreading a scam link. Your account was most likely hacked, and you should reset your password. You can rejoin the server at discord.gg/POGORaiders when your account has been recovered. Spreading the same message again will result in a ban.",
+    hosting: false,
+    categories: [ModerationAction.Kick],
+  },
+  "Scam links (second offense)": {
     description: "Sending scam links on PGR or to other members over DM is not allowed and violates Discord ToS.",
     hosting: false,
     categories: [ModerationAction.Ban],

@@ -66,9 +66,18 @@ export class Mute extends AbstractModeration {
   }
 }
 
+export class Kick extends AbstractModeration {
+  discordChannelURL = "discord://discord.com/channels/736744916012630046/738522768689332225";
+
+  get moderationString() {
+    return `?kick ${this.id} ${ModerationMap[this.reason]?.description}`;
+  }
+}
+
 // Factory Class to produce Moderations
 export enum ModerationAction {
   Mute = "Mute",
+  Kick = "Kick",
   Warning = "Warning",
   Ban = "Ban",
 }
@@ -82,6 +91,8 @@ export class ModerationFactory {
         return new Ban(formData);
       case ModerationAction.Mute:
         return new Mute(formData);
+      case ModerationAction.Kick:
+        return new Kick(formData);
       default:
         throw new Error("Wrong moderation type passed.");
     }

@@ -59,7 +59,7 @@ const changes: Change[] = [
   },
   {
     version: "1.0.0",
-    date: "2022-06-19",
+    date: "2022-06-30",
     description: ["Initial release"],
   },
 ];

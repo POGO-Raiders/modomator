@@ -53,9 +53,9 @@ type Change = {
 
 const changes: Change[] = [
   {
-    version: "Unreleased",
-    date: "Pending release date",
-    description: [],
+    version: "1.0.1",
+    date: "2022-07-23",
+    description: ["Support IDs up to 19 digits long"]
   },
   {
     version: "1.0.0",

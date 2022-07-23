@@ -71,7 +71,7 @@ const ModForm = (): JSX.Element => {
           name="id"
           rules={[
             {
-              pattern: /^\d{18}$/,
+              pattern: /^\d{18,19}$/,
               message: "Not a valid Discord ID.",
             },
           ]}

@@ -42,6 +42,11 @@ const ModerationMap: {
     hosting: false,
     categories: [ModerationAction.Warning],
   },
+  "Inappropriate language": {
+    description: "Inappropriate language. Please be mindful of your language as we have members of all ages.",
+    hosting: false,
+    categories: [ModerationAction.Mute, ModerationAction.Warning],
+  },
   "Less than 10 minutes": {
     description:
       "Hosting with less than ten minutes on the raid clock. This endangers the other members' passes. Please review the server’s <#736807346268930058> and <#793767024262119433> for more information.",

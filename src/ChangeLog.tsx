@@ -53,6 +53,11 @@ type Change = {
 
 const changes: Change[] = [
   {
+    version: "1.0.3",
+    date: "2022-08-11",
+    description: ["Restored the original ban appeal link"]
+  },
+  {
     version: "1.0.2",
     date: "2022-07-29",
     description: ["Updated the ban appeal link", "Added \"Inappropriate language\" moderation reason"]

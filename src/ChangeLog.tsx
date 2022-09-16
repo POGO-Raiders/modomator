@@ -53,6 +53,11 @@ type Change = {
 
 const changes: Change[] = [
   {
+    version: "1.1.0",
+    date: "2022-09-16",
+    description: ["Support prefilled Discord IDs"]
+  },
+  {
     version: "1.0.3",
     date: "2022-08-11",
     description: ["Restored the original ban appeal link"]

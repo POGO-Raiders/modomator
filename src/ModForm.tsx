@@ -6,6 +6,7 @@ import ModerationMap from "./ModerationMap";
 import { ModerationFactory, ModerationAction, Moderation } from "./Moderation";
 import { CopyOutlined } from "@ant-design/icons";
 import styled from "styled-components";
+import { useSearchParams } from "react-router-dom";
 
 const ClearContainer = styled.div({
   display: "flex",
@@ -37,7 +38,14 @@ const ModForm = (): JSX.Element => {
   const [muteHours, setMuteHours] = useState<number>(1);
   const [clipboardEnabled, setClipboardEnabled] = useState<boolean>(false);
   const moderation = useRef<Moderation>();
+  const [searchParams] = useSearchParams();
 
+  // Set the ID initially
+  useEffect(() => {
+    setId(searchParams.get("id") ?? "")
+  }, [searchParams])
+
+  // Update the copy string
   useEffect(() => {
     form.setFieldsValue({ textarea: null });
     setClipboardEnabled(false);
@@ -61,7 +69,7 @@ const ModForm = (): JSX.Element => {
     <div className="form-container">
       <Form
         name="modform"
-        initialValues={{ modifiers: [], mutehours: 1 }}
+        initialValues={{ id: searchParams.get("id"), modifiers: [], mutehours: 1 }}
         autoComplete="off"
         requiredMark={false}
         form={form}

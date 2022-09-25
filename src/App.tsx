@@ -7,13 +7,29 @@ import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import Heatran from "./Heatran";
 import { ChangeLog } from "./ChangeLog";
+import { ThemeSwitcherProvider } from "react-css-theme-switcher";
+import { getCookie } from 'cookied';
+
 const logo = require("./assets/pgricon64.png");
+
+const currThemes = {
+  dark: '/modomator/dark-theme.css',
+  light: '/modomator/light-theme.css'
+};
+
+const currentTheme = getCookie('currentTheme');
 
 const { Footer, Header } = Layout;
 
 const App = (): JSX.Element => {
   return (
-    <Router>
+    <Router>  
+      <ThemeSwitcherProvider
+      defaultTheme={currentTheme == '' ? 'dark' : currentTheme}
+      insertionPoint={document.getElementById('inject-styles-here')}
+      themeMap={currThemes}>
+    
+
       <Layout style={{ background: "none" }}>
         <Header style={{ background: "none" }}>
           <h1 className="centered form-title">Modomator</h1>
@@ -37,7 +53,12 @@ const App = (): JSX.Element => {
           Pokémon GO Raiders
         </Footer>
       </Layout>
+
+      </ThemeSwitcherProvider>
     </Router>
+
+  
+    
   );
 };
 

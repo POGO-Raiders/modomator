@@ -168,10 +168,10 @@ const ModForm = (): JSX.Element => {
           </Tooltip>
         </Form.Item>
       </Form>
-      <ClearContainer>
-        <Button type="link" onClick={() => form.resetFields()}>
+      <ClearContainer>      
+        <Radio.Button type="link" onClick={() => form.resetFields()}>
           Clear
-        </Button>
+        </Radio.Button>        
       </ClearContainer>
     </div>
   );

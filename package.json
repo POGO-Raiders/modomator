@@ -13,6 +13,7 @@
     "antd": "^4.21.0",
     "gh-pages": "^4.0.0",
     "react": "^18.1.0",
+    "react-css-theme-switcher": "^0.3.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
     "save-dev": "^0.0.1-security",
@@ -26,7 +27,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build & node DeployToFtp",
+    "ftpDeploy": "node DeployToFtp"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "ftp-deploy": "^2.4.3",
     "react-scripts": "5.0.1",
     "source-map-loader": "^3.0.1",
     "ts-loader": "^9.3.0",

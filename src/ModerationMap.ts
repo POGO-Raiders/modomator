@@ -4,7 +4,7 @@ const ModerationMap: {
   [reason: string]: { description: string; hosting: boolean; categories: ModerationAction[] };
 } = {
   "AFK host": {
-    description: "Going AFK while hosting a raid. When you host a raid, you are expected to communicate with your lobby and invite other players to join. Please review the server’s <#736807346268930058> and <#793767024262119433> for more information.",
+    description: "Going AFK while hosting a raid. When you host a raid, you are expected to communicate with your lobby and invite other players to join. Please review the server’s <#736807346268930058> and <#1039022349195948152> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
@@ -20,20 +20,20 @@ const ModerationMap: {
   },
   "Failure to commit": {
     description:
-      "Failure to commit to a raid. When you react to a raid, you are expected to join it. Please review the <#736807346268930058> of the server and <#793767024262119433>.",
+      "Failure to commit to a raid. When you react to a raid, you are expected to join it. Please review the <#736807346268930058> of the server and <#1039022349195948152>.",
     hosting: false,
     categories: [ModerationAction.Warning],
   },
 
   "Failure to invite": {
     description:
-      "Failure to invite all members of your party to the raid. Make sure to use private lobbies and the search string below the QR code. Please review <#793767024262119433> and the server’s <#736807346268930058> for more information.",
+      "Failure to invite all members of your party to the raid. Make sure to use private lobbies and the search string below the QR code. Please review <#1039022349195948152> and the server’s <#736807346268930058> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
   "Failure to reattempt": {
     description:
-      "When you host a raid that’s unsuccessful, you are expected to continue communicating with your lobby and provide a reattempt to prevent lost passes. If you need help, ping `@Moderator`. Please review <#793767024262119433> and the server’s <#736807346268930058> for more information.",
+      "When you host a raid that’s unsuccessful, you are expected to continue communicating with your lobby and provide a reattempt to prevent lost passes. If you need help, ping `@Moderator`. Please review <#1039022349195948152> and the server’s <#736807346268930058> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
@@ -49,7 +49,7 @@ const ModerationMap: {
   },
   "Less than 10 minutes": {
     description:
-      "Hosting with less than ten minutes on the raid clock. This endangers the other members' passes. Please review the server’s <#736807346268930058> and <#793767024262119433> for more information.",
+      "Hosting with less than ten minutes on the raid clock. This endangers the other members' passes. Please review the server’s <#736807346268930058> and <#1039022349195948152> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
@@ -96,7 +96,7 @@ const ModerationMap: {
   },
   "Unhatched Egg": {
     description:
-      "Failure to host from a hatched egg. Hosts must be within range of a gym and the egg must be already hatched before posting a raid to host. Please review the <#736807346268930058> of the server and <#793767024262119433>.",
+      "Failure to host from a hatched egg. Hosts must be within range of a gym and the egg must be already hatched before posting a raid to host. Please review the <#736807346268930058> of the server and <#1039022349195948152>.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },

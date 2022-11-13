@@ -18,7 +18,7 @@ const currThemes = {
 
 const darkMode = localStorage.getItem('darkMode');
 
-const currentTheme = darkMode != "false" ? 'dark' : 'light';
+const currentTheme = darkMode !== "false" ? 'dark' : 'light';
 
 const { Footer, Header } = Layout;
 

@@ -53,11 +53,6 @@ type Change = {
 
 const changes: Change[] = [
   {
-    version: "1.2.1",
-    date: "2022-11-13",
-    description: ["Fix #how-to-raid link"]
-  },
-  {
     version: "1.2.0",
     date: "2022-09-25",
     description: ["Dark Mode added"]

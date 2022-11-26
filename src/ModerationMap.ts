@@ -37,9 +37,19 @@ const ModerationMap: {
     hosting: true,
     categories: [ModerationAction.Warning],
   },
+  "Fake Hosting": {
+    description: "Fake hosting a raid. Please only host if you have a raid to provide. Please read <#1039022349195948152> and <#736807346268930058> before hosting a raid in the future.",
+    hosting: true,
+    categories: [ModerationAction.Mute, ModerationAction.Warning],
+  },
   Harassment: {
     description: "Harassment is not allowed on this server and likely violates Discord ToS.",
     hosting: false,
+    categories: [ModerationAction.Warning],
+  },
+  "Immediate Closing": {
+    description: "Creating a raid lobby and then closing it immediately without explanation is not allowed. Please review the <#736807346268930058> of the server and <#1039022349195948152>.",
+    hosting: true,
     categories: [ModerationAction.Warning],
   },
   "Inappropriate language": {
@@ -88,11 +98,6 @@ const ModerationMap: {
     description: "Spoofing is not tolerated on this server and violates Niantic’s ToS.",
     hosting: false,
     categories: [ModerationAction.Ban],
-  },
-  "Troll hosting": {
-    description: "Troll hosting. When you post a raid, be prepared to host it.",
-    hosting: true,
-    categories: [ModerationAction.Mute],
   },
   "Unhatched Egg": {
     description:

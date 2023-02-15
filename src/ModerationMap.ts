@@ -27,7 +27,7 @@ const ModerationMap: {
 
   "Failure to invite": {
     description:
-      "Failure to invite all members of your party to the raid. Make sure to use private lobbies and the search string below the QR code. Please review <#1039022349195948152> and the server’s <#736807346268930058> for more information.",
+    "Failure to invite all members of your party to the raid. Multiple members reported not receiving invites to your raid. Please review <#1039022349195948152> and the server’s <#736807346268930058> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },

@@ -140,7 +140,7 @@ const ModForm = (): JSX.Element => {
               },
             ]}
           >
-            <InputNumber min={1} max={24} onChange={setMuteHours} />
+            <InputNumber min={1} max={24} onChange={(value) => setMuteHours(value ?? 0)} />
           </Form.Item>
         ) : null}
 

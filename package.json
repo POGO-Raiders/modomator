@@ -16,7 +16,6 @@
     "react-css-theme-switcher": "^0.3.0",
     "react-dom": "^18.1.0",
     "react-router-dom": "^6.3.0",
-    "save-dev": "^0.0.1-security",
     "styled-components": "^5.3.5",
     "use-local-storage": "^2.3.6",
     "web-vitals": "^2.1.4"

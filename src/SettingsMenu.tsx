@@ -40,7 +40,7 @@ const SettingsMenu = (): JSX.Element => {
       <SettingsDivider />
       <Row justify="center">{`v${latestVersion}`}</Row>
       <Row justify="center">
-        <Link to="modomator/changelog">View changelog</Link>
+        <Link to="/changelog">View changelog</Link>
       </Row>
     </div>
   );

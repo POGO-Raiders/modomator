@@ -2,8 +2,8 @@ import "./App.css";
 import "antd/dist/antd.min.css";
 import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
 import React, { useEffect, useRef, useState } from "react";
-import ModerationMap from "./ModerationMap";
-import { ModerationFactory, ModerationAction, Moderation } from "./Moderation";
+import ModerationMap, { type ModerationReason } from "./ModerationMap";
+import { ModerationFactory, ModerationAction, type ModerationOutput } from "./Moderation";
 import { CopyOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
@@ -33,11 +33,11 @@ const ModForm = (): JSX.Element => {
 
   const [id, setId] = useState<string>();
   const [action, setAction] = useState<ModerationAction>();
-  const [reason, setReason] = useState<string>();
+  const [reason, setReason] = useState<ModerationReason>();
   const [modifiers, setModifiers] = useState<string[]>([]);
   const [muteHours, setMuteHours] = useState<number>(1);
   const [clipboardEnabled, setClipboardEnabled] = useState<boolean>(false);
-  const moderation = useRef<Moderation>();
+  const moderation = useRef<ModerationOutput>();
   const [searchParams] = useSearchParams();
 
   // Set the ID initially
@@ -63,13 +63,13 @@ const ModForm = (): JSX.Element => {
         setClipboardEnabled(true);
       })
       .catch(() => {});
-  }, [id, form, action, reason, modifiers, muteHours, moderation]);
+  }, [id, form, action, reason, modifiers, muteHours]);
 
   return (
     <div className="form-container">
       <Form
         name="modform"
-        initialValues={{ id: searchParams.get("id"), modifiers: [], mutehours: 1 }}
+        initialValues={{ id: searchParams.get("id"), modifiers: [], muteHours: 1 }}
         autoComplete="off"
         requiredMark={false}
         form={form}
@@ -92,7 +92,7 @@ const ModForm = (): JSX.Element => {
             buttonStyle="solid"
             onChange={(e) => {
               setAction(ModerationAction[e.target.value as keyof typeof ModerationAction]);
-              form.resetFields(["reason", "modifiers", "mutehours"]);
+              form.resetFields(["reason", "modifiers", "muteHours"]);
             }}
           >
             {Object.keys(ModerationAction).map((k, i) => (
@@ -108,14 +108,20 @@ const ModForm = (): JSX.Element => {
           label={action !== undefined ? "Reason" : undefined}
           onReset={() => setReason(undefined)}
         >
-          <Radio.Group buttonStyle="solid" onChange={(e) => setReason(e.target.value)}>
-            {Object.keys(ModerationMap)
-              .filter((m) => ModerationMap[m].categories.includes(action!))
-              .map((k, i) => (
-                <Radio.Button value={k} key={i}>
-                  {k}
-                </Radio.Button>
-              ))}
+          <Radio.Group
+            buttonStyle="solid"
+            onChange={(e) => setReason(e.target.value as ModerationReason)}
+          >
+            {(action
+              ? Object.keys(ModerationMap).filter((m) =>
+                  ModerationMap[m as ModerationReason].categories.includes(action)
+                )
+              : []
+            ).map((k, i) => (
+              <Radio.Button value={k} key={i}>
+                {k}
+              </Radio.Button>
+            ))}
           </Radio.Group>
         </Form.Item>
 
@@ -130,7 +136,7 @@ const ModForm = (): JSX.Element => {
 
         {action === ModerationAction.Mute ? (
           <Form.Item
-            name="mutehours"
+            name="muteHours"
             label="# of Hours"
             onReset={() => setMuteHours(1)}
             rules={[

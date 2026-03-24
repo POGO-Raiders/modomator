@@ -24,7 +24,7 @@ const { Footer, Header } = Layout;
 
 const App = (): JSX.Element => {
   return (
-    <Router>
+    <Router basename="/modomator">
       <ThemeSwitcherProvider 
         defaultTheme={currentTheme}
         insertionPoint={document.getElementById('inject-styles-here')}
@@ -43,8 +43,8 @@ const App = (): JSX.Element => {
           </Header>
 
           <Routes>
-            <Route path="/modomator" element={<ModForm />} />
-            <Route path="/modomator/changelog" element={<ChangeLog />} />
+            <Route path="/" element={<ModForm />} />
+            <Route path="/changelog" element={<ChangeLog />} />
             <Route path="*" element={<Heatran />} />
           </Routes>
 

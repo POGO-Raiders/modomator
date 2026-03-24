@@ -15,7 +15,7 @@ const DateCode = styled.code`
   background: #f2f4f5;
   border: 1px solid rgba(0,0,0,.06);
   border-radius: 3px;
-}`;
+`;
 
 // Inspired by https://ant.design/changelog
 
@@ -89,4 +89,4 @@ const changes: Change[] = [
   },
 ];
 
-export const latestVersion = changes.find((c) => c.version !== "Unreleased")?.version;
+export const latestVersion = changes[0]?.version;

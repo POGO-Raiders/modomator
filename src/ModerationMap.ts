@@ -1,19 +1,16 @@
 import { ModerationAction } from "./Moderation";
 
-const ModerationMap: {
-  [reason: string]: {
-    description: string;
-    hosting: boolean;
-    categories: ModerationAction[];
-  };
-} = {
+/** Canonical key for ban evasion (used by Ban moderation output). */
+export const REASON_BAN_EVASION = "Ban evasion" as const;
+
+const ModerationMap = {
   "AFK host": {
     description:
       "Going AFK while hosting a raid. When you host a raid, you are expected to communicate with your lobby and invite other players to join. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
-  "Ban evasion": {
+  [REASON_BAN_EVASION]: {
     description:
       "Ban Evasion. You may not use an alternate account to avoid a ban issued on PGR.",
     hosting: false,
@@ -166,5 +163,7 @@ const ModerationMap: {
     categories: [ModerationAction.Warning],
   },
 };
+
+export type ModerationReason = keyof typeof ModerationMap;
 
 export default ModerationMap;

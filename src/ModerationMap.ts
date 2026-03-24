@@ -1,19 +1,16 @@
 import { ModerationAction } from "./Moderation";
 
-const ModerationMap: {
-  [reason: string]: {
-    description: string;
-    hosting: boolean;
-    categories: ModerationAction[];
-  };
-} = {
+/** Canonical key for ban evasion (used by Ban moderation output). */
+export const REASON_BAN_EVASION = "Ban evasion" as const;
+
+const ModerationMap = {
   "AFK host": {
     description:
       "Going AFK while hosting a raid. When you host a raid, you are expected to communicate with your lobby and invite other players to join. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
-  "Ban Evasion": {
+  [REASON_BAN_EVASION]: {
     description:
       "Ban Evasion. You may not use an alternate account to avoid a ban issued on PGR.",
     hosting: false,
@@ -47,7 +44,7 @@ const ModerationMap: {
     hosting: true,
     categories: [ModerationAction.Warning],
   },
-  "Fake Hosting": {
+  "Fake hosting": {
     description:
       "Fake hosting a raid. Please only host if you have a raid to provide. Please read <#1039022349195948152> and <#736807346268930058> before hosting a raid in the future.",
     hosting: true,
@@ -59,13 +56,13 @@ const ModerationMap: {
     hosting: false,
     categories: [ModerationAction.Warning],
   },
-  "Hosting Wrong Pokemon": {
+  "Hosting wrong Pokemon": {
     description:
       "Please double check your host commands, and ensure that the egg that spawned is the pokemon you are hosting. Please review <#1039022349195948152> and the server's <#736807346268930058> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
-  "Immediate Closing": {
+  "Immediate closing": {
     description:
       "Creating a raid lobby and then closing it immediately without explanation is not allowed. Please review the <#736807346268930058> of the server and <#1039022349195948152>.",
     hosting: true,
@@ -83,13 +80,25 @@ const ModerationMap: {
     hosting: false,
     categories: [ModerationAction.Warning],
   },
+  "No mega evolution": {
+    description:
+      "Not having a mega evolved Pokémon while joining a Super Mega raid. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
+    hosting: false,
+    categories: [ModerationAction.Warning],
+  },
   "Less than 10 minutes": {
     description:
       "Hosting with less than ten minutes on the raid clock. This endangers the other members' passes. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
-  "Moderation Evasion": {
+  "Hosting invalid Pokemon": {
+    description:
+      "Hosting a pokemon that is not currently in the raid pool. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
+    hosting: true,
+    categories: [ModerationAction.Warning],
+  },
+  "Moderation evasion": {
     description: "You may not leave the server to avoid moderation.",
     hosting: false,
     categories: [ModerationAction.Ban],
@@ -147,12 +156,14 @@ const ModerationMap: {
     hosting: false,
     categories: [ModerationAction.Ban],
   },
-  "Unhatched Egg": {
+  "Unhatched egg": {
     description:
       "Failure to host from a hatched egg. Hosts must be within range of a gym and the egg must be already hatched before posting a raid to host. Please review the <#736807346268930058> of the server and <#1039022349195948152>.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },
 };
+
+export type ModerationReason = keyof typeof ModerationMap;
 
 export default ModerationMap;

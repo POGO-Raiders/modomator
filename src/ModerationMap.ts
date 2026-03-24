@@ -83,9 +83,21 @@ const ModerationMap: {
     hosting: false,
     categories: [ModerationAction.Warning],
   },
+  "No Mega Evolution": {
+    description:
+      "Not having a mega evolved Pokémon while joining a Super Mega raid. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
+    hosting: false,
+    categories: [ModerationAction.Warning],
+  },
   "Less than 10 minutes": {
     description:
       "Hosting with less than ten minutes on the raid clock. This endangers the other members' passes. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
+    hosting: true,
+    categories: [ModerationAction.Warning],
+  },
+  "Hosting Invalid Pokemon": {
+    description:
+      "Hosting a pokemon that is not currently in the raid pool. Please review the server's <#736807346268930058> and <#1039022349195948152> for more information.",
     hosting: true,
     categories: [ModerationAction.Warning],
   },

@@ -10,10 +10,10 @@ const Version = styled.h1({
 
 const DateCode = styled.code`
   margin: 0 1px;
-  padding: .2em .4em;
-  font-size: .9em;
+  padding: 0.2em 0.4em;
+  font-size: 0.9em;
   background: #f2f4f5;
-  border: 1px solid rgba(0,0,0,.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 3px;
 `;
 
@@ -53,34 +53,49 @@ type Change = {
 
 const changes: Change[] = [
   {
+    version: "1.2.2",
+    date: "2026-03-23",
+    description: [
+      'Added moderation reasons "No mega evolution" and "Hosting invalid Pokemon"',
+      "Aligned moderation reason titles on consistent sentence-style casing",
+      "Code cleanup and package updates",
+    ],
+  },
+  {
     version: "1.2.1",
     date: "2022-11-26",
-    description: ["Added \"Immediate Closing\" as a moderation reason", "Updated \"Troll Hosting\" to \"Fake Hosting\" and made it a warnable offense"]
+    description: [
+      'Added "Immediate Closing" as a moderation reason',
+      'Updated "Troll Hosting" to "Fake Hosting" and made it a warnable offense',
+    ],
   },
   {
     version: "1.2.0",
     date: "2022-09-25",
-    description: ["Dark Mode added"]
+    description: ["Dark Mode added"],
   },
   {
     version: "1.1.0",
     date: "2022-09-16",
-    description: ["Support prefilled Discord IDs"]
+    description: ["Support prefilled Discord IDs"],
   },
   {
     version: "1.0.3",
     date: "2022-08-11",
-    description: ["Restored the original ban appeal link"]
+    description: ["Restored the original ban appeal link"],
   },
   {
     version: "1.0.2",
     date: "2022-07-29",
-    description: ["Updated the ban appeal link", "Added \"Inappropriate language\" moderation reason"]
+    description: [
+      "Updated the ban appeal link",
+      'Added "Inappropriate language" moderation reason',
+    ],
   },
   {
     version: "1.0.1",
     date: "2022-07-23",
-    description: ["Support IDs up to 19 digits long"]
+    description: ["Support IDs up to 19 digits long"],
   },
   {
     version: "1.0.0",

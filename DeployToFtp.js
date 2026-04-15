@@ -1,5 +1,10 @@
-// import our environment variables
-require("dotenv").config({ path: ".env.production.local" });
+// Load local env file if dotenv is available (CI provides env vars directly).
+try {
+    // eslint-disable-next-line global-require
+    require("dotenv").config({ path: ".env.production.local" });
+} catch (err) {
+    // Ignore missing dotenv module in CI or minimal environments.
+}
 
 const FtpDeploy = require("ftp-deploy");
 const ftpDeploy = new FtpDeploy();

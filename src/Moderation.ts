@@ -1,4 +1,7 @@
 import ModerationMap, { REASON_BAN_EVASION, type ModerationReason } from "./ModerationMap";
+import { ModerationAction } from "./moderationAction";
+
+export { ModerationAction };
 
 export interface ModFormData {
   id: string;
@@ -88,13 +91,6 @@ export class Kick extends AbstractModeration {
   get moderationString() {
     return `?kick ${this.id} ${ModerationMap[this.reason]?.description}`;
   }
-}
-
-export enum ModerationAction {
-  Mute = "Mute",
-  Kick = "Kick",
-  Warning = "Warning",
-  Ban = "Ban",
 }
 
 export class ModerationFactory {

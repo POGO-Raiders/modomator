@@ -1,4 +1,4 @@
-import { ModerationAction } from "./Moderation";
+import { ModerationAction } from "./moderationAction";
 
 /** Canonical key for ban evasion (used by Ban moderation output). */
 export const REASON_BAN_EVASION = "Ban evasion" as const;

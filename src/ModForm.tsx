@@ -1,9 +1,11 @@
 import "./App.css";
 import "antd/dist/antd.min.css";
 import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModerationMap, { type ModerationReason } from "./ModerationMap";
-import { ModerationFactory, ModerationAction, type ModerationOutput } from "./Moderation";
+import { ModerationAction } from "./Moderation";
+import { copyModerationToClipboard } from "./moderationClipboard";
+import { useModerationPreview } from "./useModerationPreview";
 import { CopyOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
@@ -17,53 +19,30 @@ const ClearContainer = styled.div({
 const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
 
-  const copyToClipboard = (str: string) => {
-    if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(str);
-    }
-    return Promise.reject("The Clipboard API is not available.");
-  };
-
-  const openNotification = (type: string) => {
-    notification.open({
-      message: `${type} copied to clipboard.`,
-      duration: 2,
-    });
-  };
-
   const [id, setId] = useState<string>();
   const [action, setAction] = useState<ModerationAction>();
   const [reason, setReason] = useState<ModerationReason>();
   const [modifiers, setModifiers] = useState<string[]>([]);
   const [muteHours, setMuteHours] = useState<number>(1);
-  const [clipboardEnabled, setClipboardEnabled] = useState<boolean>(false);
-  const moderation = useRef<ModerationOutput>();
   const [searchParams] = useSearchParams();
 
-  // Set the ID initially
-  useEffect(() => {
-    setId(searchParams.get("id") ?? "")
-  }, [searchParams])
+  const { moderationOutput, clipboardEnabled } = useModerationPreview({
+    id,
+    action,
+    reason,
+    modifiers,
+    muteHours,
+  });
 
-  // Update the copy string
   useEffect(() => {
-    form.setFieldsValue({ textarea: null });
-    setClipboardEnabled(false);
-    form
-      .validateFields()
-      .then(() => {
-        if (!action || !reason || !id) return;
-        moderation.current = ModerationFactory.create(action, {
-          id,
-          reason,
-          modifiers,
-          muteHours,
-        });
-        form.setFieldsValue({ textarea: moderation.current?.moderationString });
-        setClipboardEnabled(true);
-      })
-      .catch(() => {});
-  }, [id, form, action, reason, modifiers, muteHours]);
+    setId(searchParams.get("id") ?? "");
+  }, [searchParams]);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      textarea: moderationOutput?.moderationString ?? null,
+    });
+  }, [moderationOutput, form]);
 
   return (
     <div className="form-container">
@@ -164,11 +143,17 @@ const ModForm = (): JSX.Element => {
               style={{ float: "right" }}
               disabled={!clipboardEnabled}
               onClick={() => {
-                copyToClipboard(form.getFieldValue("textarea")).then(() => {
-                  openNotification(action?.toString() ?? "UNKNOWN");
-                  if (localStorage.getItem("openInDiscord") === "true")
-                    window.open(moderation.current?.discordChannelURL);
-                });
+                const text = moderationOutput?.moderationString;
+                if (!text) return;
+                copyModerationToClipboard({
+                  text,
+                  actionLabel: action?.toString() ?? "UNKNOWN",
+                  notify: (message, durationSeconds = 2) => {
+                    notification.open({ message, duration: durationSeconds });
+                  },
+                  shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
+                  discordChannelURL: moderationOutput.discordChannelURL,
+                }).catch(() => {});
               }}
             />
           </Tooltip>

@@ -53,6 +53,28 @@ test("prefills id from query string and shows warning preview when action and re
   });
 });
 
+test("Clear resets choices but keeps Discord ID from the current URL", async () => {
+  const user = userEvent.setup();
+  renderModForm(`?id=${validId}`);
+
+  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
+  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+
+  await waitFor(() => {
+    expect(
+      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
+    ).toMatch(/^\?warn /);
+  });
+
+  await user.click(screen.getByText(/^Clear$/));
+
+  expect(screen.getByLabelText(/discord id/i)).toHaveValue(validId);
+  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  await waitFor(() => {
+    expect(preview.value).toBe("");
+  });
+});
+
 test("copies preview to clipboard and notifies", async () => {
   const user = userEvent.setup();
   const { container } = renderModForm(`?id=${validId}`);

@@ -2,11 +2,15 @@ import "./App.css";
 import "antd/dist/antd.min.css";
 import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
 import React, { useEffect } from "react";
-import ModerationMap, { type ModerationReason } from "./ModerationMap";
-import { ModerationAction } from "./Moderation";
+import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderationAction";
 import { copyModerationToClipboard } from "./moderationClipboard";
+import {
+  moderationReasonsForAction,
+  normalizeMuteHoursInput,
+} from "./moderationFormHelpers";
 import { DISCORD_ID_PATTERN } from "./moderationPreview";
-import { useModerationPreview } from "./useModerationPreview";
+import { useModerationFormPreview } from "./useModerationFormPreview";
+import { useModFormClear } from "./useModFormClear";
 import { CopyOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
@@ -20,20 +24,11 @@ const ClearContainer = styled.div({
 const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
   const [searchParams] = useSearchParams();
+  const clearForm = useModFormClear(form, searchParams);
 
-  const id = Form.useWatch("id", form);
   const action = Form.useWatch("action", form);
-  const reason = Form.useWatch("reason", form);
-  const modifiers = Form.useWatch("modifiers", form);
-  const muteHours = Form.useWatch("muteHours", form);
 
-  const { moderationOutput, clipboardEnabled } = useModerationPreview({
-    id: typeof id === "string" ? id : undefined,
-    action: action as ModerationAction | undefined,
-    reason: reason as ModerationReason | undefined,
-    modifiers: Array.isArray(modifiers) ? modifiers : [],
-    muteHours: typeof muteHours === "number" ? muteHours : undefined,
-  });
+  const { moderationOutput, clipboardEnabled } = useModerationFormPreview(form);
 
   useEffect(() => {
     form.setFieldsValue({ id: searchParams.get("id") ?? "" });
@@ -46,6 +41,10 @@ const ModForm = (): JSX.Element => {
   }, [moderationOutput, form]);
 
   const actionSelected = action !== undefined && action !== null;
+  const reasonsForAction =
+    action != null
+      ? moderationReasonsForAction(action as ModerationAction)
+      : [];
 
   return (
     <div className="form-container">
@@ -76,26 +75,18 @@ const ModForm = (): JSX.Element => {
               form.resetFields(["reason", "modifiers", "muteHours"]);
             }}
           >
-            {Object.keys(ModerationAction).map((k, i) => (
-              <Radio.Button value={k} key={i}>
-                {k}
+            {MODERATION_ACTION_ORDER.map((a) => (
+              <Radio.Button value={a} key={a}>
+                {a}
               </Radio.Button>
             ))}
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item
-          name="reason"
-          label={actionSelected ? "Reason" : undefined}
-        >
+        <Form.Item name="reason" label={actionSelected ? "Reason" : undefined}>
           <Radio.Group buttonStyle="solid">
-            {(action
-              ? Object.keys(ModerationMap).filter((m) =>
-                  ModerationMap[m as ModerationReason].categories.includes(action as ModerationAction)
-                )
-              : []
-            ).map((k, i) => (
-              <Radio.Button value={k} key={i}>
+            {reasonsForAction.map((k) => (
+              <Radio.Button value={k} key={k}>
                 {k}
               </Radio.Button>
             ))}
@@ -112,9 +103,7 @@ const ModForm = (): JSX.Element => {
           <Form.Item
             name="muteHours"
             label="# of Hours"
-            getValueFromEvent={(val: number | null) =>
-              val == null || val < 1 ? 1 : val > 24 ? 24 : val
-            }
+            getValueFromEvent={(val: number | null) => normalizeMuteHoursInput(val)}
             rules={[
               {
                 required: true,
@@ -161,7 +150,7 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
       </Form>
       <ClearContainer>
-        <Radio.Button type="link" onClick={() => form.resetFields()}>
+        <Radio.Button type="link" onClick={clearForm}>
           Clear
         </Radio.Button>
       </ClearContainer>

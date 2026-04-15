@@ -4,12 +4,9 @@
   "private": true,
   "homepage": "https://blakeheyman.github.io/modomator/",
   "dependencies": {
-    "@testing-library/jest-dom": "^6.4.5",
+    "@testing-library/jest-dom": "^6.9.0",
     "@testing-library/react": "^15.0.7",
-    "@testing-library/user-event": "^14.4.2",
-    "@types/react": "^18.0.12",
-    "@types/react-dom": "^18.0.5",
-    "@types/styled-components": "^5.1.25",
+    "@testing-library/user-event": "^14.6.0",
     "antd": "^4.21.0",
     "gh-pages": "^6.0.0",
     "react": "^18.1.0",
@@ -50,10 +47,13 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
+    "@types/styled-components": "^5.1.36",
     "ftp-deploy": "^2.4.3",
     "react-scripts": "5.0.1",
     "source-map-loader": "^3.0.1",
-    "ts-loader": "^9.3.0",
-    "typescript": "^4.7.3"
+    "ts-loader": "^9.5.7",
+    "typescript": "~5.6.0"
   }
 }

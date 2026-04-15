@@ -1,4 +1,4 @@
-import { ModerationAction } from "./Moderation";
+import { ModerationAction } from "./moderationAction";
 import { tryBuildModeration } from "./moderationPreview";
 
 const VALID_ID = "123456789012345678";

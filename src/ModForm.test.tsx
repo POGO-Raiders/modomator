@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import ModForm from "./ModForm";
 import { notification } from "antd";
-import * as moderationClipboard from "./moderationClipboard";
+import * as moderationClipboard from "./moderation/moderationClipboard";
 
 const validId = "123456789012345678";
 

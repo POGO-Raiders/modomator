@@ -1,5 +1,5 @@
 import ModerationMap, { type ModerationReason } from "./ModerationMap";
-import { ModerationAction } from "./Moderation";
+import { ModerationAction } from "./moderationAction";
 
 const ALL_ACTIONS = Object.values(ModerationAction) as ModerationAction[];
 

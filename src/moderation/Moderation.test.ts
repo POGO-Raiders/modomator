@@ -60,9 +60,7 @@ describe("ModerationFactory", () => {
         muteHours: 6,
       };
       const out = ModerationFactory.create(ModerationAction.Mute, formData);
-      expect(out.moderationString).toMatch(
-        /^\?mute 123456789012345678 6h .+/
-      );
+      expect(out.moderationString).toMatch(/^\?mute 123456789012345678 6h .+/);
       expect(out.discordChannelURL).toBe(MODERATION_CHANNEL);
     });
 

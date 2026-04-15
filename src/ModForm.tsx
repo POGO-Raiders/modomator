@@ -2,15 +2,15 @@ import "./App.css";
 import "antd/dist/antd.min.css";
 import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
 import React, { useEffect } from "react";
-import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderationAction";
-import { copyModerationToClipboard } from "./moderationClipboard";
+import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
+import { copyModerationToClipboard } from "./moderation/moderationClipboard";
 import {
   moderationReasonsForAction,
   normalizeMuteHoursInput,
-} from "./moderationFormHelpers";
-import { DISCORD_ID_PATTERN } from "./moderationPreview";
-import { useModerationFormPreview } from "./useModerationFormPreview";
-import { useModFormClear } from "./useModFormClear";
+} from "./moderation/moderationFormHelpers";
+import { DISCORD_ID_PATTERN } from "./moderation/moderationPreview";
+import { useModerationFormPreview } from "./hooks/useModerationFormPreview";
+import { useModFormClear } from "./hooks/useModFormClear";
 import { CopyOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";

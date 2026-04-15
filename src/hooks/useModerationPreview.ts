@@ -1,9 +1,9 @@
 import { useMemo } from "react";
-import type { ModerationOutput } from "./Moderation";
+import type { ModerationOutput } from "../moderation/Moderation";
 import {
   tryBuildModeration,
   type ModerationPreviewFields,
-} from "./moderationPreview";
+} from "../moderation/moderationPreview";
 
 export function useModerationPreview(
   fields: ModerationPreviewFields

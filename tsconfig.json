@@ -1,5 +1,5 @@
 {
-    "compilerOptions": {
+  "compilerOptions": {
 	"skipLibCheck": true,
 	"esModuleInterop": true,
         "outDir": "./js/",
@@ -10,6 +10,10 @@
 	"strict": true
     },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  // Test files use *.test.ts(x); exclude stray Playwright-style *.spec.ts from the TS project.
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
 }
 

@@ -1,8 +1,8 @@
 import { Form } from "antd";
 import type { FormInstance } from "antd/es/form";
-import type { ModerationOutput } from "./Moderation";
-import type { ModerationAction } from "./moderationAction";
-import type { ModerationReason } from "./ModerationMap";
+import type { ModerationOutput } from "../moderation/Moderation";
+import type { ModerationAction } from "../moderation/moderationAction";
+import type { ModerationReason } from "../moderation/ModerationMap";
 import { useModerationPreview } from "./useModerationPreview";
 
 /**

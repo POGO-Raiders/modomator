@@ -5,7 +5,7 @@ import ModForm from "./ModForm";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
-import Heatran from "./Heatran";
+import NotFound from "./NotFound";
 import { ChangeLog } from "./ChangeLog";
 import { ThemeSwitcherProvider } from "react-css-theme-switcher";
 import useLocalStorage from "use-local-storage";
@@ -50,7 +50,7 @@ const App = (): JSX.Element => {
           <Routes>
             <Route path="/" element={<ModForm />} />
             <Route path="/changelog" element={<ChangeLog />} />
-            <Route path="*" element={<Heatran />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
 
           <Footer style={{ textAlign: "center", background: "none" }}>

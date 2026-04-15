@@ -12,9 +12,26 @@ describe("moderationClipboard", () => {
     });
   });
 
+  afterEach(() => {
+    Object.defineProperty(navigator, "clipboard", {
+      value: { writeText: jest.fn().mockResolvedValue(undefined) },
+      configurable: true,
+      writable: true,
+    });
+  });
+
   it("copyTextToClipboard delegates to navigator.clipboard.writeText", async () => {
     await copyTextToClipboard("hello");
     expect(navigator.clipboard.writeText).toHaveBeenCalledWith("hello");
+  });
+
+  it("copyTextToClipboard rejects when Clipboard API is unavailable", async () => {
+    Object.defineProperty(navigator, "clipboard", {
+      value: undefined,
+      configurable: true,
+      writable: true,
+    });
+    await expect(copyTextToClipboard("hello")).rejects.toThrow(/Clipboard API is not available/);
   });
 
   it("copyModerationToClipboard notifies and optionally opens URL", async () => {

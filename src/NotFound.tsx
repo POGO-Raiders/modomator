@@ -1,7 +1,7 @@
 import React from "react";
 const heatran = require("./assets/heatran.png");
 
-const Heatran = (): JSX.Element => {
+const NotFound = (): JSX.Element => {
   return (
     <div>
       <img src={heatran} alt="Heatran" className="centered-image" />
@@ -10,4 +10,4 @@ const Heatran = (): JSX.Element => {
   );
 };
 
-export default Heatran;
+export default NotFound;

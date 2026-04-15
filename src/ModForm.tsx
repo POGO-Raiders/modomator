@@ -1,9 +1,16 @@
 import "./App.css";
 import "antd/dist/antd.min.css";
 import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
-import React, { useEffect, useRef, useState } from "react";
-import ModerationMap, { type ModerationReason } from "./ModerationMap";
-import { ModerationFactory, ModerationAction, type ModerationOutput } from "./Moderation";
+import React, { useEffect } from "react";
+import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
+import { copyModerationToClipboard } from "./moderation/moderationClipboard";
+import {
+  moderationReasonsForAction,
+  normalizeMuteHoursInput,
+} from "./moderation/moderationFormHelpers";
+import { DISCORD_ID_PATTERN } from "./moderation/moderationPreview";
+import { useModerationFormPreview } from "./hooks/useModerationFormPreview";
+import { useModFormClear } from "./hooks/useModFormClear";
 import { CopyOutlined } from "@ant-design/icons";
 import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
@@ -12,58 +19,33 @@ const ClearContainer = styled.div({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  marginTop: 10,
 });
 
 const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
-
-  const copyToClipboard = (str: string) => {
-    if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-      return navigator.clipboard.writeText(str);
-    }
-    return Promise.reject("The Clipboard API is not available.");
-  };
-
-  const openNotification = (type: string) => {
-    notification.open({
-      message: `${type} copied to clipboard.`,
-      duration: 2,
-    });
-  };
-
-  const [id, setId] = useState<string>();
-  const [action, setAction] = useState<ModerationAction>();
-  const [reason, setReason] = useState<ModerationReason>();
-  const [modifiers, setModifiers] = useState<string[]>([]);
-  const [muteHours, setMuteHours] = useState<number>(1);
-  const [clipboardEnabled, setClipboardEnabled] = useState<boolean>(false);
-  const moderation = useRef<ModerationOutput>();
   const [searchParams] = useSearchParams();
+  const clearForm = useModFormClear(form, searchParams);
 
-  // Set the ID initially
-  useEffect(() => {
-    setId(searchParams.get("id") ?? "")
-  }, [searchParams])
+  const action = Form.useWatch("action", form);
 
-  // Update the copy string
+  const { moderationOutput, clipboardEnabled } = useModerationFormPreview(form);
+
   useEffect(() => {
-    form.setFieldsValue({ textarea: null });
-    setClipboardEnabled(false);
-    form
-      .validateFields()
-      .then(() => {
-        if (!action || !reason || !id) return;
-        moderation.current = ModerationFactory.create(action, {
-          id,
-          reason,
-          modifiers,
-          muteHours,
-        });
-        form.setFieldsValue({ textarea: moderation.current?.moderationString });
-        setClipboardEnabled(true);
-      })
-      .catch(() => {});
-  }, [id, form, action, reason, modifiers, muteHours]);
+    form.setFieldsValue({ id: searchParams.get("id") ?? "" });
+  }, [searchParams, form]);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      textarea: moderationOutput?.moderationString ?? null,
+    });
+  }, [moderationOutput, form]);
+
+  const actionSelected = action !== undefined && action !== null;
+  const reasonsForAction =
+    action != null
+      ? moderationReasonsForAction(action as ModerationAction)
+      : [];
 
   return (
     <div className="form-container">
@@ -79,46 +61,33 @@ const ModForm = (): JSX.Element => {
           name="id"
           rules={[
             {
-              pattern: /^\d{18,19}$/,
+              pattern: DISCORD_ID_PATTERN,
               message: "Not a valid Discord ID.",
             },
           ]}
         >
-          <Input onChange={(e) => setId(e.target.value)} />
+          <Input />
         </Form.Item>
 
-        <Form.Item name="action" label="Action" onReset={() => setAction(undefined)}>
+        <Form.Item name="action" label="Action">
           <Radio.Group
             buttonStyle="solid"
-            onChange={(e) => {
-              setAction(ModerationAction[e.target.value as keyof typeof ModerationAction]);
+            onChange={() => {
               form.resetFields(["reason", "modifiers", "muteHours"]);
             }}
           >
-            {Object.keys(ModerationAction).map((k, i) => (
-              <Radio.Button value={k} key={i}>
-                {k}
+            {MODERATION_ACTION_ORDER.map((a) => (
+              <Radio.Button value={a} key={a}>
+                {a}
               </Radio.Button>
             ))}
           </Radio.Group>
         </Form.Item>
 
-        <Form.Item
-          name="reason"
-          label={action !== undefined ? "Reason" : undefined}
-          onReset={() => setReason(undefined)}
-        >
-          <Radio.Group
-            buttonStyle="solid"
-            onChange={(e) => setReason(e.target.value as ModerationReason)}
-          >
-            {(action
-              ? Object.keys(ModerationMap).filter((m) =>
-                  ModerationMap[m as ModerationReason].categories.includes(action)
-                )
-              : []
-            ).map((k, i) => (
-              <Radio.Button value={k} key={i}>
+        <Form.Item name="reason" label={actionSelected ? "Reason" : undefined}>
+          <Radio.Group buttonStyle="solid">
+            {reasonsForAction.map((k) => (
+              <Radio.Button value={k} key={k}>
                 {k}
               </Radio.Button>
             ))}
@@ -126,11 +95,8 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
 
         {action === ModerationAction.Warning || action === ModerationAction.Mute ? (
-          <Form.Item name="modifiers" valuePropName="checked" onReset={() => setModifiers([])}>
-            <Checkbox.Group
-              options={["Verified Host"]}
-              onChange={(v) => setModifiers(v as string[])}
-            />
+          <Form.Item name="modifiers">
+            <Checkbox.Group options={["Verified Host"]} />
           </Form.Item>
         ) : null}
 
@@ -138,7 +104,7 @@ const ModForm = (): JSX.Element => {
           <Form.Item
             name="muteHours"
             label="# of Hours"
-            onReset={() => setMuteHours(1)}
+            getValueFromEvent={(val: number | null) => normalizeMuteHoursInput(val)}
             rules={[
               {
                 required: true,
@@ -146,7 +112,7 @@ const ModForm = (): JSX.Element => {
               },
             ]}
           >
-            <InputNumber min={1} max={24} onChange={(value) => setMuteHours(value ?? 0)} />
+            <InputNumber min={1} max={24} />
           </Form.Item>
         ) : null}
 
@@ -160,24 +126,34 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
           <Tooltip title="Copy to clipboard">
             <Button
+              htmlType="button"
+              aria-label="Copy to clipboard"
               icon={<CopyOutlined />}
               style={{ float: "right" }}
               disabled={!clipboardEnabled}
               onClick={() => {
-                copyToClipboard(form.getFieldValue("textarea")).then(() => {
-                  openNotification(action?.toString() ?? "UNKNOWN");
-                  if (localStorage.getItem("openInDiscord") === "true")
-                    window.open(moderation.current?.discordChannelURL);
+                const text = moderationOutput?.moderationString;
+                if (!text) return;
+                copyModerationToClipboard({
+                  text,
+                  actionLabel: action?.toString() ?? "UNKNOWN",
+                  notify: (message, durationSeconds = 2) => {
+                    notification.open({ message, duration: durationSeconds });
+                  },
+                  shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
+                  discordChannelURL: moderationOutput.discordChannelURL,
+                }).catch((err: unknown) => {
+                  console.error("Copy to clipboard failed", err);
                 });
               }}
             />
           </Tooltip>
         </Form.Item>
       </Form>
-      <ClearContainer>      
-        <Radio.Button type="link" onClick={() => form.resetFields()}>
+      <ClearContainer>
+        <Radio.Button type="link" onClick={clearForm}>
           Clear
-        </Radio.Button>        
+        </Radio.Button>
       </ClearContainer>
     </div>
   );

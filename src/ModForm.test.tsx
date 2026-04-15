@@ -1,0 +1,182 @@
+import React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import ModForm from "./ModForm";
+import { notification } from "antd";
+import * as moderationClipboard from "./moderation/moderationClipboard";
+
+const validId = "123456789012345678";
+
+function renderModForm(query: string) {
+  return render(
+    <MemoryRouter initialEntries={[`/modomator/${query}`]}>
+      <Routes>
+        <Route path="/modomator" element={<ModForm />} />
+      </Routes>
+    </MemoryRouter>
+  );
+}
+
+function getCopyButton(container: HTMLElement): HTMLButtonElement {
+  const icon = container.querySelector(".anticon-copy");
+  const btn = icon?.closest("button");
+  if (!btn) {
+    throw new Error("Copy button not found");
+  }
+  return btn as HTMLButtonElement;
+}
+
+beforeEach(() => {
+  jest.spyOn(notification, "open").mockImplementation(() => void 0);
+  jest
+    .spyOn(moderationClipboard, "copyModerationToClipboard")
+    .mockResolvedValue(undefined);
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+  localStorage.removeItem("openInDiscord");
+});
+
+test("prefills id from query string and shows warning preview when action and reason selected", async () => {
+  const user = userEvent.setup();
+  renderModForm(`?id=${validId}`);
+
+  expect(screen.getByLabelText(/discord id/i)).toHaveValue(validId);
+
+  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
+  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+
+  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  await waitFor(() => {
+    expect(preview.value).toMatch(/^\?warn /);
+  });
+});
+
+test("Clear resets choices but keeps Discord ID from the current URL", async () => {
+  const user = userEvent.setup();
+  renderModForm(`?id=${validId}`);
+
+  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
+  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+
+  await waitFor(() => {
+    expect(
+      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
+    ).toMatch(/^\?warn /);
+  });
+
+  await user.click(screen.getByText(/^Clear$/));
+
+  expect(screen.getByLabelText(/discord id/i)).toHaveValue(validId);
+  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  await waitFor(() => {
+    expect(preview.value).toBe("");
+  });
+});
+
+test("copies preview to clipboard and notifies", async () => {
+  const user = userEvent.setup();
+  const { container } = renderModForm(`?id=${validId}`);
+
+  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
+  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+
+  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  await waitFor(() => {
+    expect(preview.value).toMatch(/^\?warn /);
+  });
+
+  const copyBtn = getCopyButton(container);
+  expect(copyBtn).not.toBeDisabled();
+  fireEvent.click(copyBtn);
+
+  await waitFor(() => {
+    expect(moderationClipboard.copyModerationToClipboard).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: expect.stringMatching(/^\?warn /),
+        actionLabel: "Warning",
+      })
+    );
+  });
+});
+
+test("mute action shows hours field and mute text in preview", async () => {
+  const user = userEvent.setup();
+  renderModForm(`?id=${validId}`);
+
+  await user.click(screen.getByRole("radio", { name: /^Mute$/i }));
+  await user.click(screen.getByRole("radio", { name: /^Fake hosting$/i }));
+
+  expect(screen.getByLabelText(/#\s*of\s*hours/i)).toBeInTheDocument();
+
+  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  await waitFor(() => {
+    expect(preview.value).toMatch(/^\?mute /);
+    expect(preview.value).toMatch(/1h/);
+  });
+
+  const hoursInput = screen.getByRole("spinbutton");
+  await user.clear(hoursInput);
+  await user.type(hoursInput, "5");
+
+  await waitFor(() => {
+    expect(preview.value).toMatch(/5h/);
+  });
+});
+
+test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
+  const user = userEvent.setup();
+  localStorage.setItem("openInDiscord", JSON.stringify(true));
+  const { container } = renderModForm(`?id=${validId}`);
+
+  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
+  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+
+  await waitFor(() => {
+    expect(
+      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
+    ).toMatch(/^\?warn /);
+  });
+
+  fireEvent.click(getCopyButton(container));
+
+  await waitFor(() => {
+    expect(moderationClipboard.copyModerationToClipboard).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shouldOpenDiscord: true,
+      })
+    );
+  });
+});
+
+test("copy logs error when clipboard helper rejects", async () => {
+  const user = userEvent.setup();
+  const errorSpy = jest.spyOn(console, "error").mockImplementation(() => void 0);
+  jest
+    .spyOn(moderationClipboard, "copyModerationToClipboard")
+    .mockRejectedValueOnce(new Error("clipboard failed"));
+
+  const { container } = renderModForm(`?id=${validId}`);
+
+  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
+  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+
+  await waitFor(() => {
+    expect(
+      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
+    ).toMatch(/^\?warn /);
+  });
+
+  fireEvent.click(getCopyButton(container));
+
+  await waitFor(() => {
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Copy to clipboard failed",
+      expect.any(Error)
+    );
+  });
+
+  errorSpy.mockRestore();
+});

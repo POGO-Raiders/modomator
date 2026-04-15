@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run test:ci
+
+  # After tests pass on the default branch, build and upload to FTP (same as local `npm run ftpDeploy`).
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - name: Upload build to FTP
+        env:
+          POGORAIDERS_FTP_USER: ${{ secrets.POGORAIDERS_FTP_USER }}
+          POGORAIDERS_FTP_PASSWORD: ${{ secrets.POGORAIDERS_FTP_PASSWORD }}
+          POGORAIDERS_FTP_HOST: ${{ secrets.POGORAIDERS_FTP_HOST }}
+          POGORAIDERS_FTP_PORT: ${{ secrets.POGORAIDERS_FTP_PORT }}
+          POGORAIDERS_FTP_REMOTE_ROOT: ${{ secrets.POGORAIDERS_FTP_REMOTE_ROOT }}
+        run: node DeployToFtp.js

@@ -1,4 +1,5 @@
-import { Timeline } from "antd";
+import { Timeline, theme } from "antd";
+import type { GlobalToken } from "antd";
 import "./App.css";
 import React from "react";
 import styled from "styled-components";
@@ -8,18 +9,20 @@ const Version = styled.h1({
   fontWeight: 700,
 });
 
-const DateCode = styled.code`
-  margin: 0 1px;
-  padding: 0.2em 0.4em;
-  font-size: 0.9em;
-  background: #f2f4f5;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 3px;
-`;
+const dateCodeStyle = (t: GlobalToken): React.CSSProperties => ({
+  margin: "0 1px",
+  padding: "0.2em 0.4em",
+  fontSize: "0.9em",
+  background: t.colorFillAlter,
+  border: `1px solid ${t.colorBorderSecondary}`,
+  borderRadius: 3,
+  color: t.colorText,
+});
 
 // Inspired by https://ant.design/changelog
 
 export const ChangeLog = (): JSX.Element => {
+  const { token } = theme.useToken();
   return (
     <div className="form-container">
       <Timeline
@@ -28,9 +31,9 @@ export const ChangeLog = (): JSX.Element => {
           key: i,
           children: (
             <>
-              <Version>{change.version}</Version>
+              <Version style={{ color: token.colorTextHeading }}>{change.version}</Version>
               <p>
-                <DateCode>{change.date}</DateCode>
+                <code style={dateCodeStyle(token)}>{change.date}</code>
               </p>
               <ul>
                 {change.description.map((d, j) => (

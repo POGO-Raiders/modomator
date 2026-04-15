@@ -1,11 +1,5 @@
 import "@testing-library/jest-dom/vitest";
 
-if (!document.getElementById("inject-styles-here")) {
-  const el = document.createElement("noscript");
-  el.id = "inject-styles-here";
-  document.head.appendChild(el);
-}
-
 function createMediaQueryList(query: string) {
   return {
     matches: false,

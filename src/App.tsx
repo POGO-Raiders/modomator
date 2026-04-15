@@ -1,64 +1,76 @@
 import "./App.css";
 import React from "react";
-import { Button, Layout, Popover } from "antd";
+import { Button, ConfigProvider, Layout, Popover, theme } from "antd";
 import ModForm from "./ModForm";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import NotFound from "./NotFound";
 import { ChangeLog } from "./ChangeLog";
-import { ThemeSwitcherProvider } from "react-css-theme-switcher";
 import useLocalStorage from "use-local-storage";
 
 import logo from "./assets/pgricon64.png";
-
-const currThemes = {
-  dark: "/modomator/dark-theme.css",
-  light: "/modomator/light-theme.css",
-};
+import { getAntdTheme } from "./theme/antTheme";
 
 const { Footer, Header } = Layout;
 
-const App = (): JSX.Element => {
-  const [darkMode] = useLocalStorage("darkMode", true);
-  const currentTheme = darkMode !== false ? "dark" : "light";
+/** Renders inside `ConfigProvider` so `useToken()` matches the active theme — page canvas without touching `document`. */
+function AppThemedShell({
+  isDark,
+  setDarkMode,
+}: {
+  isDark: boolean;
+  setDarkMode: (value: boolean) => void;
+}): JSX.Element {
+  const { token } = theme.useToken();
 
-  const styleInsertionPoint =
-    typeof document !== "undefined"
-      ? document.getElementById("inject-styles-here") ?? document.head
-      : undefined;
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        backgroundColor: token.colorBgLayout,
+      }}
+    >
+      <Layout>
+        <Header style={{ background: "none" }}>
+          <h1 className="centered form-title">Modomator</h1>
+          <Popover
+            content={<SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />}
+            trigger="click"
+            placement="bottomRight"
+          >
+            <Button
+              shape="circle"
+              icon={<SettingOutlined />}
+              style={{ position: "absolute", right: 18, top: 18 }}
+            />
+          </Popover>
+        </Header>
+
+        <Routes>
+          <Route path="/" element={<ModForm />} />
+          <Route path="/changelog" element={<ChangeLog />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+
+        <Footer style={{ textAlign: "center", background: "none" }}>
+          <img width={32} src={logo} alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
+          Pokémon GO Raiders
+        </Footer>
+      </Layout>
+    </div>
+  );
+}
+
+const App = (): JSX.Element => {
+  const [darkMode, setDarkMode] = useLocalStorage("darkMode", true);
+  const isDark = darkMode !== false;
 
   return (
     <Router basename="/modomator">
-      <ThemeSwitcherProvider
-        defaultTheme={currentTheme}
-        insertionPoint={styleInsertionPoint}
-        themeMap={currThemes}
-      >
-        <Layout style={{ background: "none" }}>
-          <Header style={{ background: "none" }}>
-            <h1 className="centered form-title">Modomator</h1>
-            <Popover content={<SettingsMenu />} trigger="click" placement="bottomRight">
-              <Button
-                shape="circle"
-                icon={<SettingOutlined />}
-                style={{ position: "absolute", right: 18, top: 18 }}
-              />
-            </Popover>
-          </Header>
-
-          <Routes>
-            <Route path="/" element={<ModForm />} />
-            <Route path="/changelog" element={<ChangeLog />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-
-          <Footer style={{ textAlign: "center", background: "none" }}>
-            <img width={32} src={logo} alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
-            Pokémon GO Raiders
-          </Footer>
-        </Layout>
-      </ThemeSwitcherProvider>
+      <ConfigProvider theme={getAntdTheme(isDark)}>
+        <AppThemedShell isDark={isDark} setDarkMode={setDarkMode} />
+      </ConfigProvider>
     </Router>
   );
 };

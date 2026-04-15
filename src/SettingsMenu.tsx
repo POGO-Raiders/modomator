@@ -11,7 +11,6 @@ const SettingsDivider = styled(Divider)({
 });
 
 const SettingsMenu = (): JSX.Element => {
-
   const [openInDiscord, setOpenInDiscord] = useLocalStorage("openInDiscord", true);
 
   const [darkMode, setDarkMode] = useLocalStorage("darkMode", true);
@@ -20,21 +19,21 @@ const SettingsMenu = (): JSX.Element => {
   function toggleTheme(isChecked: boolean) {
     setDarkMode(isChecked);
     switcher({ theme: isChecked ? themes.dark : themes.light });
-  };
+  }
 
   return (
     <div>
       <Row align="middle" gutter={[10, 0]}>
         <Col>Dark Mode</Col>
         <Col>
-          <Switch defaultChecked={darkMode} onChange={toggleTheme} />
+          <Switch checked={darkMode} onChange={toggleTheme} />
         </Col>
       </Row>
       <SettingsDivider />
       <Row align="middle" gutter={[10, 0]}>
         <Col>Open in Discord</Col>
         <Col>
-          <Switch defaultChecked={openInDiscord} onChange={setOpenInDiscord} />
+          <Switch checked={openInDiscord} onChange={setOpenInDiscord} />
         </Col>
       </Row>
       <SettingsDivider />

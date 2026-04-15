@@ -8,28 +8,33 @@ import { SettingOutlined } from "@ant-design/icons";
 import Heatran from "./Heatran";
 import { ChangeLog } from "./ChangeLog";
 import { ThemeSwitcherProvider } from "react-css-theme-switcher";
+import useLocalStorage from "use-local-storage";
 
 const logo = require("./assets/pgricon64.png");
 
 const currThemes = {
-  dark: '/modomator/dark-theme.css',
-  light: '/modomator/light-theme.css'
+  dark: "/modomator/dark-theme.css",
+  light: "/modomator/light-theme.css",
 };
-
-const darkMode = localStorage.getItem('darkMode');
-
-const currentTheme = darkMode !== "false" ? 'dark' : 'light';
 
 const { Footer, Header } = Layout;
 
 const App = (): JSX.Element => {
+  const [darkMode] = useLocalStorage("darkMode", true);
+  const currentTheme = darkMode !== false ? "dark" : "light";
+
+  const styleInsertionPoint =
+    typeof document !== "undefined"
+      ? document.getElementById("inject-styles-here") ?? document.head
+      : undefined;
+
   return (
     <Router basename="/modomator">
-      <ThemeSwitcherProvider 
+      <ThemeSwitcherProvider
         defaultTheme={currentTheme}
-        insertionPoint={document.getElementById('inject-styles-here')}
-        themeMap={currThemes}>
-
+        insertionPoint={styleInsertionPoint}
+        themeMap={currThemes}
+      >
         <Layout style={{ background: "none" }}>
           <Header style={{ background: "none" }}>
             <h1 className="centered form-title">Modomator</h1>
@@ -53,7 +58,6 @@ const App = (): JSX.Element => {
             Pokémon GO Raiders
           </Footer>
         </Layout>
-
       </ThemeSwitcherProvider>
     </Router>
   );

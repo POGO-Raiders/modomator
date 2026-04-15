@@ -1,10 +1,11 @@
 import "./App.css";
 import "antd/dist/antd.min.css";
 import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ModerationMap, { type ModerationReason } from "./ModerationMap";
 import { ModerationAction } from "./Moderation";
 import { copyModerationToClipboard } from "./moderationClipboard";
+import { DISCORD_ID_PATTERN } from "./moderationPreview";
 import { useModerationPreview } from "./useModerationPreview";
 import { CopyOutlined } from "@ant-design/icons";
 import styled from "styled-components";
@@ -18,31 +19,33 @@ const ClearContainer = styled.div({
 
 const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
-
-  const [id, setId] = useState<string>();
-  const [action, setAction] = useState<ModerationAction>();
-  const [reason, setReason] = useState<ModerationReason>();
-  const [modifiers, setModifiers] = useState<string[]>([]);
-  const [muteHours, setMuteHours] = useState<number>(1);
   const [searchParams] = useSearchParams();
 
+  const id = Form.useWatch("id", form);
+  const action = Form.useWatch("action", form);
+  const reason = Form.useWatch("reason", form);
+  const modifiers = Form.useWatch("modifiers", form);
+  const muteHours = Form.useWatch("muteHours", form);
+
   const { moderationOutput, clipboardEnabled } = useModerationPreview({
-    id,
-    action,
-    reason,
-    modifiers,
-    muteHours,
+    id: typeof id === "string" ? id : undefined,
+    action: action as ModerationAction | undefined,
+    reason: reason as ModerationReason | undefined,
+    modifiers: Array.isArray(modifiers) ? modifiers : [],
+    muteHours: typeof muteHours === "number" ? muteHours : undefined,
   });
 
   useEffect(() => {
-    setId(searchParams.get("id") ?? "");
-  }, [searchParams]);
+    form.setFieldsValue({ id: searchParams.get("id") ?? "" });
+  }, [searchParams, form]);
 
   useEffect(() => {
     form.setFieldsValue({
       textarea: moderationOutput?.moderationString ?? null,
     });
   }, [moderationOutput, form]);
+
+  const actionSelected = action !== undefined && action !== null;
 
   return (
     <div className="form-container">
@@ -58,19 +61,18 @@ const ModForm = (): JSX.Element => {
           name="id"
           rules={[
             {
-              pattern: /^\d{18,19}$/,
+              pattern: DISCORD_ID_PATTERN,
               message: "Not a valid Discord ID.",
             },
           ]}
         >
-          <Input onChange={(e) => setId(e.target.value)} />
+          <Input />
         </Form.Item>
 
-        <Form.Item name="action" label="Action" onReset={() => setAction(undefined)}>
+        <Form.Item name="action" label="Action">
           <Radio.Group
             buttonStyle="solid"
-            onChange={(e) => {
-              setAction(ModerationAction[e.target.value as keyof typeof ModerationAction]);
+            onChange={() => {
               form.resetFields(["reason", "modifiers", "muteHours"]);
             }}
           >
@@ -84,16 +86,12 @@ const ModForm = (): JSX.Element => {
 
         <Form.Item
           name="reason"
-          label={action !== undefined ? "Reason" : undefined}
-          onReset={() => setReason(undefined)}
+          label={actionSelected ? "Reason" : undefined}
         >
-          <Radio.Group
-            buttonStyle="solid"
-            onChange={(e) => setReason(e.target.value as ModerationReason)}
-          >
+          <Radio.Group buttonStyle="solid">
             {(action
               ? Object.keys(ModerationMap).filter((m) =>
-                  ModerationMap[m as ModerationReason].categories.includes(action)
+                  ModerationMap[m as ModerationReason].categories.includes(action as ModerationAction)
                 )
               : []
             ).map((k, i) => (
@@ -105,11 +103,8 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
 
         {action === ModerationAction.Warning || action === ModerationAction.Mute ? (
-          <Form.Item name="modifiers" valuePropName="checked" onReset={() => setModifiers([])}>
-            <Checkbox.Group
-              options={["Verified Host"]}
-              onChange={(v) => setModifiers(v as string[])}
-            />
+          <Form.Item name="modifiers">
+            <Checkbox.Group options={["Verified Host"]} />
           </Form.Item>
         ) : null}
 
@@ -117,7 +112,9 @@ const ModForm = (): JSX.Element => {
           <Form.Item
             name="muteHours"
             label="# of Hours"
-            onReset={() => setMuteHours(1)}
+            getValueFromEvent={(val: number | null) =>
+              val == null || val < 1 ? 1 : val > 24 ? 24 : val
+            }
             rules={[
               {
                 required: true,
@@ -125,7 +122,7 @@ const ModForm = (): JSX.Element => {
               },
             ]}
           >
-            <InputNumber min={1} max={24} onChange={(value) => setMuteHours(value ?? 0)} />
+            <InputNumber min={1} max={24} />
           </Form.Item>
         ) : null}
 
@@ -139,6 +136,8 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
           <Tooltip title="Copy to clipboard">
             <Button
+              htmlType="button"
+              aria-label="Copy to clipboard"
               icon={<CopyOutlined />}
               style={{ float: "right" }}
               disabled={!clipboardEnabled}
@@ -153,16 +152,18 @@ const ModForm = (): JSX.Element => {
                   },
                   shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
                   discordChannelURL: moderationOutput.discordChannelURL,
-                }).catch(() => {});
+                }).catch((err: unknown) => {
+                  console.error("Copy to clipboard failed", err);
+                });
               }}
             />
           </Tooltip>
         </Form.Item>
       </Form>
-      <ClearContainer>      
+      <ClearContainer>
         <Radio.Button type="link" onClick={() => form.resetFields()}>
           Clear
-        </Radio.Button>        
+        </Radio.Button>
       </ClearContainer>
     </div>
   );

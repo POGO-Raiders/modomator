@@ -61,9 +61,7 @@ const changes: Change[] = [
     version: "1.3.0",
     date: "2026-04-14",
     description: [
-      "Migrated app theming to Ant Design ConfigProvider tokens and algorithms, replacing runtime theme CSS switching",
-      "Refreshed ModForm layout and mobile responsiveness with cleaner control grouping, improved output area, and consistent chip styling",
-      "Improved dark mode contrast and readability across app surfaces and controls",
+      "Fresh coat of paint: updated look and layout so the tool is easier to use on phone and desktop",
     ],
   },
   {

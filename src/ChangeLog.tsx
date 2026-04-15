@@ -53,6 +53,14 @@ type Change = {
 
 const changes: Change[] = [
   {
+    version: "1.2.3",
+    date: "2026-04-14",
+    description: [
+      "Fixed spacing between the mod text preview and the Clear button in light mode",
+      "Reliability and maintenance improvements, including smoother rollout of future updates",
+    ],
+  },
+  {
     version: "1.2.2",
     date: "2026-03-23",
     description: [

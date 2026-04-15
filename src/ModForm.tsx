@@ -19,6 +19,7 @@ const ClearContainer = styled.div({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  marginTop: 10,
 });
 
 const ModForm = (): JSX.Element => {

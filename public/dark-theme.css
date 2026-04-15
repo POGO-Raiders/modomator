@@ -31,10 +31,6 @@ form+div span {
   border-width: 1px !important;
 }
 
-form+div {
-  margin-top: 10px;
-}
-
 .ant-radio-button-wrapper-checked {
   border-color: white !important;
   border-width: 2px !important;

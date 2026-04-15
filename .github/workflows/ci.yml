@@ -29,6 +29,7 @@ jobs:
           node-version: "20"
           cache: "npm"
       - run: npm ci
+      # Production build type-checks all TS under src/ (including *.test.tsx), unlike `npm start`.
       - run: npm run build
       - name: Upload build to FTP
         env:

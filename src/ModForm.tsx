@@ -1,6 +1,6 @@
 import "./App.css";
 import "antd/dist/reset.css";
-import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
+import { Card, Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
 import React, { useEffect } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
 import { copyModerationToClipboard } from "./moderation/moderationClipboard";
@@ -49,28 +49,33 @@ const ModForm = (): JSX.Element => {
 
   return (
     <div className="form-container">
-      <Form
-        name="modform"
-        initialValues={{ id: searchParams.get("id"), modifiers: [], muteHours: 1 }}
-        autoComplete="off"
-        requiredMark={false}
-        form={form}
-      >
-        <Form.Item
-          label="Discord ID"
-          name="id"
-          rules={[
-            {
-              pattern: DISCORD_ID_PATTERN,
-              message: "Not a valid Discord ID.",
-            },
-          ]}
+      <Card className="mod-form-card" variant="borderless">
+        <Form
+          name="modform"
+          className="mod-form"
+          initialValues={{ id: searchParams.get("id"), modifiers: [], muteHours: 1 }}
+          autoComplete="off"
+          requiredMark={false}
+          form={form}
+          layout="vertical"
+          size="middle"
         >
-          <Input />
-        </Form.Item>
+          <Form.Item
+            label="Discord ID"
+            name="id"
+            rules={[
+              {
+                pattern: DISCORD_ID_PATTERN,
+                message: "Not a valid Discord ID.",
+              },
+            ]}
+          >
+            <Input allowClear placeholder="Discord user ID" inputMode="numeric" autoComplete="off" />
+          </Form.Item>
 
         <Form.Item name="action" label="Action">
           <Radio.Group
+            className="mod-form-radio-grid mod-form-radio-grid--action"
             buttonStyle="solid"
             onChange={() => {
               form.resetFields(["reason", "modifiers", "muteHours"]);
@@ -85,7 +90,7 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
 
         <Form.Item name="reason" label={actionSelected ? "Reason" : undefined}>
-          <Radio.Group buttonStyle="solid">
+          <Radio.Group className="mod-form-radio-grid mod-form-radio-grid--reason" buttonStyle="solid">
             {reasonsForAction.map((k) => (
               <Radio.Button value={k} key={k}>
                 {k}
@@ -95,7 +100,7 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
 
         {action === ModerationAction.Warning || action === ModerationAction.Mute ? (
-          <Form.Item name="modifiers">
+          <Form.Item name="modifiers" label="Options" className="mod-form-modifiers">
             <Checkbox.Group options={["Verified Host"]} />
           </Form.Item>
         ) : null}
@@ -116,20 +121,22 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
         ) : null}
 
-        <Form.Item style={{ marginBottom: 0 }}>
-          <Form.Item name="textarea" noStyle>
-            <Input.TextArea
-              autoSize={true}
-              readOnly={true}
-              style={{ width: "calc(100% - 40px)" }}
-            />
-          </Form.Item>
-          <Tooltip title="Copy to clipboard">
+        <Form.Item label="Moderation text" style={{ marginBottom: 0 }}>
+          <div className="mod-form-output-row">
+            <Form.Item name="textarea" noStyle className="mod-form-output-field">
+              <Input.TextArea
+                autoSize={{ minRows: 3, maxRows: 12 }}
+                readOnly={true}
+                className="mod-form-output"
+                placeholder="Select action and reason to generate text"
+              />
+            </Form.Item>
+          <Tooltip title={clipboardEnabled ? "Copy to clipboard" : "Select action and reason first"}>
             <Button
               htmlType="button"
               aria-label="Copy to clipboard"
               icon={<CopyOutlined />}
-              style={{ float: "right" }}
+              type="default"
               disabled={!clipboardEnabled}
               onClick={() => {
                 const text = moderationOutput?.moderationString;
@@ -148,8 +155,10 @@ const ModForm = (): JSX.Element => {
               }}
             />
           </Tooltip>
+          </div>
         </Form.Item>
       </Form>
+      </Card>
       <ClearContainer>
         <Radio.Button type="link" onClick={clearForm}>
           Clear

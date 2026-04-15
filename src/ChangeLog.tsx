@@ -1,4 +1,5 @@
-import { Timeline } from "antd";
+import { Timeline, theme } from "antd";
+import type { GlobalToken } from "antd";
 import "./App.css";
 import React from "react";
 import styled from "styled-components";
@@ -8,37 +9,41 @@ const Version = styled.h1({
   fontWeight: 700,
 });
 
-const DateCode = styled.code`
-  margin: 0 1px;
-  padding: 0.2em 0.4em;
-  font-size: 0.9em;
-  background: #f2f4f5;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: 3px;
-`;
+const dateCodeStyle = (t: GlobalToken): React.CSSProperties => ({
+  margin: "0 1px",
+  padding: "0.2em 0.4em",
+  fontSize: "0.9em",
+  background: t.colorFillAlter,
+  border: `1px solid ${t.colorBorderSecondary}`,
+  borderRadius: 3,
+  color: t.colorText,
+});
 
 // Inspired by https://ant.design/changelog
 
 export const ChangeLog = (): JSX.Element => {
-  const changeToTimelineItem = (change: Change, i: number): JSX.Element => {
-    return (
-      <Timeline.Item key={i}>
-        <Version>{change.version}</Version>
-        <p>
-          <DateCode>{change.date}</DateCode>
-        </p>
-        <ul>
-          {change.description.map((d, i) => (
-            <li key={i}>{d}</li>
-          ))}
-        </ul>
-      </Timeline.Item>
-    );
-  };
-
+  const { token } = theme.useToken();
   return (
     <div className="form-container">
-      <Timeline mode="left">{changes.map(changeToTimelineItem)}</Timeline>
+      <Timeline
+        mode="left"
+        items={changes.map((change, i) => ({
+          key: i,
+          children: (
+            <>
+              <Version style={{ color: token.colorTextHeading }}>{change.version}</Version>
+              <p>
+                <code style={dateCodeStyle(token)}>{change.date}</code>
+              </p>
+              <ul>
+                {change.description.map((d, j) => (
+                  <li key={j}>{d}</li>
+                ))}
+              </ul>
+            </>
+          ),
+        }))}
+      />
     </div>
   );
 };
@@ -52,6 +57,13 @@ type Change = {
 };
 
 const changes: Change[] = [
+  {
+    version: "1.3.0",
+    date: "2026-04-14",
+    description: [
+      "Fresh coat of paint: updated look and layout so the tool is easier to use on phone and desktop",
+    ],
+  },
   {
     version: "1.2.3",
     date: "2026-04-14",

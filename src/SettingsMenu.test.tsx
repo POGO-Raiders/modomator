@@ -2,26 +2,26 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
-import { ThemeSwitcherProvider } from "react-css-theme-switcher";
+import { ConfigProvider } from "antd";
+import useLocalStorage from "use-local-storage";
 import SettingsMenu from "./SettingsMenu";
 import { latestVersion } from "./ChangeLog";
+import { getAntdTheme } from "./theme/antTheme";
 
-const themeMap = {
-  dark: "/modomator/dark-theme.css",
-  light: "/modomator/light-theme.css",
-};
+function SettingsMenuHarness(): JSX.Element {
+  const [darkMode, setDarkMode] = useLocalStorage("darkMode", true);
+  const isDark = darkMode !== false;
+  return (
+    <ConfigProvider theme={getAntdTheme(isDark)}>
+      <SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />
+    </ConfigProvider>
+  );
+}
 
 function renderSettingsMenu() {
-  const insertionPoint = document.getElementById("inject-styles-here") ?? document.head;
   return render(
     <MemoryRouter basename="/modomator" initialEntries={["/modomator/"]}>
-      <ThemeSwitcherProvider
-        defaultTheme="dark"
-        insertionPoint={insertionPoint}
-        themeMap={themeMap}
-      >
-        <SettingsMenu />
-      </ThemeSwitcherProvider>
+      <SettingsMenuHarness />
     </MemoryRouter>
   );
 }

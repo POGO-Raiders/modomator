@@ -1,19 +1,22 @@
 {
   "compilerOptions": {
-	"skipLibCheck": true,
-	"esModuleInterop": true,
-        "outDir": "./js/",
-        "sourceMap": true,
-        "module": "commonjs",
-        "target": "es6",
-        "jsx": "react",
-	"strict": true
-    },
-  "include": ["src/**/*"],
-  // Test files use *.test.ts(x); exclude stray Playwright-style *.spec.ts from the TS project.
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "useDefineForClassFields": true,
+    "types": ["vitest/globals", "vite/client"]
+  },
+  "include": ["src", "vite.config.ts"],
   "exclude": [
     "node_modules",
     "**/*.spec.ts"
   ]
 }
-

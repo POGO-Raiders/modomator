@@ -1,5 +1,5 @@
 import React from "react";
-const heatran = require("./assets/heatran.png");
+import heatran from "./assets/heatran.png";
 
 const NotFound = (): JSX.Element => {
   return (

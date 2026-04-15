@@ -18,6 +18,37 @@ function renderModForm(query: string) {
   );
 }
 
+/** Clicks the hidden input for a Radio.Button `value` (reliable with antd v5 + RTL). */
+function clickRadioValue(value: string) {
+  const input = document.querySelector<HTMLInputElement>(
+    `input.ant-radio-button-input[value="${CSS.escape(value)}"]`
+  );
+  if (!input) {
+    throw new Error(`Radio value not found: ${value}`);
+  }
+  fireEvent.click(input);
+}
+
+async function selectWarningHarassment() {
+  clickRadioValue("Warning");
+  await waitFor(() =>
+    expect(
+      document.querySelector(`input.ant-radio-button-input[value="Harassment"]`)
+    ).toBeTruthy()
+  );
+  clickRadioValue("Harassment");
+}
+
+async function selectMuteFakeHosting() {
+  clickRadioValue("Mute");
+  await waitFor(() =>
+    expect(
+      document.querySelector(`input.ant-radio-button-input[value="Fake hosting"]`)
+    ).toBeTruthy()
+  );
+  clickRadioValue("Fake hosting");
+}
+
 function getCopyButton(container: HTMLElement): HTMLButtonElement {
   const icon = container.querySelector(".anticon-copy");
   const btn = icon?.closest("button");
@@ -28,25 +59,23 @@ function getCopyButton(container: HTMLElement): HTMLButtonElement {
 }
 
 beforeEach(() => {
-  jest.spyOn(notification, "open").mockImplementation(() => void 0);
-  jest
+  vi.spyOn(notification, "open").mockImplementation(() => void 0);
+  vi
     .spyOn(moderationClipboard, "copyModerationToClipboard")
     .mockResolvedValue(undefined);
 });
 
 afterEach(() => {
-  jest.restoreAllMocks();
+  vi.restoreAllMocks();
   localStorage.removeItem("openInDiscord");
 });
 
 test("prefills id from query string and shows warning preview when action and reason selected", async () => {
-  const user = userEvent.setup();
   renderModForm(`?id=${validId}`);
 
   expect(screen.getByLabelText(/discord id/i)).toHaveValue(validId);
 
-  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
-  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+  await selectWarningHarassment();
 
   const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
   await waitFor(() => {
@@ -58,8 +87,7 @@ test("Clear resets choices but keeps Discord ID from the current URL", async () 
   const user = userEvent.setup();
   renderModForm(`?id=${validId}`);
 
-  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
-  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+  await selectWarningHarassment();
 
   await waitFor(() => {
     expect(
@@ -77,11 +105,9 @@ test("Clear resets choices but keeps Discord ID from the current URL", async () 
 });
 
 test("copies preview to clipboard and notifies", async () => {
-  const user = userEvent.setup();
   const { container } = renderModForm(`?id=${validId}`);
 
-  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
-  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+  await selectWarningHarassment();
 
   const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
   await waitFor(() => {
@@ -106,8 +132,7 @@ test("mute action shows hours field and mute text in preview", async () => {
   const user = userEvent.setup();
   renderModForm(`?id=${validId}`);
 
-  await user.click(screen.getByRole("radio", { name: /^Mute$/i }));
-  await user.click(screen.getByRole("radio", { name: /^Fake hosting$/i }));
+  await selectMuteFakeHosting();
 
   expect(screen.getByLabelText(/#\s*of\s*hours/i)).toBeInTheDocument();
 
@@ -127,12 +152,10 @@ test("mute action shows hours field and mute text in preview", async () => {
 });
 
 test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
-  const user = userEvent.setup();
   localStorage.setItem("openInDiscord", JSON.stringify(true));
   const { container } = renderModForm(`?id=${validId}`);
 
-  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
-  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+  await selectWarningHarassment();
 
   await waitFor(() => {
     expect(
@@ -152,16 +175,14 @@ test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
 });
 
 test("copy logs error when clipboard helper rejects", async () => {
-  const user = userEvent.setup();
-  const errorSpy = jest.spyOn(console, "error").mockImplementation(() => void 0);
-  jest
+  const errorSpy = vi.spyOn(console, "error").mockImplementation(() => void 0);
+  vi
     .spyOn(moderationClipboard, "copyModerationToClipboard")
     .mockRejectedValueOnce(new Error("clipboard failed"));
 
   const { container } = renderModForm(`?id=${validId}`);
 
-  await user.click(screen.getByRole("radio", { name: /^Warning$/i }));
-  await user.click(screen.getByRole("radio", { name: /^Harassment$/i }));
+  await selectWarningHarassment();
 
   await waitFor(() => {
     expect(

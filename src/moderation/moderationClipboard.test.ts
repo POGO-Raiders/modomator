@@ -6,7 +6,7 @@ import {
 describe("moderationClipboard", () => {
   beforeEach(() => {
     Object.defineProperty(navigator, "clipboard", {
-      value: { writeText: jest.fn().mockResolvedValue(undefined) },
+      value: { writeText: vi.fn().mockResolvedValue(undefined) },
       configurable: true,
       writable: true,
     });
@@ -14,7 +14,7 @@ describe("moderationClipboard", () => {
 
   afterEach(() => {
     Object.defineProperty(navigator, "clipboard", {
-      value: { writeText: jest.fn().mockResolvedValue(undefined) },
+      value: { writeText: vi.fn().mockResolvedValue(undefined) },
       configurable: true,
       writable: true,
     });
@@ -35,8 +35,8 @@ describe("moderationClipboard", () => {
   });
 
   it("copyModerationToClipboard notifies and optionally opens URL", async () => {
-    const notify = jest.fn();
-    const openSpy = jest.spyOn(window, "open").mockImplementation(() => null);
+    const notify = vi.fn();
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
 
     await copyModerationToClipboard({
       text: "?warn 1 test",

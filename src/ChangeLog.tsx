@@ -20,25 +20,27 @@ const DateCode = styled.code`
 // Inspired by https://ant.design/changelog
 
 export const ChangeLog = (): JSX.Element => {
-  const changeToTimelineItem = (change: Change, i: number): JSX.Element => {
-    return (
-      <Timeline.Item key={i}>
-        <Version>{change.version}</Version>
-        <p>
-          <DateCode>{change.date}</DateCode>
-        </p>
-        <ul>
-          {change.description.map((d, i) => (
-            <li key={i}>{d}</li>
-          ))}
-        </ul>
-      </Timeline.Item>
-    );
-  };
-
   return (
     <div className="form-container">
-      <Timeline mode="left">{changes.map(changeToTimelineItem)}</Timeline>
+      <Timeline
+        mode="left"
+        items={changes.map((change, i) => ({
+          key: i,
+          children: (
+            <>
+              <Version>{change.version}</Version>
+              <p>
+                <DateCode>{change.date}</DateCode>
+              </p>
+              <ul>
+                {change.description.map((d, j) => (
+                  <li key={j}>{d}</li>
+                ))}
+              </ul>
+            </>
+          ),
+        }))}
+      />
     </div>
   );
 };

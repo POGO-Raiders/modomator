@@ -1,5 +1,5 @@
 import "./App.css";
-import "antd/dist/antd.min.css";
+import "antd/dist/reset.css";
 import { Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
 import React, { useEffect } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";

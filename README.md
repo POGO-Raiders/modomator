@@ -6,10 +6,11 @@ Small React app for composing Pokémon Showdown moderation messages (warn / mute
 
 | Command | Purpose |
 |--------|---------|
-| `npm start` | Dev server at [http://localhost:3000](http://localhost:3000) |
-| `npm test` | Jest in watch mode |
-| `npm run test:ci` | Jest once (CI / pre-push) |
-| `npm run build` | Production bundle in `build/` |
+| `npm start` | Vite dev server — open **[http://localhost:3000/modomator/](http://localhost:3000/modomator/)** (subpath matches production) |
+| `npm test` | Vitest in watch mode |
+| `npm run test:ci` | Vitest once (CI / pre-push) |
+| `npm run build` | Production bundle in `build/` (Vite) |
+| `npm run preview` | Preview production build locally |
 | `npm run predeploy` / `npm run deploy` | Build and publish to GitHub Pages (`homepage` in `package.json`) |
 
 ## Layout

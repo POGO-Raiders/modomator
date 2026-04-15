@@ -10,7 +10,7 @@ import { ChangeLog } from "./ChangeLog";
 import { ThemeSwitcherProvider } from "react-css-theme-switcher";
 import useLocalStorage from "use-local-storage";
 
-const logo = require("./assets/pgricon64.png");
+import logo from "./assets/pgricon64.png";
 
 const currThemes = {
   dark: "/modomator/dark-theme.css",

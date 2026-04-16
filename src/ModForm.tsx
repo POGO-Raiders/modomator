@@ -121,41 +121,46 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
         ) : null}
 
-        <Form.Item label="Moderation text" style={{ marginBottom: 0 }}>
-          <div className="mod-form-output-row">
-            <Form.Item name="textarea" noStyle className="mod-form-output-field">
-              <Input.TextArea
-                autoSize={{ minRows: 3, maxRows: 12 }}
-                readOnly={true}
-                className="mod-form-output"
-                placeholder="Select action and reason to generate text"
-              />
-            </Form.Item>
-          <Tooltip title={clipboardEnabled ? "Copy to clipboard" : "Select action and reason first"}>
-            <Button
-              htmlType="button"
-              aria-label="Copy to clipboard"
-              icon={<CopyOutlined />}
-              type="default"
-              disabled={!clipboardEnabled}
-              onClick={() => {
-                const text = moderationOutput?.moderationString;
-                if (!text) return;
-                copyModerationToClipboard({
-                  text,
-                  actionLabel: action?.toString() ?? "UNKNOWN",
-                  notify: (message, durationSeconds = 2) => {
-                    notification.open({ message, duration: durationSeconds });
-                  },
-                  shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
-                  discordChannelURL: moderationOutput.discordChannelURL,
-                }).catch((err: unknown) => {
-                  console.error("Copy to clipboard failed", err);
-                });
-              }}
-            />
-          </Tooltip>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <div className="mod-form-output-header">
+            <span className="mod-form-output-title">Moderation text</span>
+            <Tooltip title={clipboardEnabled ? "Copy to clipboard" : "Select action and reason first"}>
+              <Button
+                htmlType="button"
+                aria-label="Copy moderation text"
+                icon={<CopyOutlined />}
+                size="middle"
+                className="mod-form-copy-btn"
+                type="default"
+                disabled={!clipboardEnabled}
+                onClick={() => {
+                  const text = moderationOutput?.moderationString;
+                  if (!text) return;
+                  copyModerationToClipboard({
+                    text,
+                    actionLabel: action?.toString() ?? "UNKNOWN",
+                    notify: (message, durationSeconds = 2) => {
+                      notification.open({ message, duration: durationSeconds });
+                    },
+                    shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
+                    discordChannelURL: moderationOutput.discordChannelURL,
+                  }).catch((err: unknown) => {
+                    console.error("Copy to clipboard failed", err);
+                  });
+                }}
+              >
+                Copy
+              </Button>
+            </Tooltip>
           </div>
+          <Form.Item name="textarea" noStyle>
+            <Input.TextArea
+              autoSize={{ minRows: 3, maxRows: 12 }}
+              readOnly={true}
+              className="mod-form-output"
+              placeholder="Select action and reason to generate text"
+            />
+          </Form.Item>
         </Form.Item>
       </Form>
       </Card>

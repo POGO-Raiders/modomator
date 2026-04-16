@@ -99,19 +99,19 @@
   display: none;
 }
 
-.mod-form-output-row {
+.mod-form-output-header {
   display: flex;
-  align-items: flex-start;
-  gap: var(--mod-form-gap);
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
+  margin-bottom: 8px;
 }
 
-.mod-form-output-row .mod-form-output-field {
-  flex: 1;
-  min-width: 0;
+.mod-form-output-title {
+  font-weight: 600;
 }
 
-.mod-form-output-row .ant-btn {
+.mod-form-copy-btn.ant-btn {
   flex-shrink: 0;
 }
 

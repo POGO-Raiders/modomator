@@ -17,7 +17,7 @@
   box-sizing: border-box;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 576px) {
   .form-container {
     padding: 24px 40px 40px;
   }
@@ -33,7 +33,7 @@
   padding: 20px 18px 18px;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 576px) {
   .mod-form-card .ant-card-body {
     padding: 24px 28px 22px;
   }
@@ -51,7 +51,14 @@
 }
 
 .mod-form-radio-grid--action {
-  grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  /* Mobile-first: keep action choices balanced and avoid orphan wrapped row */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (min-width: 576px) {
+  .mod-form-radio-grid--action {
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+  }
 }
 
 .mod-form-radio-grid--reason {
@@ -63,8 +70,29 @@
   text-align: center;
 }
 
-.mod-form-radio-grid--reason .ant-radio-button-wrapper {
+.mod-form-radio-grid--action .ant-radio-button-wrapper {
   border-radius: 6px;
+}
+
+.mod-form-radio-grid--action .ant-radio-button-wrapper::before {
+  display: none;
+}
+
+.mod-form-radio-grid--reason .ant-radio-button-wrapper {
+  /* Ant Radio.Button uses a fixed control height + single-line line-height; allow wrapping on narrow layouts */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 32px;
+  line-height: 1.35;
+  padding-block: 6px;
+  white-space: normal;
+  border-radius: 6px;
+}
+
+.mod-form-radio-grid--reason .ant-radio-button-wrapper .ant-radio-button-label {
+  width: 100%;
 }
 
 .mod-form-radio-grid--reason .ant-radio-button-wrapper::before {

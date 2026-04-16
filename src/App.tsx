@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, ConfigProvider, Layout, Popover, theme } from "antd";
 import ModForm from "./ModForm";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
@@ -23,11 +23,20 @@ function AppThemedShell({
   setDarkMode: (value: boolean) => void;
 }): JSX.Element {
   const { token } = theme.useToken();
+  useEffect(() => {
+    document.documentElement.style.backgroundColor = token.colorBgLayout;
+    document.body.style.backgroundColor = token.colorBgLayout;
+
+    const themeColorMeta = document.querySelector<HTMLMetaElement>("meta[name='theme-color']");
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute("content", token.colorBgLayout);
+    }
+  }, [token.colorBgLayout]);
 
   return (
     <div
       style={{
-        minHeight: "100vh",
+        minHeight: "100dvh",
         backgroundColor: token.colorBgLayout,
       }}
     >

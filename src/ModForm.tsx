@@ -1,6 +1,6 @@
 import "./App.css";
 import "antd/dist/reset.css";
-import { Card, Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
+import { Card, Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification, Flex, Typography } from "antd";
 import React, { useEffect } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
 import { copyModerationToClipboard } from "./moderation/moderationClipboard";
@@ -12,15 +12,7 @@ import { DISCORD_ID_PATTERN } from "./moderation/moderationPreview";
 import { useModerationFormPreview } from "./hooks/useModerationFormPreview";
 import { useModFormClear } from "./hooks/useModFormClear";
 import { CopyOutlined } from "@ant-design/icons";
-import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
-
-const ClearContainer = styled.div({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  marginTop: 10,
-});
 
 const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
@@ -122,15 +114,14 @@ const ModForm = (): JSX.Element => {
         ) : null}
 
         <Form.Item style={{ marginBottom: 0 }}>
-          <div className="mod-form-output-header">
-            <span className="mod-form-output-title">Moderation text</span>
+          <Flex align="center" justify="space-between" style={{ marginBottom: 8 }}>
+            <Typography.Text strong>Moderation text</Typography.Text>
             <Tooltip title={clipboardEnabled ? "Copy to clipboard" : "Select action and reason first"}>
               <Button
                 htmlType="button"
                 aria-label="Copy moderation text"
                 icon={<CopyOutlined />}
                 size="middle"
-                className="mod-form-copy-btn"
                 type="default"
                 disabled={!clipboardEnabled}
                 onClick={() => {
@@ -152,7 +143,7 @@ const ModForm = (): JSX.Element => {
                 Copy
               </Button>
             </Tooltip>
-          </div>
+          </Flex>
           <Form.Item name="textarea" noStyle>
             <Input.TextArea
               autoSize={{ minRows: 3, maxRows: 12 }}
@@ -164,11 +155,11 @@ const ModForm = (): JSX.Element => {
         </Form.Item>
       </Form>
       </Card>
-      <ClearContainer>
+      <Flex justify="center" align="center" style={{ marginTop: 10 }}>
         <Radio.Button type="link" onClick={clearForm}>
           Clear
         </Radio.Button>
-      </ClearContainer>
+      </Flex>
     </div>
   );
 };

@@ -99,22 +99,6 @@
   display: none;
 }
 
-.mod-form-output-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.mod-form-output-title {
-  font-weight: 600;
-}
-
-.mod-form-copy-btn.ant-btn {
-  flex-shrink: 0;
-}
-
 .mod-form-output.ant-input {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   font-size: 13px;

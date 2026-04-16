@@ -9,7 +9,26 @@ export function copyTextToClipboard(text: string): Promise<void> {
   ) {
     return navigator.clipboard.writeText(text);
   }
-  return Promise.reject(new Error("The Clipboard API is not available."));
+
+  if (typeof document !== "undefined" && typeof document.execCommand === "function") {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.setAttribute("readonly", "");
+    textArea.style.position = "fixed";
+    textArea.style.top = "0";
+    textArea.style.left = "-9999px";
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    const copied = document.execCommand("copy");
+    document.body.removeChild(textArea);
+    if (copied) {
+      return Promise.resolve();
+    }
+  }
+
+  return Promise.reject(new Error("Clipboard is not available on this device/browser."));
 }
 
 export type ModerationNotify = (message: string, durationSeconds?: number) => void;

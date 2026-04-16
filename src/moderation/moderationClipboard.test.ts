@@ -31,7 +31,24 @@ describe("moderationClipboard", () => {
       configurable: true,
       writable: true,
     });
-    await expect(copyTextToClipboard("hello")).rejects.toThrow(/Clipboard API is not available/);
+    await expect(copyTextToClipboard("hello")).rejects.toThrow(/Clipboard is not available/);
+  });
+
+  it("copyTextToClipboard falls back to execCommand when Clipboard API is unavailable", async () => {
+    Object.defineProperty(navigator, "clipboard", {
+      value: undefined,
+      configurable: true,
+      writable: true,
+    });
+
+    const execSpy = vi.fn().mockReturnValue(true);
+    Object.defineProperty(document, "execCommand", {
+      value: execSpy,
+      configurable: true,
+      writable: true,
+    });
+    await expect(copyTextToClipboard("fallback")).resolves.toBeUndefined();
+    expect(execSpy).toHaveBeenCalledWith("copy");
   });
 
   it("copyModerationToClipboard notifies and optionally opens URL", async () => {

@@ -1,6 +1,6 @@
 import "./App.css";
 import "antd/dist/reset.css";
-import { Card, Radio, Button, Checkbox, Form, Input, InputNumber, Tooltip, notification } from "antd";
+import { Card, Radio, Button, Checkbox, Form, Input, InputNumber, notification, Flex, Typography } from "antd";
 import React, { useEffect } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
 import { copyModerationToClipboard } from "./moderation/moderationClipboard";
@@ -12,15 +12,7 @@ import { DISCORD_ID_PATTERN } from "./moderation/moderationPreview";
 import { useModerationFormPreview } from "./hooks/useModerationFormPreview";
 import { useModFormClear } from "./hooks/useModFormClear";
 import { CopyOutlined } from "@ant-design/icons";
-import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
-
-const ClearContainer = styled.div({
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  marginTop: 10,
-});
 
 const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
@@ -121,21 +113,14 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
         ) : null}
 
-        <Form.Item label="Moderation text" style={{ marginBottom: 0 }}>
-          <div className="mod-form-output-row">
-            <Form.Item name="textarea" noStyle className="mod-form-output-field">
-              <Input.TextArea
-                autoSize={{ minRows: 3, maxRows: 12 }}
-                readOnly={true}
-                className="mod-form-output"
-                placeholder="Select action and reason to generate text"
-              />
-            </Form.Item>
-          <Tooltip title={clipboardEnabled ? "Copy to clipboard" : "Select action and reason first"}>
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Flex align="center" justify="space-between" style={{ marginBottom: 8 }}>
+            <Typography.Text strong>Moderation text</Typography.Text>
             <Button
               htmlType="button"
-              aria-label="Copy to clipboard"
+              aria-label="Copy moderation text"
               icon={<CopyOutlined />}
+              size="middle"
               type="default"
               disabled={!clipboardEnabled}
               onClick={() => {
@@ -151,19 +136,29 @@ const ModForm = (): JSX.Element => {
                   discordChannelURL: moderationOutput.discordChannelURL,
                 }).catch((err: unknown) => {
                   console.error("Copy to clipboard failed", err);
+                  notification.error({ message: "Could not copy text on this device." });
                 });
               }}
+            >
+              Copy
+            </Button>
+          </Flex>
+          <Form.Item name="textarea" noStyle>
+            <Input.TextArea
+              autoSize={{ minRows: 3, maxRows: 12 }}
+              readOnly={true}
+              className="mod-form-output"
+              placeholder="Select action and reason to generate text"
             />
-          </Tooltip>
-          </div>
+          </Form.Item>
         </Form.Item>
       </Form>
       </Card>
-      <ClearContainer>
+      <Flex justify="center" align="center" style={{ marginTop: 10 }}>
         <Radio.Button type="link" onClick={clearForm}>
           Clear
         </Radio.Button>
-      </ClearContainer>
+      </Flex>
     </div>
   );
 };

@@ -2,12 +2,7 @@ import useLocalStorage from "use-local-storage";
 import { Col, Divider, Row, Switch } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 import { latestVersion } from "./ChangeLog";
-
-const SettingsDivider = styled(Divider)({
-  margin: "10px 0",
-});
 
 export type SettingsMenuProps = {
   darkMode: boolean;
@@ -25,14 +20,14 @@ const SettingsMenu = ({ darkMode, onDarkModeChange }: SettingsMenuProps): JSX.El
           <Switch checked={darkMode} onChange={onDarkModeChange} />
         </Col>
       </Row>
-      <SettingsDivider />
+      <Divider style={{ margin: "10px 0" }} />
       <Row align="middle" gutter={[10, 0]}>
         <Col>Open in Discord</Col>
         <Col>
           <Switch checked={openInDiscord} onChange={setOpenInDiscord} />
         </Col>
       </Row>
-      <SettingsDivider />
+      <Divider style={{ margin: "10px 0" }} />
       <Row justify="center">{`v${latestVersion}`}</Row>
       <Row justify="center">
         <Link to="/changelog">View changelog</Link>

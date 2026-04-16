@@ -52,6 +52,14 @@ type Change = {
 
 const changes: Change[] = [
   {
+    version: "1.3.1",
+    date: "2026-04-15",
+    description: [
+      "Visual bug fixes and UI polish across mobile and desktop layouts",
+      "Improved moderation text copy flow with better cross-browser support",
+    ],
+  },
+  {
     version: "1.3.0",
     date: "2026-04-14",
     description: [

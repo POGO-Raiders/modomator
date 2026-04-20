@@ -12,7 +12,7 @@ import {
   Flex,
   Typography,
 } from "antd";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
 import { copyModerationToClipboard } from "./moderation/moderationClipboard";
 import {
@@ -30,7 +30,6 @@ const ModForm = (): JSX.Element => {
   const [searchParams] = useSearchParams();
   const clearForm = useModFormClear(form, searchParams);
   const formContainerRef = useRef<HTMLDivElement>(null);
-  const [idFocused, setIdFocused] = useState(false);
 
   const action = Form.useWatch("action", form);
 
@@ -91,14 +90,7 @@ const ModForm = (): JSX.Element => {
             label="Discord ID"
             name="id"
             validateTrigger={["onChange", "onBlur"]}
-            hasFeedback
-            extra={
-              idFocused ? (
-                <span id="discord-id-hint" style={{ fontSize: 12 }}>
-                  18–19 digit Discord user ID
-                </span>
-              ) : null
-            }
+            tooltip="18–19 digit Discord user ID"
             rules={[
               {
                 pattern: DISCORD_ID_PATTERN,
@@ -111,9 +103,6 @@ const ModForm = (): JSX.Element => {
               placeholder="Discord user ID"
               inputMode="numeric"
               autoComplete="off"
-              aria-describedby="discord-id-hint"
-              onFocus={() => setIdFocused(true)}
-              onBlur={() => setIdFocused(false)}
             />
           </Form.Item>
 

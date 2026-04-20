@@ -26,5 +26,18 @@ export default defineConfig({
     include: ["src/**/*.{test,spec}.{ts,tsx}"],
     css: true,
     pool: "forks",
+    coverage: {
+      provider: "v8",
+      // Only measure source files — exclude tests, the app entry point,
+      // ambient declarations, and the deployment script.
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/main.tsx",
+        "src/react-app-env.d.ts",
+        "src/setupTests.ts",
+        "src/**/*.test.{ts,tsx}",
+      ],
+      reporter: ["text", "lcov"],
+    },
   },
 });

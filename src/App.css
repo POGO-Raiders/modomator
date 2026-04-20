@@ -1,6 +1,7 @@
 :root {
   --pgr-red: #e93030;
   --mod-form-gap: 10px;
+  --mod-form-radius: 6px;
 }
 
 .form-title {
@@ -44,14 +45,28 @@
   width: 100%;
 }
 
+/* ── Radio grids ────────────────────────────────────────────── */
+
 .mod-form-radio-grid.ant-radio-group {
   display: grid;
   gap: var(--mod-form-gap);
   width: 100%;
 }
 
+/* Shared overrides: rounded pill shape, no inter-button separator */
+.mod-form-radio-grid .ant-radio-button-wrapper {
+  margin-inline-end: 0 !important;
+  text-align: center;
+  border-radius: var(--mod-form-radius);
+}
+
+.mod-form-radio-grid .ant-radio-button-wrapper::before {
+  display: none;
+}
+
+/* Action grid */
 .mod-form-radio-grid--action {
-  /* Mobile-first: keep action choices balanced and avoid orphan wrapped row */
+  /* Mobile-first: two columns avoid an orphan wrapped row */
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -60,6 +75,37 @@
     grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
   }
 }
+
+/* Reason grid */
+.mod-form-radio-grid--reason {
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 420px) {
+  .mod-form-radio-grid--reason {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
+}
+
+.mod-form-radio-grid--reason .ant-radio-button-wrapper {
+  /* Allow label text to wrap — Ant defaults to single-line fixed height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: auto;
+  min-height: 32px;
+  line-height: 1.35;
+  padding-block: 6px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.mod-form-radio-grid--reason .ant-radio-button-wrapper .ant-radio-button-label {
+  width: 100%;
+}
+
+/* ── Fade-in animation (applied to individual Radio.Buttons on mount) ── */
 
 @keyframes mod-form-fade-in {
   from {
@@ -74,51 +120,7 @@
   animation: mod-form-fade-in 0.15s ease-in;
 }
 
-.mod-form-radio-grid--reason {
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 420px) {
-  .mod-form-radio-grid--reason {
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  }
-}
-
-.mod-form-radio-grid .ant-radio-button-wrapper {
-  margin-inline-end: 0 !important;
-  text-align: center;
-}
-
-.mod-form-radio-grid--action .ant-radio-button-wrapper {
-  border-radius: 6px;
-}
-
-.mod-form-radio-grid--action .ant-radio-button-wrapper::before {
-  display: none;
-}
-
-.mod-form-radio-grid--reason .ant-radio-button-wrapper {
-  /* Ant Radio.Button uses a fixed control height + single-line line-height; allow wrapping on narrow layouts */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: auto;
-  min-height: 32px;
-  line-height: 1.35;
-  padding-block: 6px;
-  white-space: normal;
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  border-radius: 6px;
-}
-
-.mod-form-radio-grid--reason .ant-radio-button-wrapper .ant-radio-button-label {
-  width: 100%;
-}
-
-.mod-form-radio-grid--reason .ant-radio-button-wrapper::before {
-  display: none;
-}
+/* ── Output textarea ─────────────────────────────────────────── */
 
 .mod-form-output.ant-input {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
@@ -126,7 +128,9 @@
   line-height: 1.45;
 }
 
-/* Stronger checkbox affordance on dark surfaces */
+/* ── Modifiers checkboxes ────────────────────────────────────── */
+
+/* Larger hit area and clearer affordance on dark surfaces */
 .mod-form-modifiers .ant-checkbox-inner {
   width: 18px;
   height: 18px;
@@ -141,6 +145,8 @@
   padding-inline-start: 10px;
   font-weight: 500;
 }
+
+/* ── Utility ─────────────────────────────────────────────────── */
 
 .centered {
   text-align: center;

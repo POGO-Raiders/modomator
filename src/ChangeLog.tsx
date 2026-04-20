@@ -21,8 +21,8 @@ export const ChangeLog = (): JSX.Element => {
     <div className="form-container">
       <Timeline
         mode="left"
-        items={changes.map((change, i) => ({
-          key: i,
+        items={changes.map((change) => ({
+          key: change.version,
           children: (
             <>
               <h1 style={{ lineHeight: 1, fontWeight: 700, color: token.colorTextHeading }}>
@@ -33,7 +33,7 @@ export const ChangeLog = (): JSX.Element => {
               </p>
               <ul>
                 {change.description.map((d, j) => (
-                  <li key={j}>{d}</li>
+                  <li key={`${change.version}-${j}`}>{d}</li>
                 ))}
               </ul>
             </>

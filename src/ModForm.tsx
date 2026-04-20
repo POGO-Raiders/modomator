@@ -2,6 +2,7 @@ import "./App.css";
 import "antd/dist/reset.css";
 import {
   Card,
+  Divider,
   Radio,
   Button,
   Checkbox,
@@ -86,6 +87,10 @@ const ModForm = (): JSX.Element => {
           layout="vertical"
           size="middle"
         >
+          <Divider orientation="left" style={{ marginTop: 0 }}>
+            Target
+          </Divider>
+
           <Form.Item
             label="Discord ID"
             name="id"
@@ -162,6 +167,8 @@ const ModForm = (): JSX.Element => {
               <InputNumber min={1} max={24} />
             </Form.Item>
           ) : null}
+
+          <Divider orientation="left">Output</Divider>
 
           <Form.Item style={{ marginBottom: 0 }}>
             <Flex align="center" justify="space-between" style={{ marginBottom: 8 }}>

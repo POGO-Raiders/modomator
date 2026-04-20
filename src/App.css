@@ -94,6 +94,8 @@
   line-height: 1.35;
   padding-block: 6px;
   white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
   border-radius: 6px;
 }
 

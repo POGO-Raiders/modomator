@@ -121,13 +121,13 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
 
           {actionSelected && (
-            <Form.Item name="reason" label="Reason" className="mod-form-fade-in">
+            <Form.Item name="reason" label="Reason">
               <Radio.Group
                 className="mod-form-radio-grid mod-form-radio-grid--reason"
                 buttonStyle="solid"
               >
                 {reasonsForAction.map((k) => (
-                  <Radio.Button value={k} key={k}>
+                  <Radio.Button value={k} key={k} className="mod-form-fade-in">
                     {k}
                   </Radio.Button>
                 ))}

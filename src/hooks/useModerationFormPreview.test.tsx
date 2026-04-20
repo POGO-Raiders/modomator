@@ -5,18 +5,13 @@ import { useModerationFormPreview } from "./useModerationFormPreview";
 
 describe("useModerationFormPreview", () => {
   it("maps watched fields into preview state", () => {
-    const useWatchSpy = vi
-      .spyOn(Form, "useWatch")
-      .mockImplementation((name: string) => {
-        const values: Record<string, unknown> = {
-          id: "123456789012345678",
-          action: ModerationAction.Warning,
-          reason: "Harassment",
-          modifiers: [],
-          muteHours: 1,
-        };
-        return values[name];
-      });
+    const useWatchSpy = vi.spyOn(Form, "useWatch").mockReturnValue({
+      id: "123456789012345678",
+      action: ModerationAction.Warning,
+      reason: "Harassment",
+      modifiers: [],
+      muteHours: 1,
+    });
 
     const { result } = renderHook(() =>
       useModerationFormPreview({} as import("antd/es/form").FormInstance)
@@ -29,18 +24,13 @@ describe("useModerationFormPreview", () => {
   });
 
   it("returns disabled when id is invalid", () => {
-    const useWatchSpy = vi
-      .spyOn(Form, "useWatch")
-      .mockImplementation((name: string) => {
-        const values: Record<string, unknown> = {
-          id: "bad-id",
-          action: ModerationAction.Warning,
-          reason: "Harassment",
-          modifiers: [],
-          muteHours: 1,
-        };
-        return values[name];
-      });
+    const useWatchSpy = vi.spyOn(Form, "useWatch").mockReturnValue({
+      id: "bad-id",
+      action: ModerationAction.Warning,
+      reason: "Harassment",
+      modifiers: [],
+      muteHours: 1,
+    });
 
     const { result } = renderHook(() =>
       useModerationFormPreview({} as import("antd/es/form").FormInstance)

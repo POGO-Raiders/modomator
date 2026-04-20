@@ -1,4 +1,3 @@
-import { createRequire } from "module";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 import FtpDeploy from "ftp-deploy";
@@ -8,8 +7,8 @@ const __dirname = dirname(__filename);
 
 // Load local env file if dotenv is available (CI provides env vars directly).
 try {
-  const require = createRequire(import.meta.url);
-  require("dotenv").config({ path: ".env.production.local" });
+  const dotenv = await import("dotenv");
+  dotenv.config({ path: ".env.production.local" });
 } catch {
   // Ignore missing dotenv module in CI or minimal environments.
 }

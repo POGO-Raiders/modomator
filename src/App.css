@@ -62,7 +62,13 @@
 }
 
 .mod-form-radio-grid--reason {
-  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 420px) {
+  .mod-form-radio-grid--reason {
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  }
 }
 
 .mod-form-radio-grid .ant-radio-button-wrapper {

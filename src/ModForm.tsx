@@ -2,7 +2,6 @@ import "./App.css";
 import "antd/dist/reset.css";
 import {
   Card,
-  Divider,
   Radio,
   Button,
   Checkbox,
@@ -13,7 +12,7 @@ import {
   Flex,
   Typography,
 } from "antd";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
 import { copyModerationToClipboard } from "./moderation/moderationClipboard";
 import {
@@ -31,6 +30,7 @@ const ModForm = (): JSX.Element => {
   const [searchParams] = useSearchParams();
   const clearForm = useModFormClear(form, searchParams);
   const formContainerRef = useRef<HTMLDivElement>(null);
+  const [idFocused, setIdFocused] = useState(false);
 
   const action = Form.useWatch("action", form);
 
@@ -87,19 +87,17 @@ const ModForm = (): JSX.Element => {
           layout="vertical"
           size="middle"
         >
-          <Divider orientation="left" style={{ marginTop: 0 }}>
-            Target
-          </Divider>
-
           <Form.Item
             label="Discord ID"
             name="id"
             validateTrigger={["onChange", "onBlur"]}
             hasFeedback
             extra={
-              <span id="discord-id-hint" style={{ fontSize: 12 }}>
-                18–19 digit Discord user ID
-              </span>
+              idFocused ? (
+                <span id="discord-id-hint" style={{ fontSize: 12 }}>
+                  18–19 digit Discord user ID
+                </span>
+              ) : null
             }
             rules={[
               {
@@ -114,6 +112,8 @@ const ModForm = (): JSX.Element => {
               inputMode="numeric"
               autoComplete="off"
               aria-describedby="discord-id-hint"
+              onFocus={() => setIdFocused(true)}
+              onBlur={() => setIdFocused(false)}
             />
           </Form.Item>
 
@@ -133,18 +133,20 @@ const ModForm = (): JSX.Element => {
             </Radio.Group>
           </Form.Item>
 
-          <Form.Item name="reason" label={actionSelected ? "Reason" : undefined}>
-            <Radio.Group
-              className="mod-form-radio-grid mod-form-radio-grid--reason"
-              buttonStyle="solid"
-            >
-              {reasonsForAction.map((k) => (
-                <Radio.Button value={k} key={k}>
-                  {k}
-                </Radio.Button>
-              ))}
-            </Radio.Group>
-          </Form.Item>
+          {actionSelected && (
+            <Form.Item name="reason" label="Reason">
+              <Radio.Group
+                className="mod-form-radio-grid mod-form-radio-grid--reason"
+                buttonStyle="solid"
+              >
+                {reasonsForAction.map((k) => (
+                  <Radio.Button value={k} key={k}>
+                    {k}
+                  </Radio.Button>
+                ))}
+              </Radio.Group>
+            </Form.Item>
+          )}
 
           {action === ModerationAction.Warning || action === ModerationAction.Mute ? (
             <Form.Item name="modifiers" label="Options" className="mod-form-modifiers">
@@ -167,8 +169,6 @@ const ModForm = (): JSX.Element => {
               <InputNumber min={1} max={24} />
             </Form.Item>
           ) : null}
-
-          <Divider orientation="left">Output</Divider>
 
           <Form.Item style={{ marginBottom: 0 }}>
             <Flex align="center" justify="space-between" style={{ marginBottom: 8 }}>

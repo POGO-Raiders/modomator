@@ -81,6 +81,27 @@ test("prefills id from query string and shows warning preview when action and re
   });
 });
 
+test("Discord ID field shows error on invalid input and clears on valid input", async () => {
+  const user = userEvent.setup();
+  renderModForm("");
+
+  const idInput = screen.getByLabelText(/discord id/i);
+  await user.type(idInput, "abc");
+  await user.tab();
+
+  await waitFor(() => {
+    expect(screen.getByText(/not a valid discord id/i)).toBeInTheDocument();
+  });
+
+  await user.clear(idInput);
+  await user.type(idInput, "123456789012345678");
+  await user.tab();
+
+  await waitFor(() => {
+    expect(screen.queryByText(/not a valid discord id/i)).not.toBeInTheDocument();
+  });
+});
+
 test("Clear button is a real button element", () => {
   renderModForm("");
   expect(screen.getByRole("button", { name: /^clear$/i })).toBeInTheDocument();

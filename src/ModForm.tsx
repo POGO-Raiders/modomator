@@ -58,6 +58,13 @@ const ModForm = (): JSX.Element => {
           <Form.Item
             label="Discord ID"
             name="id"
+            validateTrigger={["onChange", "onBlur"]}
+            hasFeedback
+            extra={
+              <span id="discord-id-hint" style={{ fontSize: 12 }}>
+                18–19 digit Discord user ID
+              </span>
+            }
             rules={[
               {
                 pattern: DISCORD_ID_PATTERN,
@@ -70,6 +77,7 @@ const ModForm = (): JSX.Element => {
               placeholder="Discord user ID"
               inputMode="numeric"
               autoComplete="off"
+              aria-describedby="discord-id-hint"
             />
           </Form.Item>
 

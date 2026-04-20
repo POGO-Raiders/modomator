@@ -73,7 +73,9 @@ test("prefills id from query string and shows warning preview when action and re
 
   await selectWarningHarassment();
 
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toMatch(/^\?warn /);
   });
@@ -85,16 +87,16 @@ test("Clear resets choices but keeps Discord ID from the current URL", async () 
 
   await selectWarningHarassment();
 
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
-    expect((document.getElementById("modform_textarea") as HTMLTextAreaElement).value).toMatch(
-      /^\?warn /
-    );
+    expect(preview.value).toMatch(/^\?warn /);
   });
 
   await user.click(screen.getByText(/^Clear$/));
 
   expect(screen.getByLabelText(/discord id/i)).toHaveValue(validId);
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toBe("");
   });
@@ -105,7 +107,9 @@ test("copies preview to clipboard and notifies", async () => {
 
   await selectWarningHarassment();
 
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toMatch(/^\?warn /);
   });
@@ -132,7 +136,9 @@ test("mute action shows hours field and mute text in preview", async () => {
 
   expect(screen.getByLabelText(/#\s*of\s*hours/i)).toBeInTheDocument();
 
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toMatch(/^\?mute /);
     expect(preview.value).toMatch(/1h/);
@@ -154,9 +160,13 @@ test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
   await selectWarningHarassment();
 
   await waitFor(() => {
-    expect((document.getElementById("modform_textarea") as HTMLTextAreaElement).value).toMatch(
-      /^\?warn /
-    );
+    expect(
+      (
+        screen.getByRole("textbox", {
+          name: /moderation preview/i,
+        }) as HTMLTextAreaElement
+      ).value
+    ).toMatch(/^\?warn /);
   });
 
   fireEvent.click(getCopyButton(container));
@@ -181,9 +191,13 @@ test("copy logs error when clipboard helper rejects", async () => {
   await selectWarningHarassment();
 
   await waitFor(() => {
-    expect((document.getElementById("modform_textarea") as HTMLTextAreaElement).value).toMatch(
-      /^\?warn /
-    );
+    expect(
+      (
+        screen.getByRole("textbox", {
+          name: /moderation preview/i,
+        }) as HTMLTextAreaElement
+      ).value
+    ).toMatch(/^\?warn /);
   });
 
   fireEvent.click(getCopyButton(container));

@@ -38,12 +38,6 @@ const ModForm = (): JSX.Element => {
     form.setFieldsValue({ id: searchParams.get("id") ?? "" });
   }, [searchParams, form]);
 
-  useEffect(() => {
-    form.setFieldsValue({
-      textarea: moderationOutput?.moderationString ?? null,
-    });
-  }, [moderationOutput, form]);
-
   const actionSelected = action !== undefined && action !== null;
   const reasonsForAction =
     action != null ? moderationReasonsForAction(action as ModerationAction) : [];
@@ -160,14 +154,14 @@ const ModForm = (): JSX.Element => {
                 Copy
               </Button>
             </Flex>
-            <Form.Item name="textarea" noStyle>
-              <Input.TextArea
-                autoSize={{ minRows: 3, maxRows: 12 }}
-                readOnly={true}
-                className="mod-form-output"
-                placeholder="Select action and reason to generate text"
-              />
-            </Form.Item>
+            <Input.TextArea
+              value={moderationOutput?.moderationString ?? ""}
+              aria-label="Moderation preview"
+              autoSize={{ minRows: 3, maxRows: 12 }}
+              readOnly={true}
+              className="mod-form-output"
+              placeholder="Select action and reason to generate text"
+            />
           </Form.Item>
         </Form>
       </Card>

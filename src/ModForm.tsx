@@ -166,9 +166,9 @@ const ModForm = (): JSX.Element => {
         </Form>
       </Card>
       <Flex justify="center" align="center" style={{ marginTop: 10 }}>
-        <Radio.Button type="link" onClick={clearForm}>
+        <Button type="default" onClick={clearForm}>
           Clear
-        </Radio.Button>
+        </Button>
       </Flex>
     </div>
   );

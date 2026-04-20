@@ -81,6 +81,11 @@ test("prefills id from query string and shows warning preview when action and re
   });
 });
 
+test("Clear button is a real button element", () => {
+  renderModForm("");
+  expect(screen.getByRole("button", { name: /^clear$/i })).toBeInTheDocument();
+});
+
 test("Clear resets choices but keeps Discord ID from the current URL", async () => {
   const user = userEvent.setup();
   renderModForm(`?id=${validId}`);

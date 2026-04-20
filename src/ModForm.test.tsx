@@ -81,6 +81,35 @@ test("prefills id from query string and shows warning preview when action and re
   });
 });
 
+test("Cmd/Ctrl+Enter keyboard shortcut triggers copy when clipboard is enabled", async () => {
+  renderModForm(`?id=${validId}`);
+
+  await selectWarningHarassment();
+
+  await waitFor(() => {
+    expect(
+      (
+        screen.getByRole("textbox", {
+          name: /moderation preview/i,
+        }) as HTMLTextAreaElement
+      ).value
+    ).toMatch(/^\?warn /);
+  });
+
+  fireEvent.keyDown(document.querySelector(".form-container")!, {
+    key: "Enter",
+    ctrlKey: true,
+  });
+
+  await waitFor(() => {
+    expect(moderationClipboard.copyModerationToClipboard).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: expect.stringMatching(/^\?warn /),
+      })
+    );
+  });
+});
+
 test("Discord ID field shows error on invalid input and clears on valid input", async () => {
   const user = userEvent.setup();
   renderModForm("");

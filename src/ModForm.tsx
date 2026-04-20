@@ -12,7 +12,7 @@ import {
   Flex,
   Typography,
 } from "antd";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
 import { copyModerationToClipboard } from "./moderation/moderationClipboard";
 import {
@@ -29,6 +29,7 @@ const ModForm = (): JSX.Element => {
   const [form] = Form.useForm();
   const [searchParams] = useSearchParams();
   const clearForm = useModFormClear(form, searchParams);
+  const formContainerRef = useRef<HTMLDivElement>(null);
 
   const action = Form.useWatch("action", form);
 
@@ -38,12 +39,42 @@ const ModForm = (): JSX.Element => {
     form.setFieldsValue({ id: searchParams.get("id") ?? "" });
   }, [searchParams, form]);
 
+  const copyCurrentModeration = useCallback(() => {
+    const text = moderationOutput?.moderationString;
+    if (!text) return;
+    copyModerationToClipboard({
+      text,
+      actionLabel: action?.toString() ?? "UNKNOWN",
+      notify: (message, durationSeconds = 2) => {
+        notification.open({ message, duration: durationSeconds });
+      },
+      shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
+      discordChannelURL: moderationOutput.discordChannelURL,
+    }).catch((err: unknown) => {
+      console.error("Copy to clipboard failed", err);
+      notification.error({ message: "Could not copy text on this device." });
+    });
+  }, [moderationOutput, action]);
+
+  useEffect(() => {
+    const container = formContainerRef.current;
+    if (!container) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && clipboardEnabled) {
+        e.preventDefault();
+        copyCurrentModeration();
+      }
+    };
+    container.addEventListener("keydown", onKeyDown);
+    return () => container.removeEventListener("keydown", onKeyDown);
+  }, [clipboardEnabled, copyCurrentModeration]);
+
   const actionSelected = action !== undefined && action !== null;
   const reasonsForAction =
     action != null ? moderationReasonsForAction(action as ModerationAction) : [];
 
   return (
-    <div className="form-container">
+    <div className="form-container" ref={formContainerRef}>
       <Card className="mod-form-card" variant="borderless">
         <Form
           name="modform"
@@ -142,22 +173,7 @@ const ModForm = (): JSX.Element => {
                 size="middle"
                 type="default"
                 disabled={!clipboardEnabled}
-                onClick={() => {
-                  const text = moderationOutput?.moderationString;
-                  if (!text) return;
-                  copyModerationToClipboard({
-                    text,
-                    actionLabel: action?.toString() ?? "UNKNOWN",
-                    notify: (message, durationSeconds = 2) => {
-                      notification.open({ message, duration: durationSeconds });
-                    },
-                    shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
-                    discordChannelURL: moderationOutput.discordChannelURL,
-                  }).catch((err: unknown) => {
-                    console.error("Copy to clipboard failed", err);
-                    notification.error({ message: "Could not copy text on this device." });
-                  });
-                }}
+                onClick={copyCurrentModeration}
               >
                 Copy
               </Button>

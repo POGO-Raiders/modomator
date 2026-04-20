@@ -235,6 +235,33 @@ test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
   });
 });
 
+test("notify callback opens a notification with the action label", async () => {
+  vi.spyOn(moderationClipboard, "copyModerationToClipboard").mockImplementationOnce(
+    async ({ notify }) => {
+      notify("Warning copied to clipboard.");
+    }
+  );
+
+  const { container } = renderModForm(`?id=${validId}`);
+  await selectWarningHarassment();
+
+  await waitFor(() => {
+    expect(
+      (
+        screen.getByRole("textbox", { name: /moderation preview/i }) as HTMLTextAreaElement
+      ).value
+    ).toMatch(/^\?warn /);
+  });
+
+  fireEvent.click(getCopyButton(container));
+
+  await waitFor(() => {
+    expect(notification.open).toHaveBeenCalledWith(
+      expect.objectContaining({ message: "Warning copied to clipboard.", duration: 2 })
+    );
+  });
+});
+
 test("copy logs error when clipboard helper rejects", async () => {
   const errorSpy = vi.spyOn(console, "error").mockImplementation(() => void 0);
   vi.spyOn(moderationClipboard, "copyModerationToClipboard").mockRejectedValueOnce(

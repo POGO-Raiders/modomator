@@ -80,4 +80,21 @@ describe("tryBuildModeration", () => {
     });
     expect(out?.moderationString).toContain("12h");
   });
+
+  it("enforces Discord id length boundaries", () => {
+    const base = {
+      action: ModerationAction.Warning as ModerationAction,
+      reason: "Harassment" as const,
+      modifiers: [],
+      muteHours: 1,
+    };
+    // 17 digits — rejected
+    expect(tryBuildModeration({ ...base, id: "12345678901234567" })).toBeNull();
+    // 18 digits — accepted
+    expect(tryBuildModeration({ ...base, id: "123456789012345678" })).not.toBeNull();
+    // 19 digits — accepted
+    expect(tryBuildModeration({ ...base, id: "1234567890123456789" })).not.toBeNull();
+    // 20 digits — rejected
+    expect(tryBuildModeration({ ...base, id: "12345678901234567890" })).toBeNull();
+  });
 });

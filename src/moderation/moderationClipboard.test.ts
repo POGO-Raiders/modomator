@@ -66,4 +66,36 @@ describe("moderationClipboard", () => {
 
     openSpy.mockRestore();
   });
+
+  it("does not open URL when shouldOpenDiscord is false", async () => {
+    const notify = vi.fn();
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+
+    await copyModerationToClipboard({
+      text: "?warn 1 test",
+      actionLabel: "Warning",
+      notify,
+      shouldOpenDiscord: false,
+      discordChannelURL: "discord://channel",
+    });
+
+    expect(openSpy).not.toHaveBeenCalled();
+    openSpy.mockRestore();
+  });
+
+  it("does not open URL when discordChannelURL is missing", async () => {
+    const notify = vi.fn();
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+
+    await copyModerationToClipboard({
+      text: "?warn 1 test",
+      actionLabel: "Warning",
+      notify,
+      shouldOpenDiscord: true,
+      discordChannelURL: undefined,
+    });
+
+    expect(openSpy).not.toHaveBeenCalled();
+    openSpy.mockRestore();
+  });
 });

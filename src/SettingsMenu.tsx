@@ -17,7 +17,7 @@ const SettingsMenu = ({ darkMode, onDarkModeChange }: SettingsMenuProps): JSX.El
       <Row align="middle" gutter={[10, 0]}>
         <Col>Dark Mode</Col>
         <Col>
-          <Switch checked={darkMode} onChange={onDarkModeChange} />
+          <Switch checked={darkMode} onChange={onDarkModeChange} aria-label="Dark Mode" />
         </Col>
       </Row>
       <Divider style={{ margin: "10px 0" }} />

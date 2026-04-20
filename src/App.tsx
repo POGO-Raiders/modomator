@@ -51,6 +51,7 @@ function AppThemedShell({
             <Button
               shape="circle"
               icon={<SettingOutlined />}
+              aria-label="Settings"
               style={{ position: "absolute", right: 18, top: 18 }}
             />
           </Popover>

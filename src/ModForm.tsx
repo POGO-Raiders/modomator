@@ -9,7 +9,6 @@ import {
   Input,
   InputNumber,
   notification,
-  Flex,
 } from "antd";
 import React, { useCallback, useEffect, useRef } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
@@ -122,7 +121,7 @@ const ModForm = (): JSX.Element => {
           </Form.Item>
 
           {actionSelected && (
-            <Form.Item name="reason" label="Reason">
+            <Form.Item name="reason" label="Reason" className="mod-form-fade-in">
               <Radio.Group
                 className="mod-form-radio-grid mod-form-radio-grid--reason"
                 buttonStyle="solid"
@@ -180,13 +179,16 @@ const ModForm = (): JSX.Element => {
           >
             Copy to clipboard
           </Button>
+          <Button
+            type="text"
+            block
+            onClick={clearForm}
+            style={{ marginTop: 6, color: "inherit", opacity: 0.55 }}
+          >
+            Clear
+          </Button>
         </Form>
       </Card>
-      <Flex justify="center" align="center" style={{ marginTop: 10 }}>
-        <Button type="default" onClick={clearForm}>
-          Clear
-        </Button>
-      </Flex>
     </div>
   );
 };

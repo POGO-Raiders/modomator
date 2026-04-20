@@ -61,6 +61,19 @@
   }
 }
 
+@keyframes mod-form-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mod-form-fade-in {
+  animation: mod-form-fade-in 0.15s ease-in;
+}
+
 .mod-form-radio-grid--reason {
   grid-template-columns: 1fr;
 }

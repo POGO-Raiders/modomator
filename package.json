@@ -24,8 +24,8 @@
     "test": "vitest",
     "test:ci": "vitest run",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build & node DeployToFtp",
-    "ftpDeploy": "node DeployToFtp"
+    "deploy": "gh-pages -d build & node DeployToFtp.mjs",
+    "ftpDeploy": "node DeployToFtp.mjs"
   },
   "browserslist": {
     "production": [

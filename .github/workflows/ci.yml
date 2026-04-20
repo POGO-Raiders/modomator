@@ -39,4 +39,4 @@ jobs:
           POGORAIDERS_FTP_HOST: ${{ secrets.POGORAIDERS_FTP_HOST }}
           POGORAIDERS_FTP_PORT: ${{ secrets.POGORAIDERS_FTP_PORT }}
           POGORAIDERS_FTP_REMOTE_ROOT: ${{ secrets.POGORAIDERS_FTP_REMOTE_ROOT }}
-        run: node DeployToFtp.js
+        run: node DeployToFtp.mjs

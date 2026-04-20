@@ -67,7 +67,7 @@ const ModForm = (): JSX.Element => {
     return () => container.removeEventListener("keydown", onKeyDown);
   }, [clipboardEnabled, copyCurrentModeration]);
 
-  const actionSelected = action !== undefined && action !== null;
+  const actionSelected = action != null;
   const reasonsForAction =
     action != null ? moderationReasonsForAction(action as ModerationAction) : [];
 

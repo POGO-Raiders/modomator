@@ -34,41 +34,34 @@ function AppThemedShell({
   }, [token.colorBgLayout]);
 
   return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        backgroundColor: token.colorBgLayout,
-      }}
-    >
-      <Layout>
-        <Header style={{ background: "none" }}>
-          <h1 className="centered form-title">Modomator</h1>
-          <Popover
-            content={<SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />}
-            trigger="click"
-            placement="bottomRight"
-          >
-            <Button
-              shape="circle"
-              icon={<SettingOutlined />}
-              aria-label="Settings"
-              style={{ position: "absolute", right: 18, top: 18 }}
-            />
-          </Popover>
-        </Header>
+    <Layout style={{ minHeight: "100dvh" }}>
+      <Header style={{ background: "none" }}>
+        <h1 className="centered form-title">Modomator</h1>
+        <Popover
+          content={<SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />}
+          trigger="click"
+          placement="bottomRight"
+        >
+          <Button
+            shape="circle"
+            icon={<SettingOutlined />}
+            aria-label="Settings"
+            style={{ position: "absolute", right: 18, top: 18 }}
+          />
+        </Popover>
+      </Header>
 
-        <Routes>
-          <Route path="/" element={<ModForm />} />
-          <Route path="/changelog" element={<ChangeLog />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<ModForm />} />
+        <Route path="/changelog" element={<ChangeLog />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
 
-        <Footer style={{ textAlign: "center", background: "none" }}>
-          <img width={32} src={logo} alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
-          Pokémon GO Raiders
-        </Footer>
-      </Layout>
-    </div>
+      <Footer style={{ textAlign: "center", background: "none" }}>
+        <img width={32} src={logo} alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
+        Pokémon GO Raiders
+      </Footer>
+    </Layout>
   );
 }
 

@@ -5,7 +5,7 @@ const NotFound = (): JSX.Element => {
   return (
     <div>
       <img src={heatran} alt="Heatran" className="centered-image" />
-      <h1 className="centered">404: Page not found</h1>
+      <h2 className="centered">404: Page not found</h2>
     </div>
   );
 };

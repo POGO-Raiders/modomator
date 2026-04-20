@@ -25,9 +25,9 @@ export const ChangeLog = (): JSX.Element => {
           key: change.version,
           children: (
             <>
-              <h1 style={{ lineHeight: 1, fontWeight: 700, color: token.colorTextHeading }}>
+              <h2 style={{ lineHeight: 1, fontWeight: 700, color: token.colorTextHeading }}>
                 {change.version}
-              </h1>
+              </h2>
               <p>
                 <code style={dateCodeStyle(token)}>{change.date}</code>
               </p>
@@ -128,4 +128,4 @@ const changes: Change[] = [
   },
 ];
 
-export const latestVersion = changes[0]?.version;
+export const latestVersion = changes[0].version;

@@ -58,12 +58,7 @@ function AppThemedShell({
       </Routes>
 
       <Footer className="centered">
-        <img
-          className="app-footer-logo"
-          width={32}
-          src={logo}
-          alt="Pokémon Go Raiders logo"
-        />
+        <img className="app-footer-logo" width={32} src={logo} alt="Pokémon Go Raiders logo" />
         Pokémon GO Raiders
       </Footer>
     </Layout>

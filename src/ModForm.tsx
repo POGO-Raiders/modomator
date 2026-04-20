@@ -10,7 +10,6 @@ import {
   InputNumber,
   notification,
   Flex,
-  Typography,
 } from "antd";
 import React, { useCallback, useEffect, useRef } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
@@ -159,21 +158,7 @@ const ModForm = (): JSX.Element => {
             </Form.Item>
           ) : null}
 
-          <Form.Item style={{ marginBottom: 0 }}>
-            <Flex align="center" justify="space-between" style={{ marginBottom: 8 }}>
-              <Typography.Text strong>Moderation text</Typography.Text>
-              <Button
-                htmlType="button"
-                aria-label="Copy moderation text"
-                icon={<CopyOutlined />}
-                size="middle"
-                type="default"
-                disabled={!clipboardEnabled}
-                onClick={copyCurrentModeration}
-              >
-                Copy
-              </Button>
-            </Flex>
+          <Form.Item style={{ marginBottom: 8 }}>
             <Input.TextArea
               value={moderationOutput?.moderationString ?? ""}
               aria-label="Moderation preview"
@@ -183,6 +168,18 @@ const ModForm = (): JSX.Element => {
               placeholder="Select action and reason to generate text"
             />
           </Form.Item>
+          <Button
+            htmlType="button"
+            aria-label="Copy moderation text"
+            icon={<CopyOutlined />}
+            size="large"
+            type="primary"
+            block
+            disabled={!clipboardEnabled}
+            onClick={copyCurrentModeration}
+          >
+            Copy to clipboard
+          </Button>
         </Form>
       </Card>
       <Flex justify="center" align="center" style={{ marginTop: 10 }}>

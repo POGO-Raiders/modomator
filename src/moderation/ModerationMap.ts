@@ -11,20 +11,14 @@ const ModerationMap = {
     categories: [ModerationAction.Warning],
   },
   [REASON_BAN_EVASION]: {
-    description:
-      "Ban Evasion. You may not use an alternate account to avoid a ban issued on PGR.",
+    description: "Ban Evasion. You may not use an alternate account to avoid a ban issued on PGR.",
     hosting: false,
     categories: [ModerationAction.Ban],
   },
   Discrimination: {
-    description:
-      "Discrimination is not allowed on this server and likely violates Discord ToS.",
+    description: "Discrimination is not allowed on this server and likely violates Discord ToS.",
     hosting: false,
-    categories: [
-      ModerationAction.Ban,
-      ModerationAction.Mute,
-      ModerationAction.Warning,
-    ],
+    categories: [ModerationAction.Ban, ModerationAction.Mute, ModerationAction.Warning],
   },
   "Failure to commit": {
     description:
@@ -51,8 +45,7 @@ const ModerationMap = {
     categories: [ModerationAction.Mute, ModerationAction.Warning],
   },
   Harassment: {
-    description:
-      "Harassment is not allowed on this server and likely violates Discord ToS.",
+    description: "Harassment is not allowed on this server and likely violates Discord ToS.",
     hosting: false,
     categories: [ModerationAction.Warning],
   },
@@ -107,21 +100,12 @@ const ModerationMap = {
     description:
       "Posting NSFW content is not allowed on this server and likely violates Discord ToS.",
     hosting: false,
-    categories: [
-      ModerationAction.Mute,
-      ModerationAction.Warning,
-      ModerationAction.Ban,
-    ],
+    categories: [ModerationAction.Mute, ModerationAction.Warning, ModerationAction.Ban],
   },
   Promotion: {
-    description:
-      "You may not promote unaffiliated links, resources, or servers on PGR.",
+    description: "You may not promote unaffiliated links, resources, or servers on PGR.",
     hosting: false,
-    categories: [
-      ModerationAction.Mute,
-      ModerationAction.Warning,
-      ModerationAction.Ban,
-    ],
+    categories: [ModerationAction.Mute, ModerationAction.Warning, ModerationAction.Ban],
   },
   "Scam links (first offense)": {
     description:
@@ -138,11 +122,7 @@ const ModerationMap = {
   Spamming: {
     description: "Spamming and disrupting the chat.",
     hosting: false,
-    categories: [
-      ModerationAction.Mute,
-      ModerationAction.Warning,
-      ModerationAction.Ban,
-    ],
+    categories: [ModerationAction.Mute, ModerationAction.Warning, ModerationAction.Ban],
   },
   Speedhosting: {
     description:
@@ -151,8 +131,7 @@ const ModerationMap = {
     categories: [ModerationAction.Warning],
   },
   Spoofing: {
-    description:
-      "Spoofing is not tolerated on this server and violates Niantic's ToS.",
+    description: "Spoofing is not tolerated on this server and violates Niantic's ToS.",
     hosting: false,
     categories: [ModerationAction.Ban],
   },

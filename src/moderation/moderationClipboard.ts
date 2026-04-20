@@ -2,11 +2,7 @@
  * Clipboard write used by ModForm; separated for tests and reuse.
  */
 export function copyTextToClipboard(text: string): Promise<void> {
-  if (
-    typeof navigator !== "undefined" &&
-    navigator.clipboard &&
-    navigator.clipboard.writeText
-  ) {
+  if (typeof navigator !== "undefined" && navigator.clipboard && navigator.clipboard.writeText) {
     return navigator.clipboard.writeText(text);
   }
 

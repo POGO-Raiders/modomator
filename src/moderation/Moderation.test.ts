@@ -1,14 +1,8 @@
-import {
-  ModerationFactory,
-  ModerationAction,
-  type ModFormData,
-} from "./Moderation";
+import { ModerationFactory, ModerationAction, type ModFormData } from "./Moderation";
 import { REASON_BAN_EVASION } from "./ModerationMap";
 
-const MODERATION_CHANNEL =
-  "discord://discord.com/channels/736744916012630046/738522768689332225";
-const BAN_APPEALS_CHANNEL =
-  "discord://discord.com/channels/736744916012630046/778335478096724018";
+const MODERATION_CHANNEL = "discord://discord.com/channels/736744916012630046/738522768689332225";
+const BAN_APPEALS_CHANNEL = "discord://discord.com/channels/736744916012630046/778335478096724018";
 
 const SAMPLE_ID = "123456789012345678";
 

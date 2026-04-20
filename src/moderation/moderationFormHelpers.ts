@@ -4,9 +4,7 @@ import type { ModerationAction } from "./moderationAction";
 const REASON_KEYS = Object.keys(ModerationMap) as ModerationReason[];
 
 /** Reasons allowed for a given moderation action (same filter as ModForm). */
-export function moderationReasonsForAction(
-  action: ModerationAction
-): ModerationReason[] {
+export function moderationReasonsForAction(action: ModerationAction): ModerationReason[] {
   return REASON_KEYS.filter((m) => ModerationMap[m].categories.includes(action));
 }
 

@@ -25,7 +25,9 @@ export const ChangeLog = (): JSX.Element => {
           key: i,
           children: (
             <>
-              <h1 style={{ lineHeight: 1, fontWeight: 700, color: token.colorTextHeading }}>{change.version}</h1>
+              <h1 style={{ lineHeight: 1, fontWeight: 700, color: token.colorTextHeading }}>
+                {change.version}
+              </h1>
               <p>
                 <code style={dateCodeStyle(token)}>{change.date}</code>
               </p>

@@ -1,7 +1,4 @@
-import {
-  copyModerationToClipboard,
-  copyTextToClipboard,
-} from "./moderationClipboard";
+import { copyModerationToClipboard, copyTextToClipboard } from "./moderationClipboard";
 
 describe("moderationClipboard", () => {
   beforeEach(() => {

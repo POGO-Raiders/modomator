@@ -32,9 +32,7 @@ function clickRadioValue(value: string) {
 async function selectWarningHarassment() {
   clickRadioValue("Warning");
   await waitFor(() =>
-    expect(
-      document.querySelector(`input.ant-radio-button-input[value="Harassment"]`)
-    ).toBeTruthy()
+    expect(document.querySelector(`input.ant-radio-button-input[value="Harassment"]`)).toBeTruthy()
   );
   clickRadioValue("Harassment");
 }
@@ -60,9 +58,7 @@ function getCopyButton(container: HTMLElement): HTMLButtonElement {
 
 beforeEach(() => {
   vi.spyOn(notification, "open").mockImplementation(() => void 0);
-  vi
-    .spyOn(moderationClipboard, "copyModerationToClipboard")
-    .mockResolvedValue(undefined);
+  vi.spyOn(moderationClipboard, "copyModerationToClipboard").mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -90,9 +86,9 @@ test("Clear resets choices but keeps Discord ID from the current URL", async () 
   await selectWarningHarassment();
 
   await waitFor(() => {
-    expect(
-      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
-    ).toMatch(/^\?warn /);
+    expect((document.getElementById("modform_textarea") as HTMLTextAreaElement).value).toMatch(
+      /^\?warn /
+    );
   });
 
   await user.click(screen.getByText(/^Clear$/));
@@ -158,9 +154,9 @@ test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
   await selectWarningHarassment();
 
   await waitFor(() => {
-    expect(
-      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
-    ).toMatch(/^\?warn /);
+    expect((document.getElementById("modform_textarea") as HTMLTextAreaElement).value).toMatch(
+      /^\?warn /
+    );
   });
 
   fireEvent.click(getCopyButton(container));
@@ -176,27 +172,24 @@ test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
 
 test("copy logs error when clipboard helper rejects", async () => {
   const errorSpy = vi.spyOn(console, "error").mockImplementation(() => void 0);
-  vi
-    .spyOn(moderationClipboard, "copyModerationToClipboard")
-    .mockRejectedValueOnce(new Error("clipboard failed"));
+  vi.spyOn(moderationClipboard, "copyModerationToClipboard").mockRejectedValueOnce(
+    new Error("clipboard failed")
+  );
 
   const { container } = renderModForm(`?id=${validId}`);
 
   await selectWarningHarassment();
 
   await waitFor(() => {
-    expect(
-      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
-    ).toMatch(/^\?warn /);
+    expect((document.getElementById("modform_textarea") as HTMLTextAreaElement).value).toMatch(
+      /^\?warn /
+    );
   });
 
   fireEvent.click(getCopyButton(container));
 
   await waitFor(() => {
-    expect(errorSpy).toHaveBeenCalledWith(
-      "Copy to clipboard failed",
-      expect.any(Error)
-    );
+    expect(errorSpy).toHaveBeenCalledWith("Copy to clipboard failed", expect.any(Error));
   });
 
   errorSpy.mockRestore();

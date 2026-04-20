@@ -7,7 +7,7 @@ import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import NotFound from "./NotFound";
 import { ChangeLog } from "./ChangeLog";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 import logo from "./assets/pgricon64.png";
 import { getAntdTheme } from "./theme/antTheme";
@@ -73,8 +73,7 @@ function AppThemedShell({
 }
 
 const App = (): JSX.Element => {
-  const [darkMode, setDarkMode] = useLocalStorage("darkMode", true);
-  const isDark = darkMode !== false;
+  const [isDark, setDarkMode] = useLocalStorage("darkMode", true);
 
   return (
     <Router basename="/modomator">

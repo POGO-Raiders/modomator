@@ -1,4 +1,4 @@
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Col, Divider, Row, Switch } from "antd";
 import React from "react";
 import { Link } from "react-router-dom";

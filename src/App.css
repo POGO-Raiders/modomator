@@ -146,6 +146,40 @@
   font-weight: 500;
 }
 
+/* ── App shell ───────────────────────────────────────────────── */
+
+.app-layout {
+  min-height: 100dvh;
+}
+
+/* Positioned container for the absolute-positioned settings button */
+.app-header.ant-layout-header {
+  position: relative;
+}
+
+.app-settings-btn {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+}
+
+.app-footer-logo {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ── ModForm action bar ──────────────────────────────────────── */
+
+/* Tighten the gap between the preview textarea and the copy button */
+.mod-form-output-item.ant-form-item {
+  margin-bottom: 8px;
+}
+
+.mod-form-clear-btn {
+  margin-top: 6px;
+  opacity: 0.55;
+}
+
 /* ── Utility ─────────────────────────────────────────────────── */
 
 .centered {

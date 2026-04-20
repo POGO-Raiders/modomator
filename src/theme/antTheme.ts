@@ -23,6 +23,12 @@ export function getAntdTheme(isDark: boolean): ThemeConfig {
       token: {
         colorPrimary: PGR_RED,
       },
+      components: {
+        Layout: {
+          headerBg: "transparent",
+          footerBg: "transparent",
+        },
+      },
     };
   }
 

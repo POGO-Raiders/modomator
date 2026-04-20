@@ -157,7 +157,7 @@ const ModForm = (): JSX.Element => {
             </Form.Item>
           ) : null}
 
-          <Form.Item style={{ marginBottom: 8 }}>
+          <Form.Item className="mod-form-output-item">
             <Input.TextArea
               value={moderationOutput?.moderationString ?? ""}
               aria-label="Moderation preview"
@@ -179,12 +179,7 @@ const ModForm = (): JSX.Element => {
           >
             Copy to clipboard
           </Button>
-          <Button
-            type="text"
-            block
-            onClick={clearForm}
-            style={{ marginTop: 6, color: "inherit", opacity: 0.55 }}
-          >
+          <Button className="mod-form-clear-btn" type="text" block onClick={clearForm}>
             Clear
           </Button>
         </Form>

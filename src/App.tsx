@@ -34,8 +34,8 @@ function AppThemedShell({
   }, [token.colorBgLayout]);
 
   return (
-    <Layout style={{ minHeight: "100dvh" }}>
-      <Header style={{ background: "none" }}>
+    <Layout className="app-layout">
+      <Header className="app-header">
         <h1 className="centered form-title">Modomator</h1>
         <Popover
           content={<SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />}
@@ -43,10 +43,10 @@ function AppThemedShell({
           placement="bottomRight"
         >
           <Button
+            className="app-settings-btn"
             shape="circle"
             icon={<SettingOutlined />}
             aria-label="Settings"
-            style={{ position: "absolute", right: 18, top: 18 }}
           />
         </Popover>
       </Header>
@@ -57,8 +57,13 @@ function AppThemedShell({
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      <Footer style={{ textAlign: "center", background: "none" }}>
-        <img width={32} src={logo} alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
+      <Footer className="centered">
+        <img
+          className="app-footer-logo"
+          width={32}
+          src={logo}
+          alt="Pokémon Go Raiders logo"
+        />
         Pokémon GO Raiders
       </Footer>
     </Layout>

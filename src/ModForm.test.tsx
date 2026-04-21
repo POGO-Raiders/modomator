@@ -247,9 +247,7 @@ test("notify callback opens a notification with the action label", async () => {
 
   await waitFor(() => {
     expect(
-      (
-        screen.getByRole("textbox", { name: /moderation preview/i }) as HTMLTextAreaElement
-      ).value
+      (screen.getByRole("textbox", { name: /moderation preview/i }) as HTMLTextAreaElement).value
     ).toMatch(/^\?warn /);
   });
 

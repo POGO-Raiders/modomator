@@ -12,12 +12,6 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["**/*.{js,mjs,cjs}"],
-    rules: {
-      "no-undef": "off",
-    },
-  },
-  {
     files: ["src/**/*.{ts,tsx}"],
     languageOptions: {
       parserOptions: {

@@ -55,11 +55,10 @@ const changes: Change[] = [
     version: "1.4.0",
     date: "2026-04-19",
     description: [
-      "Pokémon GO Raiders red is now used consistently as the accent color throughout the form — selected options, the copy button, and input focus all match",
-      "Reason and option fields now appear only after selecting an action, keeping the form tidy until needed",
-      "Copy to clipboard is now a full-width primary button below the preview; Clear is repositioned inside the card as a subtle secondary action",
+      "PGR red is now used consistently as the accent color throughout the form",
+      "Copy to clipboard is now a full-width primary button below the preview",
       "Keyboard shortcut: press Cmd/Ctrl+Enter to copy once a moderation is ready",
-      "Discord ID hint moved to a tooltip to avoid layout shifts when the field is focused",
+      "Discord ID tooltip",
     ],
   },
   {

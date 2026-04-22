@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import SettingsMenu from "./SettingsMenu";
-import { latestVersion } from "./ChangeLog";
+import { version } from "../package.json";
 import { getAntdTheme } from "./theme/antTheme";
 
 function SettingsMenuHarness(): JSX.Element {
@@ -30,7 +30,7 @@ beforeEach(() => {
 
 test("shows version label and link to changelog", () => {
   renderSettingsMenu();
-  expect(screen.getByText(`v${latestVersion}`)).toBeInTheDocument();
+  expect(screen.getByText(`v${version}`)).toBeInTheDocument();
   const changelogLink = screen.getByRole("link", { name: /view changelog/i });
   expect(changelogLink.getAttribute("href")).toMatch(/changelog$/);
 });

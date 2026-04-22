@@ -125,5 +125,3 @@ const changes: Change[] = [
     description: ["Initial release"],
   },
 ];
-
-export const latestVersion = changes[0].version;

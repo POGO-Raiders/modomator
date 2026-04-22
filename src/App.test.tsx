@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import App from "./App";
-import { latestVersion } from "./ChangeLog";
+import { version } from "../package.json";
 
 beforeEach(() => {
   window.history.pushState({}, "", "/modomator/");
@@ -16,7 +16,7 @@ test("renders title and main form", () => {
 test("shows changelog at /modomator/changelog", () => {
   window.history.pushState({}, "", "/modomator/changelog");
   render(<App />);
-  expect(screen.getByText(latestVersion)).toBeInTheDocument();
+  expect(screen.getByText(version)).toBeInTheDocument();
 });
 
 test("shows not found for unknown paths under basename", () => {

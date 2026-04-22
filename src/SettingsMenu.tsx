@@ -1,7 +1,7 @@
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Col, Divider, Row, Switch } from "antd";
 import { Link } from "react-router-dom";
-import { latestVersion } from "./ChangeLog";
+import { version } from "../package.json";
 
 export type SettingsMenuProps = {
   darkMode: boolean;
@@ -27,7 +27,7 @@ const SettingsMenu = ({ darkMode, onDarkModeChange }: SettingsMenuProps): JSX.El
         </Col>
       </Row>
       <Divider style={{ margin: "10px 0" }} />
-      <Row justify="center">{`v${latestVersion}`}</Row>
+      <Row justify="center">{`v${version}`}</Row>
       <Row justify="center">
         <Link to="/changelog">View changelog</Link>
       </Row>

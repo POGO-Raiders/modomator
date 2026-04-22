@@ -24,9 +24,8 @@
   }
 }
 
-/* Slightly elevated panel — works with both ant light/dark tokens */
+/* Elevated panel — border-radius is set via Card token in antTheme.ts */
 .mod-form-card.ant-card {
-  border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
 }
 
@@ -130,17 +129,7 @@
 
 /* ── Modifiers checkboxes ────────────────────────────────────── */
 
-/* Larger hit area and clearer affordance on dark surfaces */
-.mod-form-modifiers .ant-checkbox-inner {
-  width: 18px;
-  height: 18px;
-}
-
-.mod-form-modifiers .ant-checkbox-inner::after {
-  width: 5.7px;
-  height: 9.2px;
-}
-
+/* Size (18px) is set via Checkbox.controlInteractiveSize token in antTheme.ts */
 .mod-form-modifiers .ant-checkbox + span {
   padding-inline-start: 10px;
   font-weight: 500;

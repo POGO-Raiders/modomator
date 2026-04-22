@@ -10,6 +10,25 @@ const DARK_SURFACE_RAISED = "#36393f";
 const DARK_DISABLED = "#404449";
 
 /**
+ * Component tokens shared between light and dark modes.
+ * Card border-radius and Checkbox size are design decisions that don't depend
+ * on the colour algorithm, so they live here rather than being duplicated.
+ */
+const SHARED_COMPONENTS: ThemeConfig["components"] = {
+  Card: {
+    // 12px matches the card's visual weight in the narrow form layout.
+    // Defined here so the CSS border-radius override can be removed.
+    borderRadiusLG: 12,
+  },
+  Checkbox: {
+    // 18px improves touch hit area and legibility on dark surfaces.
+    // Ant auto-scales the inner checkmark from this value, removing the
+    // need for the .ant-checkbox-inner CSS override.
+    controlInteractiveSize: 18,
+  },
+};
+
+/**
  * Ant Design theme for the app shell.
  * Both modes share `colorPrimary: PGR_RED` so selected radio buttons, the
  * primary Copy button, and input focus rings all use the same brand color.
@@ -24,6 +43,7 @@ export function getAntdTheme(isDark: boolean): ThemeConfig {
         colorPrimary: PGR_RED,
       },
       components: {
+        ...SHARED_COMPONENTS,
         Layout: {
           headerBg: "transparent",
           footerBg: "transparent",
@@ -51,6 +71,7 @@ export function getAntdTheme(isDark: boolean): ThemeConfig {
       colorBgContainerDisabled: DARK_DISABLED,
     },
     components: {
+      ...SHARED_COMPONENTS,
       Layout: {
         bodyBg: DARK_BG,
         headerBg: "transparent",
@@ -73,8 +94,8 @@ export function getAntdTheme(isDark: boolean): ThemeConfig {
       },
       Radio: {
         buttonBg: DARK_SURFACE,
-        buttonCheckedBg: DARK_SURFACE,
-        // buttonSolidCheckedBg derives from colorPrimary — no override needed
+        // buttonCheckedBg omitted — only applies to outline style; all grids
+        // use buttonStyle="solid" so this token is never rendered
         buttonColor: "rgba(255, 255, 255, 0.92)",
         buttonPaddingInline: 12,
       },

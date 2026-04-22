@@ -21,17 +21,19 @@ export const ChangeLog = (): JSX.Element => {
     <div className="form-container">
       <Timeline
         mode="left"
-        items={changes.map((change, i) => ({
-          key: i,
+        items={changes.map((change) => ({
+          key: change.version,
           children: (
             <>
-              <h1 style={{ lineHeight: 1, fontWeight: 700, color: token.colorTextHeading }}>{change.version}</h1>
+              <h2 style={{ lineHeight: 1, fontWeight: 700, color: token.colorTextHeading }}>
+                {change.version}
+              </h2>
               <p>
                 <code style={dateCodeStyle(token)}>{change.date}</code>
               </p>
               <ul>
                 {change.description.map((d, j) => (
-                  <li key={j}>{d}</li>
+                  <li key={`${change.version}-${j}`}>{d}</li>
                 ))}
               </ul>
             </>
@@ -42,8 +44,6 @@ export const ChangeLog = (): JSX.Element => {
   );
 };
 
-// Static data
-
 type Change = {
   readonly version: string;
   readonly date: string;
@@ -51,6 +51,16 @@ type Change = {
 };
 
 const changes: Change[] = [
+  {
+    version: "1.4.0",
+    date: "2026-04-19",
+    description: [
+      "PGR red is now used consistently as the accent color throughout the form",
+      "Copy to clipboard is now a full-width primary button below the preview",
+      "Keyboard shortcut: press Cmd/Ctrl+Enter to copy once a moderation is ready",
+      "Discord ID tooltip",
+    ],
+  },
   {
     version: "1.3.1",
     date: "2026-04-15",
@@ -125,5 +135,3 @@ const changes: Change[] = [
     description: ["Initial release"],
   },
 ];
-
-export const latestVersion = changes[0]?.version;

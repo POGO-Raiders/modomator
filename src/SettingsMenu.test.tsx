@@ -1,16 +1,14 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { ConfigProvider } from "antd";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import SettingsMenu from "./SettingsMenu";
-import { latestVersion } from "./ChangeLog";
+import { version } from "../package.json";
 import { getAntdTheme } from "./theme/antTheme";
 
 function SettingsMenuHarness(): JSX.Element {
-  const [darkMode, setDarkMode] = useLocalStorage("darkMode", true);
-  const isDark = darkMode !== false;
+  const [isDark, setDarkMode] = useLocalStorage("darkMode", true);
   return (
     <ConfigProvider theme={getAntdTheme(isDark)}>
       <SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />
@@ -32,7 +30,7 @@ beforeEach(() => {
 
 test("shows version label and link to changelog", () => {
   renderSettingsMenu();
-  expect(screen.getByText(`v${latestVersion}`)).toBeInTheDocument();
+  expect(screen.getByText(`v${version}`)).toBeInTheDocument();
   const changelogLink = screen.getByRole("link", { name: /view changelog/i });
   expect(changelogLink.getAttribute("href")).toMatch(/changelog$/);
 });

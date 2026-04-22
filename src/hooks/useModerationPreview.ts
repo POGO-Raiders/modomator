@@ -1,13 +1,8 @@
 import { useMemo } from "react";
 import type { ModerationOutput } from "../moderation/Moderation";
-import {
-  tryBuildModeration,
-  type ModerationPreviewFields,
-} from "../moderation/moderationPreview";
+import { tryBuildModeration, type ModerationPreviewFields } from "../moderation/moderationPreview";
 
-export function useModerationPreview(
-  fields: ModerationPreviewFields
-): {
+export function useModerationPreview(fields: ModerationPreviewFields): {
   moderationOutput: ModerationOutput | null;
   clipboardEnabled: boolean;
 } {

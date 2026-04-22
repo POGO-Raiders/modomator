@@ -1,8 +1,5 @@
 import { ModerationAction } from "./moderationAction";
-import {
-  moderationReasonsForAction,
-  normalizeMuteHoursInput,
-} from "./moderationFormHelpers";
+import { moderationReasonsForAction, normalizeMuteHoursInput } from "./moderationFormHelpers";
 
 describe("moderationReasonsForAction", () => {
   it("returns only reasons whose categories include the action", () => {

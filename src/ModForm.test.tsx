@@ -1,4 +1,3 @@
-import React from "react";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
@@ -32,9 +31,7 @@ function clickRadioValue(value: string) {
 async function selectWarningHarassment() {
   clickRadioValue("Warning");
   await waitFor(() =>
-    expect(
-      document.querySelector(`input.ant-radio-button-input[value="Harassment"]`)
-    ).toBeTruthy()
+    expect(document.querySelector(`input.ant-radio-button-input[value="Harassment"]`)).toBeTruthy()
   );
   clickRadioValue("Harassment");
 }
@@ -60,9 +57,7 @@ function getCopyButton(container: HTMLElement): HTMLButtonElement {
 
 beforeEach(() => {
   vi.spyOn(notification, "open").mockImplementation(() => void 0);
-  vi
-    .spyOn(moderationClipboard, "copyModerationToClipboard")
-    .mockResolvedValue(undefined);
+  vi.spyOn(moderationClipboard, "copyModerationToClipboard").mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -77,10 +72,67 @@ test("prefills id from query string and shows warning preview when action and re
 
   await selectWarningHarassment();
 
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toMatch(/^\?warn /);
   });
+});
+
+test("Cmd/Ctrl+Enter keyboard shortcut triggers copy when clipboard is enabled", async () => {
+  renderModForm(`?id=${validId}`);
+
+  await selectWarningHarassment();
+
+  await waitFor(() => {
+    expect(
+      (
+        screen.getByRole("textbox", {
+          name: /moderation preview/i,
+        }) as HTMLTextAreaElement
+      ).value
+    ).toMatch(/^\?warn /);
+  });
+
+  fireEvent.keyDown(document.querySelector(".form-container")!, {
+    key: "Enter",
+    ctrlKey: true,
+  });
+
+  await waitFor(() => {
+    expect(moderationClipboard.copyModerationToClipboard).toHaveBeenCalledWith(
+      expect.objectContaining({
+        text: expect.stringMatching(/^\?warn /),
+      })
+    );
+  });
+});
+
+test("Discord ID field shows error on invalid input and clears on valid input", async () => {
+  const user = userEvent.setup();
+  renderModForm("");
+
+  const idInput = screen.getByLabelText(/discord id/i);
+  await user.type(idInput, "abc");
+  await user.tab();
+
+  await waitFor(() => {
+    expect(screen.getByText(/not a valid discord id/i)).toBeInTheDocument();
+  });
+
+  await user.clear(idInput);
+  await user.type(idInput, "123456789012345678");
+  await user.tab();
+
+  await waitFor(() => {
+    expect(screen.queryByText(/not a valid discord id/i)).not.toBeInTheDocument();
+  });
+});
+
+test("Clear button is a real button element", () => {
+  renderModForm("");
+  expect(screen.getByRole("button", { name: /^clear$/i })).toBeInTheDocument();
 });
 
 test("Clear resets choices but keeps Discord ID from the current URL", async () => {
@@ -89,16 +141,16 @@ test("Clear resets choices but keeps Discord ID from the current URL", async () 
 
   await selectWarningHarassment();
 
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
-    expect(
-      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
-    ).toMatch(/^\?warn /);
+    expect(preview.value).toMatch(/^\?warn /);
   });
 
   await user.click(screen.getByText(/^Clear$/));
 
   expect(screen.getByLabelText(/discord id/i)).toHaveValue(validId);
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toBe("");
   });
@@ -109,7 +161,9 @@ test("copies preview to clipboard and notifies", async () => {
 
   await selectWarningHarassment();
 
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toMatch(/^\?warn /);
   });
@@ -136,7 +190,9 @@ test("mute action shows hours field and mute text in preview", async () => {
 
   expect(screen.getByLabelText(/#\s*of\s*hours/i)).toBeInTheDocument();
 
-  const preview = document.getElementById("modform_textarea") as HTMLTextAreaElement;
+  const preview = screen.getByRole("textbox", {
+    name: /moderation preview/i,
+  }) as HTMLTextAreaElement;
   await waitFor(() => {
     expect(preview.value).toMatch(/^\?mute /);
     expect(preview.value).toMatch(/1h/);
@@ -159,7 +215,11 @@ test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
 
   await waitFor(() => {
     expect(
-      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
+      (
+        screen.getByRole("textbox", {
+          name: /moderation preview/i,
+        }) as HTMLTextAreaElement
+      ).value
     ).toMatch(/^\?warn /);
   });
 
@@ -174,11 +234,36 @@ test("copy passes shouldOpenDiscord when localStorage is enabled", async () => {
   });
 });
 
+test("notify callback opens a notification with the action label", async () => {
+  vi.spyOn(moderationClipboard, "copyModerationToClipboard").mockImplementationOnce(
+    async ({ notify }) => {
+      notify("Warning copied to clipboard.");
+    }
+  );
+
+  const { container } = renderModForm(`?id=${validId}`);
+  await selectWarningHarassment();
+
+  await waitFor(() => {
+    expect(
+      (screen.getByRole("textbox", { name: /moderation preview/i }) as HTMLTextAreaElement).value
+    ).toMatch(/^\?warn /);
+  });
+
+  fireEvent.click(getCopyButton(container));
+
+  await waitFor(() => {
+    expect(notification.open).toHaveBeenCalledWith(
+      expect.objectContaining({ message: "Warning copied to clipboard.", duration: 2 })
+    );
+  });
+});
+
 test("copy logs error when clipboard helper rejects", async () => {
   const errorSpy = vi.spyOn(console, "error").mockImplementation(() => void 0);
-  vi
-    .spyOn(moderationClipboard, "copyModerationToClipboard")
-    .mockRejectedValueOnce(new Error("clipboard failed"));
+  vi.spyOn(moderationClipboard, "copyModerationToClipboard").mockRejectedValueOnce(
+    new Error("clipboard failed")
+  );
 
   const { container } = renderModForm(`?id=${validId}`);
 
@@ -186,17 +271,18 @@ test("copy logs error when clipboard helper rejects", async () => {
 
   await waitFor(() => {
     expect(
-      (document.getElementById("modform_textarea") as HTMLTextAreaElement).value
+      (
+        screen.getByRole("textbox", {
+          name: /moderation preview/i,
+        }) as HTMLTextAreaElement
+      ).value
     ).toMatch(/^\?warn /);
   });
 
   fireEvent.click(getCopyButton(container));
 
   await waitFor(() => {
-    expect(errorSpy).toHaveBeenCalledWith(
-      "Copy to clipboard failed",
-      expect.any(Error)
-    );
+    expect(errorSpy).toHaveBeenCalledWith("Copy to clipboard failed", expect.any(Error));
   });
 
   errorSpy.mockRestore();

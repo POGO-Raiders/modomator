@@ -17,6 +17,9 @@ export interface ModerationOutput {
 
 const VERIFIED_HOST_MODIFIER = "Verified Host";
 
+const joinParts = (...parts: Array<string | undefined | null>): string =>
+  parts.filter((p) => p != null && p.trim().length > 0).join(" ");
+
 const DISCORD_CHANNELS = {
   /** Mod discussion / warnings / mutes / kicks */
   moderation: "discord://discord.com/channels/736744916012630046/738522768689332225",
@@ -58,7 +61,7 @@ export class Warning extends AbstractModeration {
 
   get moderationString() {
     const verifiedString = verifiedHostNote(this.modifiers, this.reason, "warning");
-    return `?warn ${this.id} ${ModerationMap[this.reason]?.description} ${verifiedString}`;
+    return joinParts("?warn", this.id, ModerationMap[this.reason]?.description, verifiedString);
   }
 }
 
@@ -69,9 +72,9 @@ export class Ban extends AbstractModeration {
     const appealLink =
       this.reason !== REASON_BAN_EVASION
         ? "If you wish to appeal this ban, go to https://pogoraiders.gg/appeal"
-        : "";
+        : undefined;
 
-    return `?ban ${this.id} ${ModerationMap[this.reason]?.description} ${appealLink}`;
+    return joinParts("?ban", this.id, ModerationMap[this.reason]?.description, appealLink);
   }
 }
 
@@ -81,7 +84,13 @@ export class Mute extends AbstractModeration {
   get moderationString() {
     const verifiedString = verifiedHostNote(this.modifiers, this.reason, "mute");
 
-    return `?mute ${this.id} ${this.muteHours}h ${ModerationMap[this.reason]?.description} ${verifiedString}`;
+    return joinParts(
+      "?mute",
+      this.id,
+      `${this.muteHours}h`,
+      ModerationMap[this.reason]?.description,
+      verifiedString
+    );
   }
 }
 
@@ -89,7 +98,7 @@ export class Kick extends AbstractModeration {
   discordChannelURL = DISCORD_CHANNELS.moderation;
 
   get moderationString() {
-    return `?kick ${this.id} ${ModerationMap[this.reason]?.description}`;
+    return joinParts("?kick", this.id, ModerationMap[this.reason]?.description);
   }
 }
 

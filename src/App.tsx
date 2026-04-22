@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Button, ConfigProvider, Layout, Popover, theme } from "antd";
 import ModForm from "./ModForm";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
@@ -7,7 +7,7 @@ import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import NotFound from "./NotFound";
 import { ChangeLog } from "./ChangeLog";
-import useLocalStorage from "use-local-storage";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 
 import logo from "./assets/pgricon64.png";
 import { getAntdTheme } from "./theme/antTheme";
@@ -34,46 +34,39 @@ function AppThemedShell({
   }, [token.colorBgLayout]);
 
   return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        backgroundColor: token.colorBgLayout,
-      }}
-    >
-      <Layout>
-        <Header style={{ background: "none" }}>
-          <h1 className="centered form-title">Modomator</h1>
-          <Popover
-            content={<SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />}
-            trigger="click"
-            placement="bottomRight"
-          >
-            <Button
-              shape="circle"
-              icon={<SettingOutlined />}
-              style={{ position: "absolute", right: 18, top: 18 }}
-            />
-          </Popover>
-        </Header>
+    <Layout className="app-layout">
+      <Header className="app-header">
+        <h1 className="centered form-title">Modomator</h1>
+        <Popover
+          content={<SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />}
+          trigger="click"
+          placement="bottomRight"
+        >
+          <Button
+            className="app-settings-btn"
+            shape="circle"
+            icon={<SettingOutlined />}
+            aria-label="Settings"
+          />
+        </Popover>
+      </Header>
 
-        <Routes>
-          <Route path="/" element={<ModForm />} />
-          <Route path="/changelog" element={<ChangeLog />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<ModForm />} />
+        <Route path="/changelog" element={<ChangeLog />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
 
-        <Footer style={{ textAlign: "center", background: "none" }}>
-          <img width={32} src={logo} alt="Pokémon Go Raiders logo" style={{ marginRight: 8 }} />
-          Pokémon GO Raiders
-        </Footer>
-      </Layout>
-    </div>
+      <Footer className="centered">
+        <img className="app-footer-logo" width={32} src={logo} alt="Pokémon Go Raiders logo" />
+        Pokémon GO Raiders
+      </Footer>
+    </Layout>
   );
 }
 
 const App = (): JSX.Element => {
-  const [darkMode, setDarkMode] = useLocalStorage("darkMode", true);
-  const isDark = darkMode !== false;
+  const [isDark, setDarkMode] = useLocalStorage("darkMode", true);
 
   return (
     <Router basename="/modomator">

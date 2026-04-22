@@ -1,16 +1,15 @@
-import {
-  ModerationFactory,
-  ModerationAction,
-  type ModFormData,
-} from "./Moderation";
+import { ModerationFactory, ModerationAction, type ModFormData } from "./Moderation";
 import { REASON_BAN_EVASION } from "./ModerationMap";
 
-const MODERATION_CHANNEL =
-  "discord://discord.com/channels/736744916012630046/738522768689332225";
-const BAN_APPEALS_CHANNEL =
-  "discord://discord.com/channels/736744916012630046/778335478096724018";
+const MODERATION_CHANNEL = "discord://discord.com/channels/736744916012630046/738522768689332225";
+const BAN_APPEALS_CHANNEL = "discord://discord.com/channels/736744916012630046/778335478096724018";
 
 const SAMPLE_ID = "123456789012345678";
+
+function expectCleanSpacing(s: string) {
+  expect(s).not.toMatch(/\s{2,}/);
+  expect(s).not.toMatch(/\s$/);
+}
 
 describe("ModerationFactory", () => {
   describe("Warning", () => {
@@ -24,6 +23,7 @@ describe("ModerationFactory", () => {
       const out = ModerationFactory.create(ModerationAction.Warning, formData);
       expect(out.moderationString).toMatch(/^\?warn 123456789012345678 .+/);
       expect(out.discordChannelURL).toBe(MODERATION_CHANNEL);
+      expectCleanSpacing(out.moderationString);
     });
 
     it("appends verified host note when modifier set and reason is hosting", () => {
@@ -37,6 +37,7 @@ describe("ModerationFactory", () => {
       expect(out.moderationString).toContain(
         "Your Verified Host Status will be reviewed as a result of this warning."
       );
+      expectCleanSpacing(out.moderationString);
     });
 
     it("does not append verified host note when reason is not hosting", () => {
@@ -48,6 +49,7 @@ describe("ModerationFactory", () => {
       };
       const out = ModerationFactory.create(ModerationAction.Warning, formData);
       expect(out.moderationString).not.toContain("Verified Host Status");
+      expectCleanSpacing(out.moderationString);
     });
   });
 
@@ -62,6 +64,7 @@ describe("ModerationFactory", () => {
       const out = ModerationFactory.create(ModerationAction.Mute, formData);
       expect(out.moderationString).toMatch(/^\?mute 123456789012345678 6h .+/);
       expect(out.discordChannelURL).toBe(MODERATION_CHANNEL);
+      expectCleanSpacing(out.moderationString);
     });
 
     it("appends verified host note for hosting reasons", () => {
@@ -75,6 +78,7 @@ describe("ModerationFactory", () => {
       expect(out.moderationString).toContain(
         "Your Verified Host Status will be reviewed as a result of this mute."
       );
+      expectCleanSpacing(out.moderationString);
     });
   });
 
@@ -89,6 +93,7 @@ describe("ModerationFactory", () => {
       const out = ModerationFactory.create(ModerationAction.Kick, formData);
       expect(out.moderationString).toMatch(/^\?kick 123456789012345678 .+/);
       expect(out.discordChannelURL).toBe(MODERATION_CHANNEL);
+      expectCleanSpacing(out.moderationString);
     });
   });
 
@@ -103,6 +108,7 @@ describe("ModerationFactory", () => {
       const out = ModerationFactory.create(ModerationAction.Ban, formData);
       expect(out.moderationString).toContain("https://pogoraiders.gg/appeal");
       expect(out.discordChannelURL).toBe(BAN_APPEALS_CHANNEL);
+      expectCleanSpacing(out.moderationString);
     });
 
     it("omits appeal link for ban evasion", () => {
@@ -114,6 +120,7 @@ describe("ModerationFactory", () => {
       };
       const out = ModerationFactory.create(ModerationAction.Ban, formData);
       expect(out.moderationString).not.toContain("pogoraiders.gg");
+      expectCleanSpacing(out.moderationString);
     });
   });
 });

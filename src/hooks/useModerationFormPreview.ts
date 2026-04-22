@@ -5,24 +5,17 @@ import type { ModerationAction } from "../moderation/moderationAction";
 import type { ModerationReason } from "../moderation/ModerationMap";
 import { useModerationPreview } from "./useModerationPreview";
 
-/**
- * Watches modform fields and derives moderation preview (single hook for ModForm).
- */
 export function useModerationFormPreview(form: FormInstance): {
   moderationOutput: ModerationOutput | null;
   clipboardEnabled: boolean;
 } {
-  const id = Form.useWatch("id", form);
-  const action = Form.useWatch("action", form);
-  const reason = Form.useWatch("reason", form);
-  const modifiers = Form.useWatch("modifiers", form);
-  const muteHours = Form.useWatch("muteHours", form);
+  const allValues = Form.useWatch([], form) as Record<string, unknown> | undefined;
 
   return useModerationPreview({
-    id: typeof id === "string" ? id : undefined,
-    action: action as ModerationAction | undefined,
-    reason: reason as ModerationReason | undefined,
-    modifiers: Array.isArray(modifiers) ? modifiers : [],
-    muteHours: typeof muteHours === "number" ? muteHours : undefined,
+    id: typeof allValues?.id === "string" ? allValues.id : undefined,
+    action: allValues?.action as ModerationAction | undefined,
+    reason: allValues?.reason as ModerationReason | undefined,
+    modifiers: Array.isArray(allValues?.modifiers) ? (allValues.modifiers as string[]) : [],
+    muteHours: typeof allValues?.muteHours === "number" ? allValues.muteHours : undefined,
   });
 }

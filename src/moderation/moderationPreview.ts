@@ -16,9 +16,7 @@ export interface ModerationPreviewFields {
  * Returns a moderation command preview when inputs satisfy the same rules as ModForm validation.
  * Otherwise returns null (no preview / clipboard disabled).
  */
-export function tryBuildModeration(
-  fields: ModerationPreviewFields
-): ModerationOutput | null {
+export function tryBuildModeration(fields: ModerationPreviewFields): ModerationOutput | null {
   const { id, action, reason, modifiers, muteHours } = fields;
   if (!id || !action || !reason) return null;
   if (!DISCORD_ID_PATTERN.test(id)) return null;

@@ -5,9 +5,6 @@ import type { ModerationAction } from "../moderation/moderationAction";
 import type { ModerationReason } from "../moderation/ModerationMap";
 import { useModerationPreview } from "./useModerationPreview";
 
-/**
- * Watches modform fields and derives moderation preview (single hook for ModForm).
- */
 export function useModerationFormPreview(form: FormInstance): {
   moderationOutput: ModerationOutput | null;
   clipboardEnabled: boolean;

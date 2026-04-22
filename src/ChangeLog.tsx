@@ -44,8 +44,6 @@ export const ChangeLog = (): JSX.Element => {
   );
 };
 
-// Static data
-
 type Change = {
   readonly version: string;
   readonly date: string;

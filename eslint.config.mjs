@@ -7,7 +7,7 @@ import prettierConfig from "eslint-config-prettier";
 
 export default tseslint.config(
   {
-    ignores: ["build/**", "coverage/**", "node_modules/**", "DeployToFtp.js"],
+    ignores: ["build/**", "coverage/**", "node_modules/**", "DeployToFtp.mjs"],
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

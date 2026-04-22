@@ -1,4 +1,3 @@
-import React from "react";
 import heatran from "./assets/heatran.png";
 
 const NotFound = (): JSX.Element => {

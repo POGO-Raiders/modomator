@@ -1,7 +1,7 @@
 import "./App.css";
 import "antd/dist/reset.css";
 import { Card, Radio, Button, Checkbox, Form, Input, InputNumber, notification } from "antd";
-import React, { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { ModerationAction, MODERATION_ACTION_ORDER } from "./moderation/moderationAction";
 import { copyModerationToClipboard } from "./moderation/moderationClipboard";
 import {

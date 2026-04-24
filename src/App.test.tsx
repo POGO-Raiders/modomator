@@ -13,16 +13,16 @@ test("renders title and main form", () => {
   expect(screen.getByLabelText(/discord id/i)).toBeInTheDocument();
 });
 
-test("shows changelog at /modomator/changelog", () => {
+test("shows changelog at /modomator/changelog", async () => {
   window.history.pushState({}, "", "/modomator/changelog");
   render(<App />);
-  expect(screen.getByText(version)).toBeInTheDocument();
+  expect(await screen.findByText(version)).toBeInTheDocument();
 });
 
-test("shows not found for unknown paths under basename", () => {
+test("shows not found for unknown paths under basename", async () => {
   window.history.pushState({}, "", "/modomator/no-such-page");
   render(<App />);
-  expect(screen.getByRole("heading", { name: /404.*page not found/i })).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: /404.*page not found/i })).toBeInTheDocument();
 });
 
 test("dark mode toggle changes background colour", async () => {

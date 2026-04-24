@@ -2,11 +2,18 @@ import path from "node:path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
+import { imagetools } from "vite-imagetools";
 
 // Must match package.json "homepage" (GitHub Pages subpath).
 export default defineConfig({
   base: "/modomator/",
-  plugins: [react(), visualizer({ open: false, filename: "build/stats.html" })],
+  plugins: [
+    react(),
+    imagetools({
+      defaultDirectives: () => new URLSearchParams({ format: "webp", quality: "80", as: "url" }),
+    }),
+    visualizer({ open: false, filename: "build/stats.html" }),
+  ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),

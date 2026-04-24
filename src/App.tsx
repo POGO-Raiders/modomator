@@ -1,13 +1,16 @@
 import "./App.css";
-import { useEffect } from "react";
+import { Suspense, lazy, useEffect } from "react";
 import { Button, ConfigProvider, Layout, Popover, theme } from "antd";
 import ModForm from "./ModForm";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
-import NotFound from "./NotFound";
-import { ChangeLog } from "./ChangeLog";
 import { useLocalStorage } from "./hooks/useLocalStorage";
+
+const ChangeLog = lazy(async () =>
+  import("./ChangeLog").then((m) => ({ default: m.ChangeLog })),
+);
+const NotFound = lazy(() => import("./NotFound"));
 
 import logo from "./assets/pgricon64.png";
 import { getAntdTheme } from "./theme/antTheme";
@@ -51,11 +54,13 @@ function AppThemedShell({
         </Popover>
       </Header>
 
-      <Routes>
-        <Route path="/" element={<ModForm />} />
-        <Route path="/changelog" element={<ChangeLog />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<div className="form-container">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<ModForm />} />
+          <Route path="/changelog" element={<ChangeLog />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
 
       <Footer className="centered">
         <img className="app-footer-logo" width={32} src={logo} alt="Pokémon Go Raiders logo" />

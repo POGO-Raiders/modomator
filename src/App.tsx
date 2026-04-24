@@ -1,6 +1,6 @@
 import "./App.css";
 import { Suspense, lazy, useEffect } from "react";
-import { Button, ConfigProvider, Layout, Popover, theme } from "antd";
+import { Button, ConfigProvider, Layout, Popover, Spin, theme } from "antd";
 import ModForm from "./ModForm";
 import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import SettingsMenu from "./SettingsMenu";
@@ -54,7 +54,7 @@ function AppThemedShell({
         </Popover>
       </Header>
 
-      <Suspense fallback={<div className="form-container">Loading...</div>}>
+      <Suspense fallback={<div className="form-container centered"><Spin size="large" /></div>}>
         <Routes>
           <Route path="/" element={<ModForm />} />
           <Route path="/changelog" element={<ChangeLog />} />

@@ -15,6 +15,15 @@ export default defineConfig({
   build: {
     outDir: "build",
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom"],
+          "vendor-router": ["react-router-dom"],
+          "vendor-antd": ["antd", "@ant-design/icons"],
+        },
+      },
+    },
   },
   server: {
     port: 3000,

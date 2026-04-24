@@ -7,9 +7,7 @@ import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 
-const ChangeLog = lazy(async () =>
-  import("./ChangeLog").then((m) => ({ default: m.ChangeLog })),
-);
+const ChangeLog = lazy(async () => import("./ChangeLog").then((m) => ({ default: m.ChangeLog })));
 const NotFound = lazy(() => import("./NotFound"));
 
 import logo from "./assets/pgricon64.png";
@@ -54,7 +52,13 @@ function AppThemedShell({
         </Popover>
       </Header>
 
-      <Suspense fallback={<div className="form-container centered"><Spin size="large" /></div>}>
+      <Suspense
+        fallback={
+          <div className="form-container centered">
+            <Spin size="large" />
+          </div>
+        }
+      >
         <Routes>
           <Route path="/" element={<ModForm />} />
           <Route path="/changelog" element={<ChangeLog />} />

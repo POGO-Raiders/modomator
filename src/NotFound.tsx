@@ -15,11 +15,7 @@ const NotFound = (): JSX.Element => {
         color: token.colorTextHeading,
       }}
     >
-      <img
-        src={heatran}
-        alt="Heatran"
-        style={{ width: 220, maxWidth: "100%", display: "block" }}
-      />
+      <img src={heatran} alt="Heatran" style={{ width: 220, maxWidth: "100%", display: "block" }} />
       <h2 style={{ margin: 0, fontSize: "1.4rem", fontWeight: 700, color: token.colorTextHeading }}>
         404: Page not found
       </h2>

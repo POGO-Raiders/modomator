@@ -11,6 +11,7 @@ import {
 import { DISCORD_ID_PATTERN } from "./moderation/moderationPreview";
 import { useModerationFormPreview } from "./hooks/useModerationFormPreview";
 import { useModFormClear } from "./hooks/useModFormClear";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import { CopyOutlined } from "@ant-design/icons";
 import { useSearchParams } from "react-router-dom";
 
@@ -23,6 +24,7 @@ const ModForm = (): JSX.Element => {
   const action = Form.useWatch("action", form);
 
   const { moderationOutput, clipboardEnabled } = useModerationFormPreview(form);
+  const [openInDiscord] = useLocalStorage("openInDiscord", true);
 
   useEffect(() => {
     form.setFieldsValue({ id: searchParams.get("id") ?? "" });
@@ -35,15 +37,15 @@ const ModForm = (): JSX.Element => {
       text,
       actionLabel: action?.toString() ?? "UNKNOWN",
       notify: (message, durationSeconds = 2) => {
-        notification.open({ message, duration: durationSeconds });
+        notification.open({ title: message, duration: durationSeconds });
       },
-      shouldOpenDiscord: localStorage.getItem("openInDiscord") === "true",
+      shouldOpenDiscord: openInDiscord,
       discordChannelURL: moderationOutput.discordChannelURL,
     }).catch((err: unknown) => {
       console.error("Copy to clipboard failed", err);
-      notification.error({ message: "Could not copy text on this device." });
+      notification.error({ title: "Could not copy text on this device." });
     });
-  }, [moderationOutput, action]);
+  }, [moderationOutput, action, openInDiscord]);
 
   useEffect(() => {
     const container = formContainerRef.current;
@@ -73,7 +75,7 @@ const ModForm = (): JSX.Element => {
           requiredMark={false}
           form={form}
           layout="vertical"
-          size="middle"
+          size="medium"
         >
           <Form.Item
             label="Discord ID"

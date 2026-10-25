@@ -14,7 +14,7 @@ describe("useModerationFormPreview", () => {
     });
 
     const { result } = renderHook(() =>
-      useModerationFormPreview({} as import("antd/es/form").FormInstance)
+      useModerationFormPreview({} as import("antd").FormInstance)
     );
 
     expect(result.current.clipboardEnabled).toBe(true);
@@ -33,7 +33,7 @@ describe("useModerationFormPreview", () => {
     });
 
     const { result } = renderHook(() =>
-      useModerationFormPreview({} as import("antd/es/form").FormInstance)
+      useModerationFormPreview({} as import("antd").FormInstance)
     );
 
     expect(result.current.clipboardEnabled).toBe(false);

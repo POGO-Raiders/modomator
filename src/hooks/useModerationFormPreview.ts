@@ -1,5 +1,5 @@
 import { Form } from "antd";
-import type { FormInstance } from "antd/es/form";
+import type { FormInstance } from "antd";
 import type { ModerationOutput } from "../moderation/Moderation";
 import type { ModerationAction } from "../moderation/moderationAction";
 import type { ModerationReason } from "../moderation/ModerationMap";

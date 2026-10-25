@@ -4,15 +4,16 @@
   "private": true,
   "homepage": "https://blakeheyman.github.io/modomator/",
   "dependencies": {
-    "@ant-design/icons": "^5.6.1",
-    "@testing-library/jest-dom": "^6.9.0",
-    "@testing-library/react": "^15.0.7",
-    "@testing-library/user-event": "^14.6.0",
-    "antd": "^5.29.3",
+    "@ant-design/icons": "^6.3.4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "antd": "^6.6.7",
     "gh-pages": "^6.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.3"
+    "react-router-dom": "^7.18.4"
   },
   "scripts": {
     "start": "vite",
@@ -29,25 +30,28 @@
     "bench": "npm run build 2>&1 | grep -E '\\.(js|css|png)'"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@types/node": "^22.19.17",
-    "@types/react": "^18.3.28",
+    "@eslint/js": "^9.39.5",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^4.7.0",
-    "@vitest/coverage-v8": "^2.1.9",
-    "eslint": "^9.39.4",
+    "@vitejs/plugin-react": "^5.1.4",
+    "@vitest/coverage-v8": "^4.1.12",
+    "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
+    "eslint-plugin-react-refresh": "^0.5.7",
     "ftp-deploy": "^2.4.7",
-    "jsdom": "^25.0.1",
-    "prettier": "^3.8.3",
-    "rollup-plugin-visualizer": "^6.0.11",
-    "typescript": "~5.6.0",
-    "typescript-eslint": "^8.58.2",
-    "vite": "^5.4.21",
-    "vite-imagetools": "^9.0.3",
-    "vitest": "^2.1.9"
+    "jsdom": "^30.1.3",
+    "prettier": "^3.9.10",
+    "rollup-plugin-visualizer": "^7.1.1",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.72.0",
+    "vite": "^7.3.7",
+    "vite-imagetools": "^10.0.1",
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "minimatch": "^9.0.9"
   }
 }

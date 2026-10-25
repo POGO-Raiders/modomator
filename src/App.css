@@ -57,6 +57,12 @@
   margin-inline-end: 0 !important;
   text-align: center;
   border-radius: var(--mod-form-radius);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.mod-form-radio-grid .ant-radio-button-label {
+  display: block;
 }
 
 .mod-form-radio-grid .ant-radio-button-wrapper::before {

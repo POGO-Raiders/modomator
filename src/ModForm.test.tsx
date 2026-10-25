@@ -17,7 +17,7 @@ function renderModForm(query: string) {
   );
 }
 
-/** Clicks the hidden input for a Radio.Button `value` (reliable with antd v5 + RTL). */
+/** Clicks the hidden input for a Radio.Button `value` (reliable with antd + RTL). */
 function clickRadioValue(value: string) {
   const input = document.querySelector<HTMLInputElement>(
     `input.ant-radio-button-input[value="${CSS.escape(value)}"]`
@@ -254,7 +254,7 @@ test("notify callback opens a notification with the action label", async () => {
 
   await waitFor(() => {
     expect(notification.open).toHaveBeenCalledWith(
-      expect.objectContaining({ message: "Warning copied to clipboard.", duration: 2 })
+      expect.objectContaining({ title: "Warning copied to clipboard.", duration: 2 })
     );
   });
 });

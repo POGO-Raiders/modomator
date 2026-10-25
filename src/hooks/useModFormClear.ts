@@ -1,4 +1,4 @@
-import type { FormInstance } from "antd/es/form";
+import type { FormInstance } from "antd";
 import { useCallback } from "react";
 
 /**

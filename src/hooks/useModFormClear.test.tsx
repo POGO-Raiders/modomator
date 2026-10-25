@@ -8,7 +8,7 @@ describe("useModFormClear", () => {
     const form = {
       resetFields,
       setFieldsValue,
-    } as unknown as import("antd/es/form").FormInstance;
+    } as unknown as import("antd").FormInstance;
 
     const searchParams = new URLSearchParams("id=123456789012345678");
     const { result } = renderHook(() => useModFormClear(form, searchParams));
@@ -29,7 +29,7 @@ describe("useModFormClear", () => {
     const form = {
       resetFields,
       setFieldsValue,
-    } as unknown as import("antd/es/form").FormInstance;
+    } as unknown as import("antd").FormInstance;
 
     const searchParams = new URLSearchParams("");
     const { result } = renderHook(() => useModFormClear(form, searchParams));

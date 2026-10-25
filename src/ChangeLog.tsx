@@ -56,6 +56,7 @@ const changes: Change[] = [
     date: "2026-10-24",
     description: [
       "Moderation preview now copies Dyno slash commands with option names (/warn user:… reason:…) instead of the old ?-prefixed commands",
+      "Upgraded Vite, Vitest, TypeScript, Testing Library, React Router 7, and Ant Design 6; applied npm audit fixes",
     ],
   },
   {

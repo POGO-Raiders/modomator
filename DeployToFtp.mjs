@@ -32,6 +32,9 @@ const config = {
 ftpDeploy
   .deploy(config)
   .then((res) => console.log("finished:", res))
-  .catch((err) => console.log(err));
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
 
 ftpDeploy.on("log", (data) => console.log("[log]", data));

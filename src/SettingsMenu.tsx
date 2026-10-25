@@ -4,7 +4,7 @@ import { Col, Divider, Row, Switch } from "antd";
 import { Link } from "react-router";
 import { version } from "../package.json";
 
-export type SettingsMenuProps = {
+type SettingsMenuProps = {
   darkMode: boolean;
   onDarkModeChange: (dark: boolean) => void;
 };

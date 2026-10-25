@@ -1,6 +1,6 @@
 # Modomator
 
-Small React app for composing Pokémon Showdown moderation messages (warn / mute / kick / ban) and copying them to the clipboard.
+Small React app for composing Pokémon GO Raiders / Dyno moderation commands (warn / mute / kick / ban) and copying them to the clipboard.
 
 ## Scripts
 
@@ -25,11 +25,7 @@ Small React app for composing Pokémon Showdown moderation messages (warn / mute
   - `useModerationFormPreview.ts` — derives preview state from a single `Form.useWatch([], form)` call
   - `useModFormClear.ts` — resets the form while re-applying URL id and defaults
 
-The app is hosted under a subpath (`basename` / `homepage`). Local dev typically uses `/`; production matches the GitHub Pages URL.
-
-## TypeScript
-
-Unit tests live next to sources as `*.test.ts` / `*.test.tsx`. `tsconfig.json` excludes `**/*.spec.ts` so Playwright-style spec files are not pulled into the main TS project by mistake.
+The app is hosted under `/modomator/` locally and in production.
 
 ## Notable removals / replacements
 

@@ -3,15 +3,15 @@ import { Suspense, lazy, useEffect, type JSX } from "react";
 import { Button, ConfigProvider, Layout, Popover, Spin, theme } from "antd";
 import ModForm from "./ModForm";
 import { Route, Routes, BrowserRouter as Router } from "react-router";
-import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 
-const ChangeLog = lazy(async () => import("./ChangeLog").then((m) => ({ default: m.ChangeLog })));
-const NotFound = lazy(() => import("./NotFound"));
-
 import logo from "./assets/pgricon64.png";
 import { getAntdTheme } from "./theme/antTheme";
+
+const ChangeLog = lazy(async () => import("./ChangeLog").then((m) => ({ default: m.ChangeLog })));
+const NotFound = lazy(() => import("./NotFound"));
+const SettingsMenu = lazy(() => import("./SettingsMenu"));
 
 const { Footer, Header } = Layout;
 
@@ -39,7 +39,11 @@ function AppThemedShell({
       <Header className="app-header">
         <h1 className="centered form-title">Modomator</h1>
         <Popover
-          content={<SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />}
+          content={
+            <Suspense fallback={<Spin size="small" />}>
+              <SettingsMenu darkMode={isDark} onDarkModeChange={setDarkMode} />
+            </Suspense>
+          }
           trigger="click"
           placement="bottomRight"
         >

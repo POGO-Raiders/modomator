@@ -14,6 +14,5 @@
     "useDefineForClassFields": true,
     "types": ["vitest/globals", "vite/client"]
   },
-  "include": ["src", "vite.config.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"]
+  "include": ["src", "vite.config.mts"]
 }

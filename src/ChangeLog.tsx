@@ -1,6 +1,5 @@
 import { Timeline, theme } from "antd";
 import type { GlobalToken } from "antd";
-import "./App.css";
 import React, { type JSX } from "react";
 
 const dateCodeStyle = (t: GlobalToken): React.CSSProperties => ({

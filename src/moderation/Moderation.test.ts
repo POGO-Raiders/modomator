@@ -1,5 +1,5 @@
 import { ModerationFactory, ModerationAction, type ModFormData } from "./Moderation";
-import { REASON_BAN_EVASION } from "./ModerationMap";
+import ModerationMap, { REASON_BAN_EVASION } from "./ModerationMap";
 
 const MODERATION_CHANNEL = "discord://discord.com/channels/736744916012630046/738522768689332225";
 const BAN_APPEALS_CHANNEL = "discord://discord.com/channels/736744916012630046/778335478096724018";
@@ -21,7 +21,9 @@ describe("ModerationFactory", () => {
         muteHours: 1,
       };
       const out = ModerationFactory.create(ModerationAction.Warning, formData);
-      expect(out.moderationString).toMatch(/^\?warn 123456789012345678 .+/);
+      expect(out.moderationString).toBe(
+        `/warn user:${SAMPLE_ID} reason:${ModerationMap.Harassment.description}`
+      );
       expect(out.discordChannelURL).toBe(MODERATION_CHANNEL);
       expectCleanSpacing(out.moderationString);
     });
@@ -34,8 +36,8 @@ describe("ModerationFactory", () => {
         muteHours: 1,
       };
       const out = ModerationFactory.create(ModerationAction.Warning, formData);
-      expect(out.moderationString).toContain(
-        "Your Verified Host Status will be reviewed as a result of this warning."
+      expect(out.moderationString).toBe(
+        `/warn user:${SAMPLE_ID} reason:${ModerationMap["AFK host"].description} Your Verified Host Status will be reviewed as a result of this warning.`
       );
       expectCleanSpacing(out.moderationString);
     });
@@ -62,7 +64,9 @@ describe("ModerationFactory", () => {
         muteHours: 6,
       };
       const out = ModerationFactory.create(ModerationAction.Mute, formData);
-      expect(out.moderationString).toMatch(/^\?mute 123456789012345678 6h .+/);
+      expect(out.moderationString).toBe(
+        `/mute user:${SAMPLE_ID} reason:${ModerationMap["Inappropriate language"].description} limit:6h`
+      );
       expect(out.discordChannelURL).toBe(MODERATION_CHANNEL);
       expectCleanSpacing(out.moderationString);
     });
@@ -91,7 +95,9 @@ describe("ModerationFactory", () => {
         muteHours: 1,
       };
       const out = ModerationFactory.create(ModerationAction.Kick, formData);
-      expect(out.moderationString).toMatch(/^\?kick 123456789012345678 .+/);
+      expect(out.moderationString).toBe(
+        `/kick user:${SAMPLE_ID} reason:${ModerationMap["Scam links (first offense)"].description}`
+      );
       expect(out.discordChannelURL).toBe(MODERATION_CHANNEL);
       expectCleanSpacing(out.moderationString);
     });
@@ -106,7 +112,9 @@ describe("ModerationFactory", () => {
         muteHours: 1,
       };
       const out = ModerationFactory.create(ModerationAction.Ban, formData);
-      expect(out.moderationString).toContain("https://pogoraiders.gg/appeal");
+      expect(out.moderationString).toBe(
+        `/ban user:${SAMPLE_ID} reason:${ModerationMap.Spoofing.description} If you wish to appeal this ban, go to https://pogoraiders.gg/appeal`
+      );
       expect(out.discordChannelURL).toBe(BAN_APPEALS_CHANNEL);
       expectCleanSpacing(out.moderationString);
     });
@@ -119,7 +127,9 @@ describe("ModerationFactory", () => {
         muteHours: 1,
       };
       const out = ModerationFactory.create(ModerationAction.Ban, formData);
-      expect(out.moderationString).not.toContain("pogoraiders.gg");
+      expect(out.moderationString).toBe(
+        `/ban user:${SAMPLE_ID} reason:${ModerationMap[REASON_BAN_EVASION].description}`
+      );
       expectCleanSpacing(out.moderationString);
     });
   });

@@ -18,7 +18,7 @@ describe("useModerationFormPreview", () => {
     );
 
     expect(result.current.clipboardEnabled).toBe(true);
-    expect(result.current.moderationOutput?.moderationString).toMatch(/^\?warn /);
+    expect(result.current.moderationOutput?.moderationString).toMatch(/^\/warn user:/);
 
     useWatchSpy.mockRestore();
   });

@@ -52,6 +52,13 @@ type Change = {
 
 const changes: Change[] = [
   {
+    version: "1.4.1",
+    date: "2026-10-24",
+    description: [
+      "Moderation preview now copies Dyno slash commands with option names (/warn user:… reason:…) instead of the old ?-prefixed commands",
+    ],
+  },
+  {
     version: "1.4.0",
     date: "2026-04-19",
     description: [

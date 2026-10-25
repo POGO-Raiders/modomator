@@ -53,14 +53,14 @@ describe("moderationClipboard", () => {
     const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
 
     await copyModerationToClipboard({
-      text: "?warn 1 test",
+      text: "/warn 1 test",
       actionLabel: "Warning",
       notify,
       shouldOpenDiscord: true,
       discordChannelURL: "discord://channel",
     });
 
-    expect(navigator.clipboard.writeText).toHaveBeenCalledWith("?warn 1 test");
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith("/warn 1 test");
     expect(notify).toHaveBeenCalledWith("Warning copied to clipboard.", 2);
     expect(openSpy).toHaveBeenCalledWith("discord://channel");
 
@@ -72,7 +72,7 @@ describe("moderationClipboard", () => {
     const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
 
     await copyModerationToClipboard({
-      text: "?warn 1 test",
+      text: "/warn 1 test",
       actionLabel: "Warning",
       notify,
       shouldOpenDiscord: false,
@@ -88,7 +88,7 @@ describe("moderationClipboard", () => {
     const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
 
     await copyModerationToClipboard({
-      text: "?warn 1 test",
+      text: "/warn 1 test",
       actionLabel: "Warning",
       notify,
       shouldOpenDiscord: true,

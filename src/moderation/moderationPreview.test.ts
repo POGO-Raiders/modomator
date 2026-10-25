@@ -46,7 +46,7 @@ describe("tryBuildModeration", () => {
       muteHours: 1,
     });
     expect(out).not.toBeNull();
-    expect(out?.moderationString).toMatch(/^\?warn /);
+    expect(out?.moderationString).toMatch(/^\/warn user:/);
   });
 
   it("returns null for mute when hours out of range", () => {

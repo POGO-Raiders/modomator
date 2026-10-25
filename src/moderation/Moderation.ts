@@ -20,6 +20,15 @@ const VERIFIED_HOST_MODIFIER = "Verified Host";
 const joinParts = (...parts: Array<string | undefined | null>): string =>
   parts.filter((p) => p != null && p.trim().length > 0).join(" ");
 
+/** Dyno slash-command option: `name:value` (spaces allowed in the value). */
+const slashOption = (name: string, value: string | undefined | null): string | undefined => {
+  if (value == null || value.trim().length === 0) return undefined;
+  return `${name}:${value.trim()}`;
+};
+
+const slashCommand = (name: string, ...options: Array<string | undefined>): string =>
+  joinParts(`/${name}`, ...options);
+
 const DISCORD_CHANNELS = {
   /** Mod discussion / warnings / mutes / kicks */
   moderation: "discord://discord.com/channels/736744916012630046/738522768689332225",
@@ -61,7 +70,11 @@ export class Warning extends AbstractModeration {
 
   get moderationString() {
     const verifiedString = verifiedHostNote(this.modifiers, this.reason, "warning");
-    return joinParts("?warn", this.id, ModerationMap[this.reason]?.description, verifiedString);
+    return slashCommand(
+      "warn",
+      slashOption("user", this.id),
+      slashOption("reason", joinParts(ModerationMap[this.reason]?.description, verifiedString))
+    );
   }
 }
 
@@ -74,7 +87,11 @@ export class Ban extends AbstractModeration {
         ? "If you wish to appeal this ban, go to https://pogoraiders.gg/appeal"
         : undefined;
 
-    return joinParts("?ban", this.id, ModerationMap[this.reason]?.description, appealLink);
+    return slashCommand(
+      "ban",
+      slashOption("user", this.id),
+      slashOption("reason", joinParts(ModerationMap[this.reason]?.description, appealLink))
+    );
   }
 }
 
@@ -84,12 +101,11 @@ export class Mute extends AbstractModeration {
   get moderationString() {
     const verifiedString = verifiedHostNote(this.modifiers, this.reason, "mute");
 
-    return joinParts(
-      "?mute",
-      this.id,
-      `${this.muteHours}h`,
-      ModerationMap[this.reason]?.description,
-      verifiedString
+    return slashCommand(
+      "mute",
+      slashOption("user", this.id),
+      slashOption("reason", joinParts(ModerationMap[this.reason]?.description, verifiedString)),
+      slashOption("limit", `${this.muteHours}h`)
     );
   }
 }
@@ -98,7 +114,11 @@ export class Kick extends AbstractModeration {
   discordChannelURL = DISCORD_CHANNELS.moderation;
 
   get moderationString() {
-    return joinParts("?kick", this.id, ModerationMap[this.reason]?.description);
+    return slashCommand(
+      "kick",
+      slashOption("user", this.id),
+      slashOption("reason", ModerationMap[this.reason]?.description)
+    );
   }
 }
 

@@ -1,8 +1,8 @@
 import "./App.css";
-import { Suspense, lazy, useEffect } from "react";
+import { Suspense, lazy, useEffect, type JSX } from "react";
 import { Button, ConfigProvider, Layout, Popover, Spin, theme } from "antd";
 import ModForm from "./ModForm";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router } from "react-router";
 import SettingsMenu from "./SettingsMenu";
 import { SettingOutlined } from "@ant-design/icons";
 import { useLocalStorage } from "./hooks/useLocalStorage";

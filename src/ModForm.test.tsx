@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { MemoryRouter, Route, Routes } from "react-router";
 import ModForm from "./ModForm";
 import { notification } from "antd";
 import * as moderationClipboard from "./moderation/moderationClipboard";

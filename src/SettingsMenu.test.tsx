@@ -1,6 +1,7 @@
+import type { JSX } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router";
 import { ConfigProvider } from "antd";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import SettingsMenu from "./SettingsMenu";

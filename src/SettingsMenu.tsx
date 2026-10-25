@@ -1,6 +1,7 @@
+import type { JSX } from "react";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import { Col, Divider, Row, Switch } from "antd";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { version } from "../package.json";
 
 export type SettingsMenuProps = {

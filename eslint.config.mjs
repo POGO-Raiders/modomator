@@ -25,7 +25,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactPlugin.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
+      ...reactHooks.configs["recommended-latest"].rules,
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
       "react-refresh/only-export-components": "warn",

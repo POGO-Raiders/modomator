@@ -1,7 +1,7 @@
 import { Timeline, theme } from "antd";
 import type { GlobalToken } from "antd";
 import "./App.css";
-import React from "react";
+import React, { type JSX } from "react";
 
 const dateCodeStyle = (t: GlobalToken): React.CSSProperties => ({
   margin: "0 1px",
@@ -51,6 +51,19 @@ type Change = {
 };
 
 const changes: Change[] = [
+  {
+    version: "1.4.3",
+    date: "2026-10-24",
+    description: [
+      "Upgraded to React Router 8 and Vite 8; switched router imports to react-router",
+      "Enabled React Compiler",
+    ],
+  },
+  {
+    version: "1.4.2",
+    date: "2026-10-24",
+    description: ["Upgraded to React 19"],
+  },
   {
     version: "1.4.1",
     date: "2026-10-24",

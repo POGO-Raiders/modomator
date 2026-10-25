@@ -1,6 +1,7 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
-import react from "@vitejs/plugin-react";
+import react, { reactCompilerPreset } from "@vitejs/plugin-react";
+import babel from "@rolldown/plugin-babel";
 import { visualizer } from "rollup-plugin-visualizer";
 import { imagetools } from "vite-imagetools";
 
@@ -8,6 +9,9 @@ import { imagetools } from "vite-imagetools";
 export default defineConfig({
   base: "/modomator/",
   plugins: [
+    babel({
+      presets: [reactCompilerPreset()],
+    }),
     react(),
     imagetools({
       defaultDirectives: () => new URLSearchParams({ format: "webp", quality: "80", as: "url" }),
@@ -16,7 +20,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"),
+      "@": path.resolve(import.meta.dirname, "src"),
     },
   },
   build: {
@@ -24,10 +28,10 @@ export default defineConfig({
     emptyOutDir: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-react": ["react", "react-dom"],
-          "vendor-router": ["react-router-dom"],
-          "vendor-antd": ["antd", "@ant-design/icons"],
+        manualChunks(id) {
+          if (/node_modules[/\\](?:react-router)[/\\]/.test(id)) return "vendor-router";
+          if (/node_modules[/\\](?:react|react-dom)[/\\]/.test(id)) return "vendor-react";
+          if (/node_modules[/\\](?:antd|@ant-design)[/\\]/.test(id)) return "vendor-antd";
         },
       },
     },

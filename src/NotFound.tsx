@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { theme } from "antd";
 import heatran from "./assets/heatran.png";
 

@@ -56,22 +56,30 @@ function AppThemedShell({
         </Popover>
       </Header>
 
-      <Suspense
-        fallback={
-          <div className="form-container centered">
-            <Spin size="large" />
-          </div>
-        }
-      >
-        <Routes>
-          <Route path="/" element={<ModForm />} />
-          <Route path="/changelog" element={<ChangeLog />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
+      <main>
+        <Suspense
+          fallback={
+            <div className="form-container centered">
+              <Spin size="large" />
+            </div>
+          }
+        >
+          <Routes>
+            <Route path="/" element={<ModForm />} />
+            <Route path="/changelog" element={<ChangeLog />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Suspense>
+      </main>
 
       <Footer className="centered">
-        <img className="app-footer-logo" width={32} src={logo} alt="Pokémon Go Raiders logo" />
+        <img
+          className="app-footer-logo"
+          width={32}
+          height={32}
+          src={logo}
+          alt="Pokémon Go Raiders logo"
+        />
         Pokémon GO Raiders
       </Footer>
     </Layout>
